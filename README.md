@@ -1,1 +1,1 @@
-# https-github.com-mynosir-koalabeds-wechat-server
+# koalabeds-wechat-server
