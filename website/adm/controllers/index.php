@@ -1,0 +1,63 @@
+<?php
+/**
+ * 后台首页控制器
+ *
+ * @author linzequan <lowkey361@gmail.com>
+ *
+ */
+class Index extends MY_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        $this->checkLogin();
+        $data['resource_url'] = $this->resource_url;
+        $data['admin_info'] = isset($_SESSION['loginInfo']) ? $_SESSION['loginInfo'] : '';
+        // var_dump($_SESSION['loginInfo']);exit;
+        // $data['admin_info'] = $this->session->userdata('loginInfo');
+        $data['base_url'] = $this->config->item('base_url');
+        $data['current_menu'] = 'index';
+        $data['current_menu_text'] = 'Dashboard';
+        $data['sub_menu'] = array();
+        $data['menu_list'] = $this->getMenuList();
+        $this->data = $data;
+    }
+
+
+    public function index() {
+        $this->load->view('include/_header', $this->data);
+        // 查询当前用户个人信息
+        $adminId = $this->data['admin_info']['id'];
+        $this->load->model('admin_model');
+        $this->data['adminDetail'] = $this->admin_model->getAdminDetailInfo($adminId);
+        // 查询系统信息
+        $this->data['systemInfo'] = getSystemInfo();
+        $this->data['systemInfo']['access_token'] = $this->getAccessToken();
+        $this->load->view('index', $this->data);
+        $this->load->view('include/_footer', $this->data);
+    }
+
+
+    public function test() {
+        $this->session->set_userdata('loginInfo', array('userid'=>1, 'username'=>'admin', 'realname'=>'林泽全', 'telephone'=> '18665953630', 'is_admin'=>1));
+        $this->load->model('admin_model');
+        $result = $this->admin_model->getAdminByPage(1, 20, 'admin3');
+        var_dump($result);
+    }
+
+
+    public function get() {
+        $actionxm = $this->get_request('actionxm');
+        $result = array();
+        switch($actionxm) {
+        }
+        echo json_encode($result);
+    }
+
+    public function post() {
+        $actionxm = $this->get_request('actionxm');
+        $result = array();
+        switch($actionxm) {
+        }
+        echo json_encode($result);
+    }
+}
