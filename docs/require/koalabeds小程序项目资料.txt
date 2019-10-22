@@ -1,0 +1,121 @@
+koalabeds小程序项目资料
+一、计划表
+10.22
+1.demo界面操作
+a.我的账户
+b.酒店列表+订购流程
+c.门票列表+订购流程
+
+11.6
+2.后台及中间件
+
+11.16
+3.串联整个及完成
+
+二、开发须知
+1.前端两种语言（中英）中文简体，后端一种语言（英文）
+2.移动支付是使用ion第三方
+
+三、账号相关
+1.mini program backend:
+https://mp.weixin.qq.com/
+finance@koalabeds.com.hk
+PW: Password!@#
+Admin: Fay
+
+2.mini program developer account:
+https://open.weixin.qq.com/cgi-bin/index?t=home/index&lang=zh_CN
+koalabeds@gmail.com
+PW: Password!@#
+Admin: Wesley Tang
+
+3.WeChat official account (KoalabedsHK):
+https://mp.weixin.qq.com/
+Email: wesley@koalabeds.com.hk
+PW: Password!@#
+WeChat ID: KoalabedsHK
+Admin: Wesley
+
+4.koalabeds (RMB account, for mini program) Backend:
+https://weshops.wepayez.com
+商戶號碼：104530000126
+登錄密碼：5bc5B4DE
+支付秘鑰：97a36c5b28ecb6dbe194c45ebc00f46f
+
+
+5.高德地圖map
+steve@koalabeds.com.hk
+PW: Password!@#
+Admin: Wesley Tang
+
+6.koalabeds目前的后台
+https://koalabeds.com.hk/wp-login.php
+user: admin
+password:sLaK5cW%UG7LcMIkT^n!la28
+
+
+四、api
+cloudbeds:https://hotels.cloudbeds.com/api/docs/
+帐密：
+enquiries+5@koalabeds.com.hk
+clcL@ma3
+grayline: 查看文档 ticket api.zip
+wesley@koalabeds.com.hk
+clcwesley1
+（貌似这个账号调不通，需要两个账号去试，还有grayline文档里面的测试账号是可以用的）
+
+调用api例子
+For the hotel list API, please find the API here:
+https://koalabeds.com.hk/en/wp-json/api/v1/hotels (English)
+https://koalabeds.com.hk/hk/wp-json/api/v1/hotels (T. Chinese)
+https://koalabeds.com.hk/zh/wp-json/api/v1/hotels (S. Chinese)
+
+For the room listing of a hotel:
+https://koalabeds.com.hk/en/wp-json/api/v1/hotels/[id] (English)
+https://koalabeds.com.hk/hk/wp-json/api/v1/hotels/[id] (T. Chinese)
+https://koalabeds.com.hk/zh/wp-json/api/v1/hotels/[id] (S. Chinese)
+
+e.g.
+https://koalabeds.com.hk/en/wp-json/api/v1/hotels/298
+
+
+
+
+五、流程图及ui
+The links are the layout design.
+https://drive.google.com/file/d/14KhOaZl8ExW0cEQib0WLP5bB3mZ70_O4/view?usp=sharing
+https://drive.google.com/file/d/1iA24VVvdNM1YiOf0cdxaTRjFKFzaPC0a/view?usp=sharing
+注意：流程图，红圈为待确定部分
+
+六、最初需求
+WeChat mini program
+2 main purpose: booking room & buying tickets
+-Simplified Chinese and English
+-Functions:
+3 user roles: Master admin for HQ, Sub-admin for each guesthouse, Guest
+Booking system link up each guesthouse API (using cloudbed)
+QR code to authorize the booking
+Membership system
+Cross-broader WeChat payment gateway integration
+WeChat social Wifi (Connection with WIFI by following their official account关注微信公众号就可以自动连接上无线网络: they would use Rutgers wifi)
+Web-based backend
+API for ticket ordering system (create the api and clients vendor to use this api )
+e.g. ticket: Gary Line website(http://www.grayline.com.hk/)
+
+客人background:
+Web for booking rooms: https://koalabeds.com.hk/hk/
+Apps for check-in only
+https://apps.apple.com/ph/app/koalabeds/id1463018088
+https://play.google.com/store/apps/details?id=hk.com.koalabeds.app&hl=zh_HK
+
+小程序: 一個平台可以book房、買ticket
+關於boking部分:
+Integrate Cloudbed API
+關於ticket部分：
+客人和Grayline公司合作，Grayline提供一個portal和login，portal內有已連所有tickets API，例如Disneyland ，購買後會自動生成ticket。不需擔心ticket無貨，而客人可月付/每15日/用credit形式找數給Grayline。
+小程序需integrate Grayline API，並將此部分寫成API (包括ticket products listing, details, order) ，日後用作其他平台 (包括app, website) 使用。
+**已有WeChat pay RMB account, 高德地圖
+
+
+七、微信支付
+ion wechat pay使用文档

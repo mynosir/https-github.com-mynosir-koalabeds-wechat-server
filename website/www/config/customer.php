@@ -7,3 +7,8 @@ $config['wechat'] = array(
     'token'         => 'sew',
     'encodingAESKey'=> 'xkWd6DJlmXcgZHkwtt3y03jWlpvXQ4tBPQ6AMAQvYMV'
 );
+
+$config['cloudbeds'] = array(
+    'clientId'      => 'live1_assoc163958_2Mk4KHb1qDeawdVxCzQlRmEF',
+    'clientSecret'  => 'te1ml5AvSdMjk0JoWFhUc8P7y4gV9bIx'
+);
