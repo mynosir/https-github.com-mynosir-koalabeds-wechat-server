@@ -31,13 +31,38 @@ class home extends MY_Controller {
     }
 
 
+    public function https_request($url, $data=null) {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        if(!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($curl);
+        curl_close($curl);
+        return $output;
+    }
+
+
     public function test() {
-        $redirect_uri = urlencode('https://koalabeds-cloudbeds.kakaday.com/oauth2/callback');
-        $url = 'https://hotels.cloudbeds.com/api/v1.1/oauth?client_id=live1_25198_mcBk1iPXpLxzA7SQsK4TbgeN&redirect_uri=' . $redirect_uri . '&response_type=code';
-        // var_dump($url);exit;
-        header('Location: ' . $url);
-        // $data = curl_file_get_contents($url);
-        // var_dump($data);
+        $curl = curl_init();
+        $access_token = 'LRl0X8OMK9yxqFruZD8XseDE803oJfFRf9DbMclv';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getHotels';
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token));
+        if(!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($curl);
+        curl_close($curl);
+        var_dump($output);
     }
 
 
