@@ -31,25 +31,9 @@ class home extends MY_Controller {
     }
 
 
-    public function https_request($url, $data=null) {
+    public function getHotels() {
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-        if(!empty($data)) {
-            curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        }
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($curl);
-        curl_close($curl);
-        return $output;
-    }
-
-
-    public function test() {
-        $curl = curl_init();
-        $access_token = 'LRl0X8OMK9yxqFruZD8XseDE803oJfFRf9DbMclv';
+        $access_token = 'XWJ7RHhRohUO82v01r5ncNiTtcdU1JKH2PZmezzq';
         $url = 'https://hotels.cloudbeds.com/api/v1.1/getHotels';
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -60,7 +44,150 @@ class home extends MY_Controller {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         }
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($curl);
+        $output = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        var_dump($output);
+    }
+
+
+    public function getHotelDetails() {
+        $curl = curl_init();
+        $access_token = 'XWJ7RHhRohUO82v01r5ncNiTtcdU1JKH2PZmezzq';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getHotelDetails?propertyID=170048';
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token));
+        if(!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        var_dump($output);
+    }
+
+
+    public function getRoomTypes() {
+        $curl = curl_init();
+        $access_token = 'XWJ7RHhRohUO82v01r5ncNiTtcdU1JKH2PZmezzq';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getRoomTypes';
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token));
+        if(!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        var_dump($output);
+    }
+
+
+    public function getAvailableRoomTypes() {
+        $curl = curl_init();
+        $access_token = 'XWJ7RHhRohUO82v01r5ncNiTtcdU1JKH2PZmezzq';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getAvailableRoomTypes?propertyIDs=170048&startDate=2019-11-02&endDate=2019-11-03&rooms=1';
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token));
+        if(!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        var_dump($output);
+    }
+
+
+    public function getRooms() {
+        $curl = curl_init();
+        $access_token = 'XWJ7RHhRohUO82v01r5ncNiTtcdU1JKH2PZmezzq';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getRooms?propertyIDs=170048&roomTypeID=176686&roomTypeNameShort=DRU';
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token));
+        if(!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        var_dump($output);
+    }
+
+
+    public function postReservation() {
+        $curl = curl_init();
+        $access_token = 'XWJ7RHhRohUO82v01r5ncNiTtcdU1JKH2PZmezzq';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/postPayment';
+        $data = array(
+            'propertyID'    => 170048,
+            'startDate'     => '2019-11-02',
+            'endDate'       => '2019-11-03',
+            'guestFirstName'    => 'zequan',
+            'guestLastName' => 'lin',
+            'guestCountry'  => 'cn',
+            'guestZip'      => '86',
+            'guestEmail'    => '361789273@qq.com',
+            'amount'        => 0.01,
+            'type'          => 'hotel',
+            'reservationID' => time(),
+            'rooms' => array(
+                'roomTypeID'=> 197686,
+                'quantity'  => 1
+            ),
+            'adults'    => array(
+                'roomTypeID'=> 197686,
+                'quantity'  => 1
+            ),
+            'paymentMethod' => 'ebanking'
+        );
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token));
+        if(!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        var_dump($output);
+    }
+
+
+    public function postPayment() {
+        $curl = curl_init();
+        $access_token = 'XWJ7RHhRohUO82v01r5ncNiTtcdU1JKH2PZmezzq';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/postPayment';
+        $data = array(
+            'propertyID'        => 170048,
+            'reservationID'     => time(),
+            'type'              => 'credit',
+            'amount'            => 0.01,
+            'cardType'          => 'visa'
+        );
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token));
+        if(!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = json_decode(curl_exec($curl), true);
         curl_close($curl);
         var_dump($output);
     }
