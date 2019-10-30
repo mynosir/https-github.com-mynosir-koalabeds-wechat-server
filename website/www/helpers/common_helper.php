@@ -143,6 +143,13 @@ function curl_file_get_contents($durl) {
     curl_setopt($ch, CURLOPT_URL, $durl);
     curl_setopt($ch, CURLOPT_TIMEOUT, 2);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $headers = array(
+        "Content-type: application/x-www-form-urlencoded",
+        "Accept: application/json",
+        "Cache-Control: no-cache",
+        "Pragma: no-cache",
+    );
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     $r = curl_exec($ch);
     curl_close($ch);
     return $r;

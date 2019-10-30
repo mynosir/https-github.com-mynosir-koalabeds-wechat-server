@@ -574,7 +574,7 @@ class MY_Controller extends CI_Controller {
         $data['userinfo'] = curl_file_get_contents($url);
         // $data['userinfo'] = file_get_contents($url);
         $this->session->set_userdata('koalabedsUserinfo', $data);
-        $_SESSION['sewUserinfo'] = $data;
+        $_SESSION['koalabedsUserinfo'] = $data;
         header('Location: ' . $jumpurl);
         return true;
     }

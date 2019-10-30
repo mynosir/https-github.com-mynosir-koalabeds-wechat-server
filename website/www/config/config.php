@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-if($_SERVER['HTTP_HOST']=='dev.koalabeds-server.com') {
+if(isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST']=='dev.koalabeds-server.com') {
     $config['base_url'] = 'http://dev.koalabeds-server.com/';
 } else {
     $config['base_url'] = 'http://koalabeds-server.kakaday.com/';

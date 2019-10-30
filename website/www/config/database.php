@@ -48,7 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-if($_SERVER['HTTP_HOST']=='dev.koalabeds-server.com') {
+if(isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST']=='dev.koalabeds-server.com') {
     $db['default']['hostname'] = 'dev.koalabeds-server.com:3306';
     $db['default']['username'] = 'root';
     $db['default']['password'] = '123456';

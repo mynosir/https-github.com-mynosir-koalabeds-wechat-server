@@ -32,8 +32,9 @@ class home extends MY_Controller {
 
 
     public function test() {
-        $redirect_uri = urlencode('http://dev.koalabeds-server.com/home/test');
-        $url = 'https://hotels.cloudbeds.com/api/v1.1/oauth?client_id=live1_assoc163958_2Mk4KHb1qDeawdVxCzQlRmEF&redirect_uri=' . $redirect_uri . '&response_type=code';
+        $redirect_uri = urlencode('https://koalabeds-cloudbeds.kakaday.com/oauth2/callback');
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/oauth?client_id=live1_25198_mcBk1iPXpLxzA7SQsK4TbgeN&redirect_uri=' . $redirect_uri . '&response_type=code';
+        // var_dump($url);exit;
         header('Location: ' . $url);
         // $data = curl_file_get_contents($url);
         // var_dump($data);
