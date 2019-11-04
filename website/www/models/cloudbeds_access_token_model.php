@@ -33,7 +33,7 @@ class Cloudbeds_access_token_model extends MY_Model {
                     'refresh_token' => $result[0]['refresh_token']
                 );
                 $apiReturnStr = $this->https_request($url, $params);
-                file_put_contents('/pub/logs/update_cloudbeds_access_token', '[' . time() . ']==> ' . $apiReturnStr . PHP_EOL, FILE_APPEND);
+                file_put_contents('/pub/logs/update_cloudbeds_access_token', '[' . date('Y-m-d H:i:s', time()) . ']==> ' . $apiReturnStr . PHP_EOL, FILE_APPEND);
                 $apiReturn = json_decode($apiReturnStr, true);
                 // {
                 //     "access_token": "I1xDWLawVoUwZq7kjDDsbCpaTrIjwqZ4LSZM80Nh",
