@@ -24,4 +24,12 @@ class cli extends MY_Controller {
         return $result;
     }
 
+
+    public function fetch_hotels() {
+        $this->load->model('cloudbeds_hotel_model');
+        $result = $this->cloudbeds_hotel_model->fetch_hotels();
+        var_dump($result);
+        return $result;
+    }
+
 }
