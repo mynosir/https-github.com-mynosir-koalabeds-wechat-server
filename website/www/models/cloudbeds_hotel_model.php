@@ -136,4 +136,46 @@ class Cloudbeds_hotel_model extends MY_Model {
         }
     }
 
+
+    /**
+     * 查询推荐列表
+     **/
+    public function getRecommend($type = 0, $num = 10) {
+        if($type == 0) {
+            return array(
+                'status'    => -1,
+                'msg'       => '推荐位置不可为空'
+            );
+        }
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `recommend` = ' . $type . ' order by id desc limit 0, ' . $num);
+        $result = $query->result_array();
+        return array(
+            'status'    => 0,
+            'msg'       => '查询成功',
+            'data'      => $result
+        );
+    }
+
+
+    /**
+     * 获取首页推荐列表瀑布流
+     **/
+    public function getRecommendFlow($page = 1, $num = 10) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `recommend` = 1 order by id desc limit ' . ($page - 1) * $num . ' , ' . $num);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            $rtn = array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result
+            );
+        } else {
+            $rtn = array(
+                'status'    => -1,
+                'msg'       => '没有更多数据'
+            );
+        }
+        return $rtn;
+    }
+
 }

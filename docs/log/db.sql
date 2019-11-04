@@ -82,3 +82,8 @@ create table `ko_hotel_order` (
     `endDate` date comment '退房日期',
     primary key (`id`)
 ) engine myisam character set utf8 collate utf8_general_ci comment = '订单表';
+
+
+-- linzequan 20191105
+-- cloudbeds酒店表添加推荐字段
+alter table `ko_cloudbeds_hotels` add recommend int(3) default 0 comment '是否推荐。0不推荐，1推荐到首页横幅，2推荐到首页瀑布流';
