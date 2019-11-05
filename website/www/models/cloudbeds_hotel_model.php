@@ -33,7 +33,7 @@ class Cloudbeds_hotel_model extends MY_Model {
             }
             $url = 'https://hotels.cloudbeds.com/api/v1.1/getHotels?pageSize=' . $pageSize . '&pageNumber=' . $pageNumber;
             $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
-            if(!!$apiReturnStr['success']) {
+            if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
                 // 判断当前是否爬完所有分页数据，是的话则将循环标志位置为false
                 if($apiReturnStr['total'] <= $pageSize * $pageNumber) {
                     $hasNext = false;
@@ -115,7 +115,7 @@ class Cloudbeds_hotel_model extends MY_Model {
         }
         $url = 'https://hotels.cloudbeds.com/api/v1.1/getHotelDetails?propertyID=' . $propertyID;
         $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
-        if(!!$apiReturnStr['success']) {
+        if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
             return $apiReturnStr['data'];
         } else {
             return false;
@@ -176,6 +176,34 @@ class Cloudbeds_hotel_model extends MY_Model {
             );
         }
         return $rtn;
+    }
+
+
+    /**
+     * 获取房间类型
+     **/
+    public function getRoomTypes($propertyIDs) {
+        $access_token_result = $this->update_cloudbeds_access_token();
+        if($access_token_result['status']) {
+            return array(
+                'status'    => -1,
+                'msg'       => $access_token_result['msg']
+            );
+        }
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getRoomTypes?propertyIDs=' . $propertyIDs;
+        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
+        if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $apiReturnStr['data']
+            );
+        } else {
+            return array(
+                'status'    => -2,
+                'msg'       => $apiReturnStr['message']
+            );
+        }
     }
 
 }

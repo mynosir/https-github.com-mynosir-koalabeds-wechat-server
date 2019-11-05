@@ -88,3 +88,44 @@
     }]
 }
 ```
+
+
+## 3. 获取酒店房型
+
+* 请求URL
+
+> /api/get?actionxm=getRoomTypes
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| propertyIDs | Integer，不可为空 | cloudbeds酒店id，多个以英文逗号隔开 |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Array | 搜索结果集 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": [{
+        "id": 1,
+        "roomTypeID": "197687",
+        "propertyID": "172068",
+        "maxGuests": "3"
+        ...
+    }]
+}
+```

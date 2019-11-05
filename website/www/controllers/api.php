@@ -38,6 +38,12 @@ class api extends MY_Controller {
                 $num = $this->get_request('num', 10);
                 $result = $this->cloudbeds_hotel_model->getRecommendFlow($page, $num);
                 break;
+            // 获取酒店类型
+            case 'getRoomTypes':
+                $this->load->model('cloudbeds_hotel_model');
+                $propertyIDs = $this->get_request('propertyIDs');
+                $result = $this->cloudbeds_hotel_model->getRoomTypes($propertyIDs);
+                break;
         }
         echo json_encode($result);
     }
