@@ -1,7 +1,7 @@
 $(function() {
     config = {
-        apiServer: document.domain=='dev.koalabeds-server.com' ? 'http://dev.koalabeds-server.com/adm/' : 'http://koalabeds-server.kakaday.com/adm/',
-        resServer: document.domain=='dev.koalabeds-server.com' ? 'http://dev.koalabeds-server.com/adm/views/static/' : 'http://koalabeds-server.kakaday.comn/adm/views/static/'
+        apiServer: document.domain=='dev.koalabeds-server.com' ? 'http://dev.koalabeds-server.com/adm/' : 'https://koalabeds-server.kakaday.com/adm/',
+        resServer: document.domain=='dev.koalabeds-server.com' ? 'http://dev.koalabeds-server.com/adm/views/static/' : 'https://koalabeds-server.kakaday.comn/adm/views/static/'
     };
     Utils = {
         // 请求数据公用方法
