@@ -227,4 +227,194 @@ class Cloudbeds_hotel_model extends MY_Model {
         }
     }
 
+
+    /**
+     * 搜索酒店
+     */
+    public function searchHotels($params) {
+        // 获取酒店列表，如果筛选条件有传入酒店名称hotelName或者城市city，则作为入参
+        $hotels = $this->getHotels($params['hotelName'], $params['city']);
+        if($hotels['status'] != 0) {
+            return array(
+                'status'    => -1,
+                'msg'       => '酒店查询失败'
+            );
+        }
+        // 通过筛选完成后的酒店，获取酒店propertyID，进行房间筛选
+        $hotelIdArr = array();
+        foreach($hotels['data'] as $k=>$v) {
+            $hotelIdArr[] = $v['propertyID'];
+        }
+        $hotelIdStr = implode(',', $hotelIdArr);
+        $availableRoomTypes = $this->getAvailableRoomTypes($hotelIdStr, $params['checkInDate'], $params['checkOutDate']);
+        if($availableRoomTypes['status'] != 0) {
+            return array(
+                'status'    => -2,
+                'msg'       => '酒店查询失败'
+            );
+        }
+        // 获取酒店下所有房型的价格
+        $amount = array();
+        foreach($availableRoomTypes['data'] as $k=>$v) {
+            $tmp = array();
+            foreach($v['propertyRooms'] as $x=>$y) {
+                // 判断是否价格区间，有的话则需要过滤
+                if($params['priceStart'] > 0 && $params['priceStart'] > $y['roomRate']) {
+                    continue;
+                }
+                if($params['priceEnd'] > 0 && $params['priceEnd'] < $y['roomRate']) {
+                    continue;
+                }
+                $tmp[$y['roomTypeID']] = $y['roomRate'];
+            }
+            $amount[$v['propertyID']] = $tmp;
+        }
+        // 是否需要按照价格排序，0不排序，1升序，2降序
+        $minAmount = array();
+        $maxAmount = array();
+        foreach($amount as $k=>$v) {
+            $minAmount[$k] = min($v);
+            $maxAmount[$k] = max($v);
+        }
+        $newHotels = array();
+        if(isset($params['moneySort']) && $params['moneySort'] == 0) {
+            $newHotels = $hotels;
+        }
+        if($params['moneySort'] == 1) {
+            asort($minAmount);
+            foreach($minAmount as $k=>$v) {
+                $newHotels[] = $this->getHotelByPropertyIDWithSource($k, $hotels['data']);
+            }
+        }
+        if($params['moneySort'] == 2) {
+            arsort($maxAmount);
+            foreach($maxAmount as $k=>$v) {
+                $newHotels[] = $this->getHotelByPropertyIDWithSource($k, $hotels['data']);
+            }
+        }
+        // 往酒店列表中塞入最低价格
+        foreach($newHotels as $k=>$v) {
+            $newHotels[$k]['minMoney'] = $minAmount[$v['propertyID']];
+            $newHotels[$k]['maxMoney'] = $maxAmount[$v['propertyID']];
+        }
+        // 获取酒店详情
+        foreach($newHotels as $k=>$v) {
+            $newHotels[$k]['details'] = $this->getHotelDetailsInDB($v['propertyID']);
+        }
+        return array(
+            'status'    => 0,
+            'msg'       => '查询成功',
+            'data'      => $newHotels
+        );
+    }
+
+
+    /**
+     * 从数据库中检索酒店信息
+     */
+    public function getHotelDetailsInDB($propertyID) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `propertyID` = ' . $propertyID);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return $result[0];
+        } else {
+            return array();
+        }
+    }
+
+
+    /**
+     * 通过propertyID在传入的原数组数据中查找酒店
+     */
+    public function getHotelByPropertyIDWithSource($propertyID, $source) {
+        foreach($source as $k=>$v) {
+            if($v['propertyID'] == $propertyID) {
+                return $v;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 筛选酒店
+     */
+    public function getHotels($hotelName='', $city='') {
+        $access_token_result = $this->update_cloudbeds_access_token();
+        if($access_token_result['status']) {
+            return array(
+                'status'    => -1,
+                'msg'       => $access_token_result['msg']
+            );
+        }
+        $filters = array();
+        if(!!$hotelName) {
+            $filters[] = 'propertyName=' . str_replace(' ', '%20', $hotelName);
+        }
+        if(!!$city) {
+            $filters[] = 'propertyCity=' . str_replace(' ', '%20', $city);
+        }
+        $filtersStr = '';
+        if(count($filters) > 0) {
+            $filtersStr = '?' . implode('&', $filters);
+        }
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getHotels' . $filtersStr;
+        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
+        if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $apiReturnStr['data']
+            );
+        } else {
+            return array(
+                'status'    => -2,
+                'msg'       => $apiReturnStr['message']
+            );
+        }
+    }
+
+
+    /**
+     * 筛选可用的房间
+     */
+    public function getAvailableRoomTypes($propertyIDs, $checkInDate, $checkOutDate) {
+        $access_token_result = $this->update_cloudbeds_access_token();
+        if($access_token_result['status']) {
+            return array(
+                'status'    => -1,
+                'msg'       => $access_token_result['msg']
+            );
+        }
+        $filters = array('pageNumber=1', 'pageSize=100000');
+        if(!!$propertyIDs) {
+            // $propertyIDs = '173691,169762,26846,173694';
+            $filters[] = 'propertyIDs=' . str_replace(' ', '%20', $propertyIDs);
+        }
+        if(!!$checkInDate) {
+            $filters[] = 'startDate=' . str_replace(' ', '%20', $checkInDate);
+        }
+        if(!!$checkOutDate) {
+            $filters[] = 'endDate=' . str_replace(' ', '%20', $checkOutDate);
+        }
+        $filtersStr = '';
+        if(count($filters) > 0) {
+            $filtersStr = '?' . implode('&', $filters);
+        }
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getAvailableRoomTypes' . $filtersStr;
+        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
+        if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $apiReturnStr['data']
+            );
+        } else {
+            return array(
+                'status'    => -2,
+                'msg'       => $apiReturnStr['message']
+            );
+        }
+    }
+
 }

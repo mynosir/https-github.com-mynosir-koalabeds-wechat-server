@@ -59,6 +59,20 @@ class api extends MY_Controller {
                 $this->load->model('cloudbeds_hotel_model');
                 $result = $this->cloudbeds_hotel_model->getCitys();
                 break;
+            // 酒店搜索
+            case 'searchHotels':
+                $this->load->model('cloudbeds_hotel_model');
+                $params['city'] = $this->get_request('city', '');                     // 酒店所在城市
+                $params['checkInDate'] = $this->get_request('checkInDate', '');       // 入住日期
+                $params['checkOutDate'] = $this->get_request('checkOutDate', '');     // 离店日期
+                $params['hotelName'] = $this->get_request('hotelName', '');           // 酒店名称
+                $params['moneySort'] = $this->get_request('moneySort', 0);            // 价格排序
+                $params['rankSort'] = $this->get_request('rankSort', 0);              // 评价排序
+                $params['priceStart'] = $this->get_request('priceStart', 0);          // 价格区间开始
+                $params['priceEnd'] = $this->get_request('priceEnd', 0);              // 价格区间结束
+                $params['rank'] = $this->get_request('rank', 0);                      // 评价星数，0为全部
+                $result = $this->cloudbeds_hotel_model->searchHotels($params);
+                break;
         }
         echo json_encode($result);
     }

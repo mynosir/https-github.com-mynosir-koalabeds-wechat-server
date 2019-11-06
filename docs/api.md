@@ -264,11 +264,11 @@
 | checkInDate | String | 入住日期 |
 | checkOutDate | String | 离店日期 |
 | hotelName | String | 酒店名称 |
-| moneySort | String | 价格排序 |
-| rankSort | String | 评价排序 |
+| moneySort | String | 价格排序。0不排序，1升序，2降序。默认0 |
+| rankSort | String | 评价排序。0不排序，1升序，2降序。默认0 |
 | priceStart | String | 价格区间开始 |
 | priceEnd | String | 价格区间结束 |
-| rank | Integer | 评价星数，0为全部 |
+| rank | Integer | 评价星数，0为全部。默认0 |
 
 * 返回参数
 
