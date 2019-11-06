@@ -359,6 +359,8 @@
 | 请求参数 | 参数类型 | 参数说明 |
 | :--- | :--- | :--- |
 | propertyID | Integer，不可为空 | 酒店id |
+| checkInDate | String | 入住日期 |
+| checkOutDate | String | 离店日期 |
 
 * 返回参数
 
