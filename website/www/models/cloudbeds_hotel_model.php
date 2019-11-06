@@ -180,7 +180,7 @@ class Cloudbeds_hotel_model extends MY_Model {
 
 
     /**
-     * 获取房间类型
+     * 获取酒店房型
      **/
     public function getRoomTypes($propertyIDs) {
         $access_token_result = $this->update_cloudbeds_access_token();

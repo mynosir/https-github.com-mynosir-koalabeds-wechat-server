@@ -87,3 +87,18 @@ create table `ko_hotel_order` (
 -- linzequan 20191105
 -- cloudbeds酒店表添加推荐字段
 alter table `ko_cloudbeds_hotels` add recommend int(3) default 0 comment '是否推荐。0不推荐，1推荐到首页横幅，2推荐到首页瀑布流';
+
+
+-- linzequan 20191106
+-- 添加首页轮播图
+create table `ko_banner` (
+    `id` int not null auto_increment comment '自增id',
+    `img` varchar(255) not null comment '图片地址',
+    `link` varchar(255) default '' comment '跳转地址',
+    `zorder` int default 100 comment '排序。数值越大越靠前，默认值100',
+    `status` int default 0 comment '状态。0显示，1隐藏',
+    primary key (`id`)
+) engine myisam character set utf8 collate utf8_general_ci comment = '首页轮播图';
+-- 测试数据
+-- insert into ko_banner(img, link) values('https://img1.qunarzz.com/order/comp/1805/2e/6e407f088bfb902.png', 'https://baidu.com');
+-- insert into ko_banner(img, link) values('https://simg1.qunarzz.com/site/images/wap/home/recommend/20160509_banner_750x376.jpg', 'https://sina.com.cn');
