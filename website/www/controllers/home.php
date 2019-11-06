@@ -31,6 +31,25 @@ class home extends MY_Controller {
     }
 
 
+    public function getAccessToken() {
+        $this->load->model('cloudbeds_hotel_model');
+        $result = $this->cloudbeds_hotel_model->update_cloudbeds_access_token();
+        echo json_encode($result);
+    }
+
+
+    public function fetchServerAccessToken() {
+        $result = json_decode($this->https_request('https://koalabeds-server.kakaday.com/home/getAccessToken'), true);
+        if($result['status'] == 0) {
+            $this->load->model('cloudbeds_access_token_model');
+            $this->cloudbeds_access_token_model->saveDevAccessToken($result['data']['access_token']);
+            echo '同步服务器cloudbeds access token成功';
+        } else {
+            echo json_encode($result);
+        }
+    }
+
+
     public function getHotels() {
         $curl = curl_init();
         $access_token = 'fn3J6VwleQaKr5011AkkeC5uc2RRRHXmDuUreq5y';

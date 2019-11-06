@@ -28,4 +28,12 @@ class Cloudbeds_access_token_model extends MY_Model {
         }
     }
 
+
+    /**
+     * 同步服务器access_token，方便开发
+     */
+    public function saveDevAccessToken($access_token) {
+        return $this->db->query('update ' . $this->table . ' set `access_token` = "' . $access_token . '"');
+    }
+
 }
