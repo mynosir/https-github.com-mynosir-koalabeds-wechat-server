@@ -129,3 +129,513 @@
     }]
 }
 ```
+
+
+## 4. 获取轮播图
+
+* 请求URL
+
+> /api/get?actionxm=getBanners
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+无
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Array | 结果集 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": [{
+        "id": 1,
+        "img": "https://xxxx/a.jpg",
+        "link": "https://xxxx",
+        "zorder": "3"
+        ...
+    }]
+}
+```
+
+
+## 4. 获取优惠券
+
+* 请求URL
+
+> /api/get?actionxm=getCoupons
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+无
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Array | 结果集 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": [{
+        "id": 1,
+        "money": "10",
+        "validateDate": "2019-11-01",
+        "status": "0"
+        ...
+    }]
+}
+```
+
+
+## 5. 获取酒店房型
+
+* 请求URL
+
+> /api/get?actionxm=getCitys
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+无
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Array | 搜索结果集 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": [{
+        "id": 1,
+        "name": "shenzhen"
+        ...
+    }]
+}
+```
+
+
+## 6. 酒店搜索
+
+* 请求URL
+
+> /api/get?actionxm=searchHotels
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| city | String | 酒店所在城市 |
+| checkInDate | String | 入住日期 |
+| checkOutDate | String | 离店日期 |
+| hotelName | String | 酒店名称 |
+| moneySort | String | 价格排序 |
+| rankSort | String | 评价排序 |
+| priceStart | String | 价格区间开始 |
+| priceEnd | String | 价格区间结束 |
+| rank | Integer | 评价星数，0为全部 |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Array | 结果集 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": [{
+        "id": 1,
+        "propertyID": "172068",
+        "propertyImageThumb": "https://xxx/a.jpg",
+        "propertyName": "酒店名称",
+        "propertyAddress1": "",
+        "propertyAddress2": "",
+        "propertyCity": "",
+        "propertyState": "",
+        "grandTotal": "最低价格",
+        "rank": "3"，
+        "rankNum": "908"
+        ...
+    }]
+}
+```
+
+
+## 7. 获取酒店详情
+
+* 请求URL
+
+> /api/get?actionxm=getHotel
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| propertyID | Integer，不可为空 | 酒店id |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Array | 结果集 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": [{
+        "id": 1,
+        "propertyID": "172068",
+        "rank": "3"，
+        "rankNum": "908"
+        /* hotel表所有字段 */
+        ...
+    }]
+}
+```
+
+
+## 8. 获取房间列表
+
+* 请求URL
+
+> /api/get?actionxm=getRoomsByHotelId
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| propertyID | Integer，不可为空 | 酒店id |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Array | 结果集 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": [{
+        "id": 1,
+        "propertyID": "172068",
+        "rank": "3"，
+        "rankNum": "908"
+        /* 同搜索 */
+        ...
+    }]
+}
+```
+
+
+## 9. 获取评论列表
+
+* 请求URL
+
+> /api/get?actionxm=getReviews
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| propertyID | Integer，不可为空 | 酒店id |
+| page | Integer，可为空 | 页码，默认为1 |
+| num | Integer，可为空 | 查询个数，默认为10 |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Array | 结果集 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": [{
+        "id": 1,
+        /* 评论列表 */
+        ...
+    }]
+}
+```
+
+
+## 10. 获取openid
+
+* 请求URL
+
+> /api/get?actionxm=getOpenid
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| code | String | 微信授权openid |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Object | 结果集 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": {
+        "openid": "afasdfdsfsadf",
+        /* 评论列表 */
+        ...
+    }
+}
+```
+
+
+## 11. 保存用户信息
+
+* 请求URL
+
+> /api/post?actionxm=saveUserinfo
+
+* 请求方式
+
+> post
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| openid | String | 微信用户openid |
+| userinfo | Object | 微信用户信息 |
+| lang | String | 语言，默认英文 |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功"
+}
+```
+
+
+## 12. 下订单
+
+* 请求URL
+
+> /api/post?actionxm=getReviews
+
+* 请求方式
+
+> post
+
+* 请求参数
+
+> 参照http://hotels.cloudbeds.com/api/docs/#api-Reservation-postReservation
+
+* 返回参数
+
+> 参照http://hotels.cloudbeds.com/api/docs/#api-Reservation-postReservation
+
+* 返回示例
+
+```
+{
+    "success": true,
+    "reservationID": "5386838946",
+    "status": "confirmed",
+    "guestID": 282,
+    "guestFirstName": "John",
+    "guestLastName": "Doe",
+    "guestGender": "M",
+    "guestEmail": "john.doe@example.com",
+    "startDate": "2018-12-03",
+    "endDate": "2018-12-07",
+    "dateCreated": "2018-12-03 20:47:35",
+    "grandTotal": 124.27,
+    "unassigned": [
+    {
+        "subReservationID": "5386838946",
+        "roomTypeName": "Double",
+        "roomTypeID": 2,
+        "adults": 1,
+        "children": 0,
+        "dailyRates": [
+        {
+            "date": "2018-12-03",
+            "rate": 30
+        },
+        {
+            "date": "2018-12-04",
+            "rate": 30
+        },
+        {
+            "date": "2018-12-05",
+            "rate": 30
+        },
+        {
+            "date": "2018-12-06",
+            "rate": 30
+        }
+        ],
+        "roomTotal": 120
+    }
+    ]
+}
+```
+
+
+## 13. 获取订单列表
+
+* 请求URL
+
+> /api/get?actionxm=getHotelOrders
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| openid | String | 微信用户openid |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Array | 订单列表 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": [{
+        "id": "xxx",
+        "status": 0,
+        ...
+    }]
+}
+```
+
+
+## 14. 用户获取优惠券
+
+* 请求URL
+
+> /api/post?actionxm=getUserCoupon
+
+* 请求方式
+
+> post
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| ids | String | 优惠券ids，以,分隔 |
+| openid | String | 微信用户openid |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "请求成功"
+}
+```
+
