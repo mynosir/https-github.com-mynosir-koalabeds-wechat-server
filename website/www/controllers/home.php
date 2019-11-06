@@ -109,8 +109,8 @@ class home extends MY_Controller {
 
     public function getRooms() {
         $curl = curl_init();
-        $access_token = 'FkqeKbMe7vZxyc9Ymoanc5YoRuFD1MC9QDk2ojvR';
-        $url = 'https://hotels.cloudbeds.com/api/v1.1/getRooms?propertyIDs=170048&roomTypeID=176686&roomTypeNameShort=DRU';
+        $access_token = 'vd0YIi16dqLsaQHUy35VoCIN8fhSmepyhdN8wX3g';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getRooms?propertyIDs=170048';
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
@@ -129,7 +129,7 @@ class home extends MY_Controller {
     public function postReservation() {
         $curl = curl_init();
         $access_token = 'FkqeKbMe7vZxyc9Ymoanc5YoRuFD1MC9QDk2ojvR';
-        $url = 'https://hotels.cloudbeds.com/api/v1.1/postPayment';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/postReservation';
         $data = array(
             'propertyID'    => 170048,
             'startDate'     => '2019-11-02',

@@ -28,7 +28,7 @@ class api extends MY_Controller {
             case 'getRecommend':
                 $this->load->model('cloudbeds_hotel_model');
                 $type = $this->get_request('type');
-                $num = $this->get_request('num');
+                $num = $this->get_request('num', 10);
                 $result = $this->cloudbeds_hotel_model->getRecommend($type, $num);
                 break;
             // 获取首页推荐酒店瀑布流
