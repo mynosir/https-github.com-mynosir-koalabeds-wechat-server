@@ -73,6 +73,12 @@ class api extends MY_Controller {
                 $params['rank'] = $this->get_request('rank', 0);                      // 评价星数，0为全部
                 $result = $this->cloudbeds_hotel_model->searchHotels($params);
                 break;
+            // 获取酒店详情
+            case 'getHotel':
+                $this->load->model('cloudbeds_hotel_model');
+                $propertyID = $this->get_request('propertyID', 0);
+                $result = $this->cloudbeds_hotel_model->getHotelDetailsInDB($propertyID);
+                break;
         }
         echo json_encode($result);
     }

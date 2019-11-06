@@ -299,7 +299,15 @@ class Cloudbeds_hotel_model extends MY_Model {
         }
         // 获取酒店详情
         foreach($newHotels as $k=>$v) {
-            $newHotels[$k]['details'] = $this->getHotelDetailsInDB($v['propertyID']);
+            $tmp = $this->getHotelDetailsInDB($v['propertyID']);
+            if($tmp['status'] == 0) {
+                $newHotels[$k]['details'] = $tmp['data'];
+            } else {
+                return array(
+                    'status'    => -3,
+                    'msg'       => '酒店查询失败'
+                );
+            }
         }
         return array(
             'status'    => 0,
@@ -316,9 +324,17 @@ class Cloudbeds_hotel_model extends MY_Model {
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `propertyID` = ' . $propertyID);
         $result = $query->result_array();
         if(count($result) > 0) {
-            return $result[0];
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result[0]
+            );
         } else {
-            return array();
+            return array(
+                'status'    => -1,
+                'msg'       => '没有数据',
+                'data'      => array()
+            );
         }
     }
 
