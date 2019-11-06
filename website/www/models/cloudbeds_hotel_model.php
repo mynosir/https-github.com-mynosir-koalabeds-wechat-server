@@ -206,4 +206,25 @@ class Cloudbeds_hotel_model extends MY_Model {
         }
     }
 
+
+    /**
+     * 查询城市列表数据
+     */
+    public function getCitys() {
+        $query = $this->db->query('select distinct `propertyCity` from ' . $this->table);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '没有数据'
+            );
+        }
+    }
+
 }

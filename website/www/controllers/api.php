@@ -49,6 +49,16 @@ class api extends MY_Controller {
                 $this->load->model('banner_model');
                 $result = $this->banner_model->getList();
                 break;
+            // 获取优惠券配置信息
+            case 'getCoupons':
+                $this->load->model('coupon_model');
+                $result = $this->coupon_model->getList();
+                break;
+            // 获取城市列表
+            case 'getCitys':
+                $this->load->model('cloudbeds_hotel_model');
+                $result = $this->cloudbeds_hotel_model->getCitys();
+                break;
         }
         echo json_encode($result);
     }

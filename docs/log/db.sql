@@ -90,7 +90,12 @@ alter table `ko_cloudbeds_hotels` add recommend int(3) default 0 comment '是否
 
 
 -- linzequan 20191106
--- 添加首页轮播图
+-- cloudbeds酒店表添加状态字段
+alter table `ko_cloudbeds_hotels` add `status` int default 0 comment '状态。0下架，1上架，-1删除。默认0';
+
+
+-- linzequan 20191106
+-- 添加首页轮播图表
 create table `ko_banner` (
     `id` int not null auto_increment comment '自增id',
     `img` varchar(255) not null comment '图片地址',
@@ -98,7 +103,25 @@ create table `ko_banner` (
     `zorder` int default 100 comment '排序。数值越大越靠前，默认值100',
     `status` int default 0 comment '状态。0显示，1隐藏',
     primary key (`id`)
-) engine myisam character set utf8 collate utf8_general_ci comment = '首页轮播图';
+) engine myisam character set utf8 collate utf8_general_ci comment = '首页轮播图表';
 -- 测试数据
 -- insert into ko_banner(img, link) values('https://img1.qunarzz.com/order/comp/1805/2e/6e407f088bfb902.png', 'https://baidu.com');
 -- insert into ko_banner(img, link) values('https://simg1.qunarzz.com/site/images/wap/home/recommend/20160509_banner_750x376.jpg', 'https://sina.com.cn');
+
+
+-- linzequan 20191106
+-- 添加优惠券配置表
+create table `ko_coupon` (
+    `id` int not null auto_increment comment '自增id',
+    `totalAmount` decimal(20, 2) not null comment '满多少金额可以使用',
+    `discountAmount` decimal(20, 2) not null comment '优惠多少金额',
+    `validateDate` int not null comment '有效期多少天',
+    `zorder` int default 100 comment '排序。数值越大越靠前，默认值100',
+    `status` int default 0 comment '优惠券状态。0显示，1隐藏',
+    primary key (`id`)
+) engine myisam character set utf8 collate utf8_general_ci comment = '优惠券配置表';
+-- 测试数据
+-- insert into ko_coupon(totalAmount, discountAmount, validateDate) values(500.00, 50.00, 30);
+-- insert into ko_coupon(totalAmount, discountAmount, validateDate) values(300.00, 30.00, 15);
+-- insert into ko_coupon(totalAmount, discountAmount, validateDate) values(200.00, 20.00, 10);
+-- insert into ko_coupon(totalAmount, discountAmount, validateDate) values(100.00, 10.00, 5);
