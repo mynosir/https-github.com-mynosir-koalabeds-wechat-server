@@ -87,6 +87,37 @@ class api extends MY_Controller {
                 $checkOutDate = $this->get_request('checkOutDate', '');     // 离店日期
                 $result = $this->cloudbeds_hotel_model->getAvailableRoomTypes($propertyID, $checkInDate, $checkOutDate);
                 break;
+            // 获取openid
+            case 'getOpenid':
+                $code = $this->get_request('code');         // 小程序传过来的code值
+                $this->load->config('customer');
+                $wechatConfig = $this->config->item('wechat');
+                $url = 'https://api.weixin.qq.com/sns/jscode2session?appid=' . $wechatConfig['appId'] . '&secret=' . $wechatConfig['appSecret'] . '&js_code=' . $code . '&grant_type=authorization_code';
+                $wechatResult = file_get_contents($url);
+                $wechatResultObj = json_decode($wechatResult, true);
+                // var_dump($resultObj);
+                if(empty($wechatResultObj)) {
+                    $result = array(
+                        'status'    => -1,
+                        'msg'       => '获取openid异常，微信内部错误'
+                    );
+                } else {
+                    $loginFail = array_key_exists('errcode', $wechatResultObj);
+                    if($loginFail) {
+                        $result = array(
+                            'status'    => -2,
+                            'msg'       => '请求失败',
+                            'ext'       => $wechatResult
+                        );
+                    } else {
+                        $result = array(
+                            'status'    => 0,
+                            'msg'       => '请求成功',
+                            'data'      => $wechatResultObj['openid']
+                        );
+                    }
+                }
+                break;
         }
         echo json_encode($result);
     }
@@ -96,6 +127,20 @@ class api extends MY_Controller {
         $actionxm = $this->get_request('actionxm');
         $result = array();
         switch($actionxm) {
+            // 保存用户信息
+            case 'saveUserinfo':
+                $openid = $this->get_request('openid');
+                $userinfo = $this->get_request('userinfo', '');
+                $this->load->model('user_model');
+                $result = $this->user_model->saveUserinfo($openid, $userinfo);
+                break;
+            // 保存语音
+            case 'updateLang':
+                $openid = $this->get_request('openid');
+                $lang = $this->get_request('lang', 'en');
+                $this->load->model('user_model');
+                $result = $this->user_model->updateLang($openid, $lang):
+                break;
         }
         echo json_encode($result);
     }
