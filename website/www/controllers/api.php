@@ -139,7 +139,7 @@ class api extends MY_Controller {
                 $openid = $this->get_request('openid');
                 $lang = $this->get_request('lang', 'en');
                 $this->load->model('user_model');
-                $result = $this->user_model->updateLang($openid, $lang):
+                $result = $this->user_model->updateLang($openid, $lang);
                 break;
         }
         echo json_encode($result);

@@ -459,11 +459,7 @@
 {
     "statu"： 0，
     "msg": "查询成功",
-    "data": {
-        "openid": "afasdfdsfsadf",
-        /* 评论列表 */
-        ...
-    }
+    "data": "afasdfdsfsadf",
 }
 ```
 
