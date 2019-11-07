@@ -8,7 +8,7 @@
 class user_model extends MY_Model {
 
     private $table = 'ko_user';
-    private $fields = 'id, openid, userinfo, wx_subscribe, wx_nickname, wx_sex, wx_language, wx_city, wx_province, wx_country, wx_headimgurl, wx_subscribe_time, wx_remark, wx_groupid, wx_tagid_list, lang';
+    private $fields = 'id, openid, userinfo, wx_nickname, wx_sex, wx_language, wx_city, wx_province, wx_country, wx_avatarUrl, lang';
 
     public function __construct() {
         parent::__construct();
@@ -26,11 +26,7 @@ class user_model extends MY_Model {
             'wx_city'       => $userinfoObj['city'],
             'wx_province'   => $userinfoObj['province'],
             'wx_country'    => $userinfoObj['country'],
-            'wx_headimgurl' => $userinfoObj['headimgurl'],
-            'wx_subscribe_time' => $userinfoObj['subscribe_time'],
-            'wx_remark'     => $userinfoObj['remark'],
-            'wx_groupid'    => $userinfoObj['groupid'],
-            'wx_tagid_list' => $userinfoObj['tagid_list'],
+            'wx_avatarUrl'  => $userinfoObj['avatarUrl']
         );
         if(!$this->checkExistByOpenid($openid)) {
             // 不存在记录，新增
