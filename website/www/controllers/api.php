@@ -141,6 +141,13 @@ class api extends MY_Controller {
                 $this->load->model('user_model');
                 $result = $this->user_model->updateLang($openid, $lang);
                 break;
+            // 用户获取优惠券
+            case 'getUserCoupon':
+                $openid = $this->get_request('openid');
+                $ids = $this->get_request('ids');
+                $this->load->model('coupon_model');
+                $result = $this->coupon_model->getUserCoupon($openid, $ids);
+                break;
         }
         echo json_encode($result);
     }

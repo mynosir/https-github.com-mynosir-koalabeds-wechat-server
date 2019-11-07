@@ -162,3 +162,15 @@ create table `ko_user` (
     `lang` varchar(32) default 'en' comment '用户使用小程序的预言。可选择en、cn，默认en英文',
     primary key (`id`)
 ) engine myisam character set utf8 collate utf8_general_ci comment = '微信用户信息表';
+
+
+-- linzequan 20191107
+-- 添加微信用户领取优惠券记录表
+create table `ko_coupon_record` (
+    `id` int not null auto_increment comment '自增id',
+    `openid` varchar(32) not null comment '微信openid',
+    `cid` int comment '优惠券id',
+    `status` int default 0 comment '使用状态。0未使用，1已使用，默认0',
+    `create_time` int comment '领取时间',
+    primary key (`id`)
+) engine myisam character set utf8 collate utf8_general_ci comment = '微信用户领取优惠券记录表';
