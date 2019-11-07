@@ -278,7 +278,7 @@ class Cloudbeds_hotel_model extends MY_Model {
         }
         $newHotels = array();
         if(isset($params['moneySort']) && $params['moneySort'] == 0) {
-            $newHotels = $hotels;
+            $newHotels = $hotels['data'];
         }
         if($params['moneySort'] == 1) {
             asort($minAmount);
@@ -294,19 +294,24 @@ class Cloudbeds_hotel_model extends MY_Model {
         }
         // 往酒店列表中塞入最低价格
         foreach($newHotels as $k=>$v) {
-            $newHotels[$k]['minMoney'] = $minAmount[$v['propertyID']];
-            $newHotels[$k]['maxMoney'] = $maxAmount[$v['propertyID']];
+            if(isset($v['propertyID']) &&isset($minAmount[$v['propertyID']]) && isset($maxAmount[$v['propertyID']])) {
+                $newHotels[$k]['minMoney'] = $minAmount[$v['propertyID']];
+                $newHotels[$k]['maxMoney'] = $maxAmount[$v['propertyID']];
+            }
         }
+        // var_dump($newHotels);
         // 获取酒店详情
         foreach($newHotels as $k=>$v) {
             $tmp = $this->getHotelDetailsInDB($v['propertyID']);
             if($tmp['status'] == 0) {
                 $newHotels[$k]['details'] = $tmp['data'];
             } else {
-                return array(
-                    'status'    => -3,
-                    'msg'       => '酒店查询失败'
-                );
+                // 不存在，从酒店列表中剔除该数据
+                unset($newHotels[$k]);
+                // return array(
+                //     'status'    => -3,
+                //     'msg'       => '酒店查询失败'
+                // );
             }
         }
         return array(

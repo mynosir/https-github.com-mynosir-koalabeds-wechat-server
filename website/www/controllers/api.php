@@ -148,6 +148,11 @@ class api extends MY_Controller {
                 $this->load->model('coupon_model');
                 $result = $this->coupon_model->getUserCoupon($openid, $ids);
                 break;
+            // 下订单
+            case 'saveOrder':
+                $this->load->model('hotel_order_model');
+                $result = $this->hotel_order_model->saveOrder();
+                break;
         }
         echo json_encode($result);
     }

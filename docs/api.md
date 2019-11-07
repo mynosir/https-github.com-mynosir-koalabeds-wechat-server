@@ -502,7 +502,7 @@
 
 * 请求URL
 
-> /api/post?actionxm=getReviews
+> /api/post?actionxm=saveOrder
 
 * 请求方式
 

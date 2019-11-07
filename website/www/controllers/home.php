@@ -43,7 +43,7 @@ class home extends MY_Controller {
         if($result['status'] == 0) {
             $this->load->model('cloudbeds_access_token_model');
             $this->cloudbeds_access_token_model->saveDevAccessToken($result['data']['access_token']);
-            echo '同步服务器cloudbeds access token成功';
+            echo '同步服务器cloudbeds access token成功==> ' . $result['data']['access_token'];
         } else {
             echo json_encode($result);
         }
@@ -109,8 +109,8 @@ class home extends MY_Controller {
 
     public function getAvailableRoomTypes() {
         $curl = curl_init();
-        $access_token = 'FkqeKbMe7vZxyc9Ymoanc5YoRuFD1MC9QDk2ojvR';
-        $url = 'https://hotels.cloudbeds.com/api/v1.1/getAvailableRoomTypes?propertyIDs=170048&startDate=2019-11-02&endDate=2019-11-03&rooms=1';
+        $access_token = 'RxNFRVFOXYh1BjTIr8wQoup7vftxqmgBTZYAsgow';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getAvailableRoomTypes?propertyIDs=170048&startDate=2019-11-10&endDate=2019-11-13&rooms=1';
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
@@ -147,30 +147,32 @@ class home extends MY_Controller {
 
     public function postReservation() {
         $curl = curl_init();
-        $access_token = 'FkqeKbMe7vZxyc9Ymoanc5YoRuFD1MC9QDk2ojvR';
+        $access_token = 'HfOTpgLp9Ejie5mqpPmsTJIjxWZWhY4L1jWdiEZQ';
         $url = 'https://hotels.cloudbeds.com/api/v1.1/postReservation';
         $data = array(
-            'propertyID'    => 170048,
-            'startDate'     => '2019-11-02',
-            'endDate'       => '2019-11-03',
+            'propertyID'    =>  170048,
+            'startDate'     => '2019-11-14',
+            'endDate'       => '2019-11-15',
             'guestFirstName'    => 'zequan',
             'guestLastName' => 'lin',
-            'guestCountry'  => 'cn',
-            'guestZip'      => '86',
+            'guestCountry'  => 'US',
+            'guestZip'      => '94121',
             'guestEmail'    => '361789273@qq.com',
-            'amount'        => 0.01,
-            'type'          => 'hotel',
-            'reservationID' => time(),
-            'rooms' => array(
+            'rooms' => array(array(
                 'roomTypeID'=> 197686,
                 'quantity'  => 1
-            ),
-            'adults'    => array(
+            )),
+            'adults'    => array(array(
                 'roomTypeID'=> 197686,
                 'quantity'  => 1
-            ),
+            )),
+            'children'  => array(array(
+                'roomTypeID'=> 197686,
+                'quantity'  => 0
+            )),
             'paymentMethod' => 'ebanking'
         );
+        // array(13) { ["success"]=> bool(true) ["reservationID"]=> string(12) "842706099534" ["status"]=> string(9) "confirmed" ["guestID"]=> int(26820944) ["guestFirstName"]=> string(6) "zequan" ["guestLastName"]=> string(3) "lin" ["guestGender"]=> string(3) "N/A" ["guestEmail"]=> string(16) "361789273@qq.com" ["startDate"]=> string(10) "2019-11-10" ["endDate"]=> string(10) "2019-11-13" ["dateCreated"]=> string(19) "2019-11-07 15:52:29" ["grandTotal"]=> int(900) ["unassigned"]=> array(1) { [0]=> array(7) { ["subReservationID"]=> string(12) "842706099534" ["roomTypeName"]=> string(29) "4 Guests Ensuite with Windows" ["roomTypeID"]=> int(197686) ["adults"]=> int(1) ["children"]=> int(0) ["dailyRates"]=> array(3) { [0]=> array(2) { ["date"]=> string(10) "2019-11-10" ["rate"]=> int(300) } [1]=> array(2) { ["date"]=> string(10) "2019-11-11" ["rate"]=> int(300) } [2]=> array(2) { ["date"]=> string(10) "2019-11-12" ["rate"]=> int(300) } } ["roomTotal"]=> int(900) } } }
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);

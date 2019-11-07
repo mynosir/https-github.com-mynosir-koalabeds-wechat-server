@@ -81,7 +81,7 @@ create table `ko_hotel_order` (
     `startDate` date comment '入住日期',
     `endDate` date comment '退房日期',
     primary key (`id`)
-) engine myisam character set utf8 collate utf8_general_ci comment = '订单表';
+) engine myisam character set utf8 collate utf8_general_ci comment = '酒店订单表';
 
 
 -- linzequan 20191105
