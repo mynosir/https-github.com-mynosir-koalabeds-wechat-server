@@ -118,6 +118,36 @@ class api extends MY_Controller {
                     }
                 }
                 break;
+            // 获取支付参数
+            case 'getPay':
+                $params = array(
+                    'service'   => 'pay.weixin.jspay',
+                    'body'      => '支付测试',
+                    'mch_id'   => '104530000126',
+                    'is_raw'    => '1',
+                    'out_trade_no'  => '1409196838',
+                    'sub_openid'    => 'oLq-f4iaG_zt3onbC8lzZ4ODht-c',
+                    'sub_appid' => 'wx18cda3bfbb701cb7',
+                    'total_fee' => '1',
+                    'mch_create_ip' => '127.0.0.1',
+                    'notify_url'    => 'https://koalabeds-server.kakaday.com/',
+                    'nonce_str' => '1409196838'
+                );
+                $sign = $this->getSign($params, '97a36c5b28ecb6dbe194c45ebc00f46f');
+                $params['sign'] = $sign;
+                $xml = $this->arrayToXml($params);
+                $url = 'https://gateway.wepayez.com/pay/gateway';
+
+                $responseXml = $this->curlPost($url, $xml);
+                // 禁止引用外部xml实体
+                libxml_disable_entity_loader(true);
+                $unifiedOrder = simplexml_load_string($responseXml, 'SimpleXMLElement', LIBXML_NOCDATA);
+                $result = array(
+                    'status'    => 0,
+                    'msg'       => '获取成功',
+                    'data'      => $unifiedOrder
+                );
+                break;
         }
         echo json_encode($result);
     }
@@ -155,6 +185,66 @@ class api extends MY_Controller {
                 break;
         }
         echo json_encode($result);
+    }
+
+
+    public function curlPost($url = '', $postData = '', $options = array()) {
+        if(is_array($postData)) {
+            $postData = http_build_query($postData);
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30); //设置cURL允许执行的最长秒数
+        if(!empty($options)) {
+            curl_setopt_array($ch, $options);
+        }
+        // https请求 不验证证书和host
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return $data;
+    }
+
+    public function getSign($params, $key) {
+        ksort($params, SORT_STRING);
+        $unSignParaString = self::formatQueryParaMap($params, false);
+        $signStr = strtoupper(md5($unSignParaString . "&key=" . $key));
+        return $signStr;
+    }
+    protected static function formatQueryParaMap($paraMap, $urlEncode = false) {
+        $buff = '';
+        ksort($paraMap);
+        foreach($paraMap as $k => $v) {
+            if(null != $v && "null" != $v) {
+                if($urlEncode) {
+                    $v = urlencode($v);
+                }
+                $buff .= $k . "=" . $v . "&";
+            }
+        }
+        $reqPar = '';
+        if(strlen($buff) > 0) {
+            $reqPar = substr($buff, 0, strlen($buff) - 1);
+        }
+        return $reqPar;
+    }
+
+
+    public function arrayToXml($arr) {
+        $xml = "<xml>";
+        foreach ($arr as $key => $val) {
+            if(is_numeric($val)) {
+                $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
+            } else {
+                $xml .= "<" . $key . "><![CDATA[" . $val . "]]></" . $key . ">";
+            }
+        }
+        $xml .= "</xml>";
+        return $xml;
     }
 
 }
