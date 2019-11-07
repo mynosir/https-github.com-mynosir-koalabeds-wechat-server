@@ -16,12 +16,18 @@ class user_model extends MY_Model {
 
 
     public function saveUserinfo($openid, $userinfo) {
+        if($userinfo == '') {
+            return array(
+                'status'    => -1,
+                'msg'       => '参数异常'
+            );
+        }
+        // {"openid":"oLq-f4iaG_zt3onbC8lzZ4ODht-c","userinfo":{"nickName":"宏","gender":1,"language":"zh_CN","city":"Shantou","province":"Guangdong","country":"China","avatarUrl":"https://wx.qlogo.cn/mmopen/vi_32/V95RibrKF21lbrbunsV0vXSAiaxVWzYgp0mbFzG0GicD4pom4BgEcLrKHAnYJgWxDjmk4jDG8cSgXSfuynjRlibfjg/132"}}
         $userinfoObj = json_decode($userinfo, true);
         $data = array(
             'userinfo'      => $userinfo,
-            'wx_subscribe'  => $userinfoObj['subscribe'],
-            'wx_nickname'   => $userinfoObj['nickname'],
-            'wx_sex'        => $userinfoObj['sex'],
+            'wx_nickname'   => $userinfoObj['nickName'],
+            'wx_sex'        => $userinfoObj['gender'],
             'wx_language'   => $userinfoObj['language'],
             'wx_city'       => $userinfoObj['city'],
             'wx_province'   => $userinfoObj['province'],

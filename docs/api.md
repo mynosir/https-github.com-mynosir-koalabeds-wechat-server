@@ -479,7 +479,7 @@
 | 请求参数 | 参数类型 | 参数说明 |
 | :--- | :--- | :--- |
 | openid | String | 微信用户openid |
-| userinfo | String | 微信用户信息 |
+| userinfo | Object | 微信用户信息 |
 
 * 返回参数
 
