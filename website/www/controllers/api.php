@@ -71,6 +71,7 @@ class api extends MY_Controller {
                 $params['priceStart'] = $this->get_request('priceStart', 0);          // 价格区间开始
                 $params['priceEnd'] = $this->get_request('priceEnd', 0);              // 价格区间结束
                 $params['rank'] = $this->get_request('rank', 0);                      // 评价星数，0为全部
+                $params['openid'] = $this->get_request('openid');                     // 用户微信openid
                 $result = $this->cloudbeds_hotel_model->searchHotels($params);
                 break;
             // 获取酒店详情

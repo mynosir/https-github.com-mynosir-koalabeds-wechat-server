@@ -273,8 +273,10 @@ class Cloudbeds_hotel_model extends MY_Model {
         $minAmount = array();
         $maxAmount = array();
         foreach($amount as $k=>$v) {
-            $minAmount[$k] = min($v);
-            $maxAmount[$k] = max($v);
+            if(count($v) > 0) {
+                $minAmount[$k] = min($v);
+                $maxAmount[$k] = max($v);
+            }
         }
         $newHotels = array();
         if(isset($params['moneySort']) && $params['moneySort'] == 0) {
