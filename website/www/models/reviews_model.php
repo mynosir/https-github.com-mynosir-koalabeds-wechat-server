@@ -31,10 +31,14 @@ class reviews_model extends MY_Model {
         if($count > 0) {
             $rate = round($sum / $count, 1);
         }
+        $result = array(
+            'rate'      => $rate,
+            'rateNum'   => $count
+        );
         return array(
             'status'    => 0,
             'msg'       => '查询成功',
-            'data'      => $rate
+            'data'      => $result
         );
     }
 }

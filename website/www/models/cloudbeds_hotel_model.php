@@ -336,7 +336,8 @@ class Cloudbeds_hotel_model extends MY_Model {
             $CI = &get_instance();
             $rate = $CI->reviews_model->getReviewsRate($result[0]['propertyID']);
             if($rate['status'] == 0) {
-                $result[0]['rate'] = $rate['data'];
+                $result[0]['rate'] = $rate['data']['rate'];
+                $result[0]['rateNum'] = $rate['data']['rateNum'];
             } else {
                 return array(
                     'status'    => -2,
