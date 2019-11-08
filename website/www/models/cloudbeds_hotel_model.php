@@ -331,6 +331,18 @@ class Cloudbeds_hotel_model extends MY_Model {
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `propertyID` = ' . $propertyID);
         $result = $query->result_array();
         if(count($result) > 0) {
+            // 查询酒店对应的评星
+            $this->load->model('reviews_model');
+            $CI = &get_instance();
+            $rate = $CI->reviews_model->getReviewsRate($result[0]['propertyID']);
+            if($rate['status'] == 0) {
+                $result[0]['rate'] = $rate['data'];
+            } else {
+                return array(
+                    'status'    => -2,
+                    'msg'       => '查询酒店评星异常'
+                );
+            }
             return array(
                 'status'    => 0,
                 'msg'       => '查询成功',
