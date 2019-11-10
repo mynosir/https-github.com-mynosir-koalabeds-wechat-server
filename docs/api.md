@@ -1,6 +1,8 @@
 # Koalabeds接口文档
 
-## 1. 首页酒店推荐列表
+## Cloudbeds
+
+### 1. 首页酒店推荐列表
 
 * 请求URL
 
@@ -45,7 +47,7 @@
 ```
 
 
-## 2. 首页酒店推荐瀑布流
+### 2. 首页酒店推荐瀑布流
 
 * 请求URL
 
@@ -90,7 +92,7 @@
 ```
 
 
-## 3. 获取酒店房型
+### 3. 获取酒店房型
 
 * 请求URL
 
@@ -131,7 +133,7 @@
 ```
 
 
-## 4. 获取轮播图
+### 4. 获取轮播图
 
 * 请求URL
 
@@ -170,7 +172,7 @@
 ```
 
 
-## 5. 获取优惠券配置信息
+### 5. 获取优惠券配置信息
 
 * 请求URL
 
@@ -209,7 +211,7 @@
 ```
 
 
-## 6. 获取酒店城市列表
+### 6. 获取酒店城市列表
 
 * 请求URL
 
@@ -246,7 +248,7 @@
 ```
 
 
-## 7. 酒店搜索
+### 7. 酒店搜索
 
 * 请求URL
 
@@ -302,7 +304,7 @@
 ```
 
 
-## 8. 获取酒店详情
+### 8. 获取酒店详情
 
 * 请求URL
 
@@ -344,7 +346,7 @@
 ```
 
 
-## 9. 获取房间列表
+### 9. 获取房间列表
 
 * 请求URL
 
@@ -388,7 +390,7 @@
 ```
 
 
-## 10. 获取评论列表
+### 10. 获取评论列表
 
 * 请求URL
 
@@ -429,7 +431,7 @@
 ```
 
 
-## 11. 获取openid
+### 11. 获取openid
 
 * 请求URL
 
@@ -464,7 +466,7 @@
 ```
 
 
-## 12. 保存用户信息
+### 12. 保存用户信息
 
 * 请求URL
 
@@ -498,7 +500,7 @@
 ```
 
 
-## 13. 下订单
+### 13. 下订单
 
 * 请求URL
 
@@ -564,7 +566,7 @@
 ```
 
 
-## 14. 获取订单列表
+### 14. 获取订单列表
 
 * 请求URL
 
@@ -603,7 +605,7 @@
 ```
 
 
-## 15. 用户获取优惠券
+### 15. 用户获取优惠券
 
 * 请求URL
 
@@ -637,7 +639,7 @@
 ```
 
 
-## 16. 保存用户设置语言
+### 16. 保存用户设置语言
 
 * 请求URL
 
@@ -671,7 +673,7 @@
 ```
 
 
-## 17. 酒店支付
+### 17. 酒店支付
 
 * 请求URL
 
@@ -721,5 +723,270 @@
 {
     "statu"： 0，
     "msg": "保存成功"
+}
+```
+
+---
+
+## Grayline
+
+### 1. 获取国家列表
+
+* 请求URL
+
+> /api/get?actionxm=getGraylineNationalityList
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| language | String | 语言，默认英文。en英文，zh-hk繁体中文，zh-cn简体中文 |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Object | 结果集合 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": {
+        "nationalityList": {
+            "1": "Afghanistan",
+            "2": "Aland Islands",
+            ...
+        }
+    }
+}
+```
+
+### 2. 获取产品列表
+
+* 请求URL
+
+> /api/get?actionxm=getGraylineNationalityList
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| language | String | 语言，默认英文。en英文，zh-hk繁体中文，zh-cn简体中文 |
+| type | String | 产品类型。tour巡回比赛，transportation交通票，ticket门票。默认返回所有 |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Object | 结果集合 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": [{
+        "productId": 6,
+        "title": "124AIF-SK DELUXE HONG KONG ISLAND  WITH LUNCH (With Sky Terrace 428 Admission)",
+        "tourCode": "124AIF-SK",
+        "image": "http:\/\/grayline.com.hk\/b2b\/resource\/images\/887I5A2lKpwJFPASeU1r.jpg",
+        "type": "tour"
+    }, {
+        ...
+    }]
+}
+```
+
+### 3. 获取产品详情
+
+* 请求URL
+
+> /api/get?actionxm=getGraylineProductDetails
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| type | String | 产品类型。tour巡回比赛，transportation交通票，ticket门票 |
+| productId | Integer | 产品ID |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Object | 结果集合 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": {
+        "productId": 6,
+        "title": "124AIF-SK DELUXE HONG KONG ISLAND  WITH LUNCH (With Sky Terrace 428 Admission)",
+        "tourCode": "124AIF-SK",
+        "productPrice": [{
+            "id": 51,
+            "title": "Adult",
+            "price": "670"
+        }, {
+            "id": 52,
+            "title": "Child (3-11yrs)",
+            "price": "590"
+        }]
+    }
+}
+```
+
+### 4. 查询产品
+
+* 请求URL
+
+> /api/get?actionxm=queryGraylineProduct
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| type | String | 必填，产品类型。tour巡回比赛，transportation交通票，ticket门票 |
+| productId | Integer | 必填，产品ID |
+| date | String | 必填（除非详情接口没有返回产品价格），旅行日期 |
+| travelTime | String | 选填（除非详情接口返回timeable为yes），旅行时间 |
+| turbojetDepartureDate | String | 选填，TurboJET departure date |
+| turbojetReturnDate | String | 选填，TurboJET return date |
+| turbojetDepartureTime | String | 选填，TurboJET departure time |
+| turbojetReturnTime | String | 选填，TurboJET return time |
+| turbojetDepartureFrom | String | 选填，TurboJET departure location (from) |
+| turbojetDepartureTo | String | 选填，TurboJET departure location (to) |
+| turbojetReturnFrom | String | 选填，TurboJET return location (from) |
+| turbojetReturnTo | String | 选填，TurboJET return location (to) |
+| turbojetQuantity | Integer | 选填（除非详情接口返回turbojet，并且没有返回产品价格），TurboJET票据数量 |
+| turbojetClass | String | 选填（除非详情接口返回turbojet，并且没有返回产品价格），TurboJET类型，可选项：economy、super、primer-grand |
+| subQty[productPriceId] | Integer | 选填（当详情接口返回价格清单时必填） |
+
+>>> TurboJET departure fields are necessary when getProductDetails response provides turbojet data.
+TurboJET return fields are necessary when getProductDetails response provides turbojet data and turbojet.type = ‘round-trip’.
+turbojetDepartureTime and turbojetReturnTime are not necessary when getProductDetails response provides turbojet.productType and turbojet.productType = ‘open-sailing’.
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Object | 结果集合 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": {
+        "productId": 6,
+        "title": "124AIF-SK DELUXE HONG KONG ISLAND  WITH LUNCH (With Sky Terrace 428 Admission)",
+        "tourCode": "124AIF-SK",
+        "productPrice": [{
+            "id": 51,
+            "title": "Adult",
+            "price": "670"
+        }, {
+            "id": 52,
+            "title": "Child (3-11yrs)",
+            "price": "590"
+        }]
+    }
+}
+```
+
+### 5. 获取支付参数
+
+* 请求URL
+
+> /api/get?actionxm=getGraylinePay
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| type | String | 必填，产品类型。tour巡回比赛，transportation交通票，ticket门票 |
+| productId | Integer | 必填，产品ID |
+| date | String | 必填（除非详情接口没有返回产品价格），旅行日期 |
+| travelTime | String | 选填（除非详情接口返回timeable为yes），旅行时间 |
+| turbojetDepartureDate | String | 选填，TurboJET departure date |
+| turbojetReturnDate | String | 选填，TurboJET return date |
+| turbojetDepartureTime | String | 选填，TurboJET departure time |
+| turbojetReturnTime | String | 选填，TurboJET return time |
+| turbojetDepartureFrom | String | 选填，TurboJET departure location (from) |
+| turbojetDepartureTo | String | 选填，TurboJET departure location (to) |
+| turbojetReturnFrom | String | 选填，TurboJET return location (from) |
+| turbojetReturnTo | String | 选填，TurboJET return location (to) |
+| turbojetQuantity | Integer | 选填（除非详情接口返回turbojet，并且没有返回产品价格），TurboJET票据数量 |
+| turbojetClass | String | 选填（除非详情接口返回turbojet，并且没有返回产品价格），TurboJET类型，可选项：economy、super、primer-grand |
+| subQty[productPriceId] | Integer | 选填（当详情接口返回价格清单时必填） |
+
+>>> TurboJET departure fields are necessary when getProductDetails response provides turbojet data.
+TurboJET return fields are necessary when getProductDetails response provides turbojet data and turbojet.type = ‘round-trip’.
+turbojetDepartureTime and turbojetReturnTime are not necessary when getProductDetails response provides turbojet.productType and turbojet.productType = ‘open-sailing’.
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Object | 结果集合 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": {
+        "productId": 6,
+        "title": "124AIF-SK DELUXE HONG KONG ISLAND  WITH LUNCH (With Sky Terrace 428 Admission)",
+        "tourCode": "124AIF-SK",
+        "productPrice": [{
+            "id": 51,
+            "title": "Adult",
+            "price": "670"
+        }, {
+            "id": 52,
+            "title": "Child (3-11yrs)",
+            "price": "590"
+        }]
+    }
 }
 ```

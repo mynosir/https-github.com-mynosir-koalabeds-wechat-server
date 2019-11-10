@@ -188,3 +188,50 @@ create table `ko_coupon_record` (
     `create_time` int comment '领取时间',
     primary key (`id`)
 ) engine myisam character set utf8 collate utf8_general_ci comment = '微信用户领取优惠券记录表';
+
+
+-- linzequan 20191110
+-- 添加grayline票据订单表
+create table `ko_grayline_ticket` (
+    `id` int not null auto_increment comment '自增id',
+    `openid` varchar(32) not null comment '微信openid',
+    `type` varchar(32) default '' comment '票据类型',
+    `productId` int not null comment '产品id',
+    `travelDate` varchar(32) default '' comment '旅游日期',
+    `travelTime` varchar(32) default '' comment '旅游时间',
+    `turbojetDepartureDate` varchar(32) default '' comment 'TurboJET departure date',
+    `turbojetReturnDate` varchar(32) default '' comment 'TurboJET return date',
+    `turbojetDepartureTime` varchar(32) default '' comment 'TurboJET departure time',
+    `turbojetReturnTime` varchar(32) default '' comment 'TurboJET return time',
+    `turbojetDepartureFrom` varchar(32) default '' comment 'TurboJET departure location (from)',
+    `turbojetDepartureTo` varchar(32) default '' comment 'TurboJET departure location (to)',
+    `turbojetReturnFrom` varchar(32) default '' comment 'TurboJET return location (from)',
+    `turbojetReturnTo` varchar(32) default '' comment 'TurboJET return location (to)',
+    `turbojetQuantity` varchar(32) default '' comment 'TurboJET ticket quantity',
+    `turbojetClass` varchar(128) default '' comment 'TurboJET class. Allowed values:‘economy’, ‘super’, ‘primer-grand’',
+    `turbojetTicketType` varchar(128) default '' comment 'TurboJET ticket type. Allowed values: ‘eboarding’, ‘voucher’',
+    `turbojetDepartureFlightNo` varchar(128) default '' comment 'TurboJET departure flight no., necessary when queryProduct response provides turbojet.selected.departureAvailableFlight',
+    `turbojetReturnFlightNo` varchar(128) default '' comment 'TurboJET Return flight no. , necessary when queryProduct response provides turbojet.selected.returnAvailableFlight',
+    `hotel` varchar(256) default '' comment '居住的酒店',
+    `title` varchar(512) default '' comment '称呼。可选项：Mr、Mrs、Miss',
+    `firstName` varchar(128) default '' comment 'Guest First name, English characters only',
+    `lastName` varchar(128) default '' comment 'Guest last name, English characters only',
+    `passport` varchar(128) default '' comment 'Guest passport nationality code (refer to getNationalityList API)',
+    `guestEmail` varchar(256) default '' comment '邮箱',
+    `countryCode` varchar(256) default '' comment '手机国家编码',
+    `telephone` varchar(32) default '' comment '手机号码',
+    `promocode` varchar(32) default '' comment 'Promo Code',
+    `agentReference` varchar(256) default '' comment 'Agent Reference number',
+    `remark` varchar(512) default '' comment 'Remark',
+    `subQtyProductPriceId` varchar(32) default '' comment 'ID. Quantity of selected product package, necessary when queryProduct response provides productPrice',
+    `subQtyValue` varchar(32) default '' comment 'Value. Quantity of selected product package, necessary when queryProduct response provides productPrice',
+    `totalPrice` varchar(32) default '' comment '总价',
+    `info` varchar(512) default '' comment 'Agree to receive information about or from Gray Line Tours of Hong Kong Limited Allowed values: ‘1’ – agree、null – not agree',
+    `orderParamsDetail` text comment '订单参数存档',
+    `create_time` int comment '订单生成时间',
+    `outTradeNo` varchar(64) comment '订单编号',
+    `transaction_id` varchar(64) default '' comment '交易单号',
+    `transaction_info` varchar(512) default '' comment '交易详情',
+    `status` int default 0 comment '订单状态。0未支付，1已支付，2支付失败，3待确认，4订单取消，5预订失败，6预订成功，7不显示',
+    primary key (`id`)
+) engine myisam character set utf8 collate utf8_general_ci comment = 'grayline票据订单表';

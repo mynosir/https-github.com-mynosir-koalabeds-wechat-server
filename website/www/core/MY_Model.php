@@ -77,6 +77,27 @@ class MY_Model extends CI_Model {
 
 
     /**
+     * 发起http请求(grayline)
+     * @param  [type] $url  [description]
+     * @param  [type] $data [description]
+     * @return [type]       [description]
+     */
+    public function http_request_grayline($url, $data=null, $httpBuildQuery=false) {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        if(!empty($data)) {
+            if(!!$httpBuildQuery) $data = http_build_query($data);
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        return $output;
+    }
+
+
+    /**
      * 更新cloudbeds access token
      **/
     public function update_cloudbeds_access_token() {

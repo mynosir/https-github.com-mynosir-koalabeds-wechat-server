@@ -119,6 +119,46 @@ class api extends MY_Controller {
                     }
                 }
                 break;
+            // 获取grayline国家列表
+            case 'getGraylineNationalityList':
+                $this->load->model('grayline_ticket_model');
+                $language = $this->get_request('language', 'en');
+                $result = $this->grayline_ticket_model->getNationalityList($language);
+                break;
+            // 获取grayline产品列表
+            case 'getGraylineProductList':
+                $this->load->model('grayline_ticket_model');
+                $language = $this->get_request('language', 'en');
+                $type = $this->get_request('type', '');
+                $result = $this->grayline_ticket_model->getProductList($language, $type);
+                break;
+            // 获取grayline产品详情
+            case 'getGraylineProductDetails':
+                $this->load->model('grayline_ticket_model');
+                $type = $this->get_request('type', '');
+                $productId = $this->get_request('productId');
+                $result = $this->grayline_ticket_model->getProductDetails($type, $productId);
+                break;
+            // 查询grayline产品
+            case 'queryGraylineProduct':
+                $this->load->model('grayline_ticket_model');
+                $type = $this->get_request('type', '');
+                $productId = $this->get_request('productId');
+                $date = $this->get_request('date');
+                $travelTime = $this->get_request('travelTime');
+                $turbojetDepartureDate = $this->get_request('turbojetDepartureDate');
+                $turbojetReturnDate = $this->get_request('turbojetReturnDate');
+                $turbojetDepartureTime = $this->get_request('turbojetDepartureTime');
+                $turbojetReturnTime = $this->get_request('turbojetReturnTime');
+                $turbojetDepartureFrom = $this->get_request('turbojetDepartureFrom');
+                $turbojetDepartureTo = $this->get_request('turbojetDepartureTo');
+                $turbojetReturnFrom = $this->get_request('turbojetReturnFrom');
+                $turbojetReturnTo = $this->get_request('turbojetReturnTo');
+                $turbojetQuantity = $this->get_request('turbojetQuantity');
+                $turbojetClass = $this->get_request('turbojetClass');
+                $subQtyProductPriceId = $this->get_request('subQtyProductPriceId');
+                $result = $this->grayline_ticket_model->queryProduct($type, $productId, $date, $travelTime, $turbojetDepartureDate, $turbojetReturnDate, $turbojetDepartureTime, $turbojetReturnTime, $turbojetDepartureFrom, $turbojetDepartureTo, $turbojetReturnFrom, $turbojetReturnTo, $turbojetQuantity, $turbojetClass, $subQtyProductPriceId);
+                break;
         }
         echo json_encode($result);
     }
@@ -235,8 +275,118 @@ class api extends MY_Controller {
                     }
                 }
                 break;
+            // 获取Grayline支付参数
+            case 'getGraylinePay':
+                $params = json_decode($this->get_request('params'), true);
+                if(!isset($params['openid'])) {
+                    $result = array(
+                        'status'    => -2,
+                        'msg'       => '登录态异常'
+                    );
+                } else {
+                    // 生成订单号
+                    $outTradeNo = substr('grayline' . date('YmdHis', time()) . uniqid(), 0, 32); // 商品订单号
+                    // 保存订单
+                    $data = array(
+                        'service'       => 'pay.weixin.jspay',
+                        'body'          => 'Ticket Order',
+                        'mch_id'        => '104530000126',
+                        'is_raw'        => '1',
+                        'out_trade_no'  => $outTradeNo,
+                        'sub_openid'    => $params['openid'],
+                        'sub_appid'     => 'wx18cda3bfbb701cb7',
+                        'total_fee'     => '1',
+                        'mch_create_ip' => '127.0.0.1',
+                        'notify_url'    => 'https://koalabeds-server.kakaday.com/paycallbackGrayline',
+                        'nonce_str'     => '1409196838'
+                    );
+                    $sign = $this->getSign($data, '97a36c5b28ecb6dbe194c45ebc00f46f');
+                    $data['sign'] = $sign;
+                    $xml = $this->arrayToXml($data);
+                    $url = 'https://gateway.wepayez.com/pay/gateway';
+                    $responseXml = $this->curlPost($url, $xml);
+                    // 禁止引用外部xml实体
+                    libxml_disable_entity_loader(true);
+                    $unifiedOrder = simplexml_load_string($responseXml, 'SimpleXMLElement', LIBXML_NOCDATA);
+                    // 保存订单
+                    $this->load->model('grayline_ticket_model');
+                    $orderParams = array(
+                        'openid'        => $params['openid'],
+                        'type'          => $params['type'],
+                        'productId'     => $params['productId'],
+                        'travelDate'    => isset($params['date']) ? $params['date'] : '',
+                        'travelTime'    => isset($params['travelTime']) ? $params['travelTime'] : '',
+                        'turbojetDepartureDate' => isset($params['turbojetDepartureDate']) ? $params['turbojetDepartureDate'] : '',
+                        'turbojetReturnDate'    => isset($params['turbojetReturnDate']) ? $params['turbojetReturnDate'] : '',
+                        'turbojetDepartureTime' => isset($params['turbojetDepartureTime']) ? $params['turbojetDepartureTime'] : '',
+                        'turbojetReturnTime'    => isset($params['turbojetReturnTime']) ? $params['turbojetReturnTime'] : '',
+                        'turbojetDepartureFrom' => isset($params['turbojetDepartureFrom']) ? $params['turbojetDepartureFrom'] : '',
+                        'turbojetDepartureTo'   => isset($params['turbojetDepartureTo']) ? $params['turbojetDepartureTo'] : '',
+                        'turbojetReturnFrom'    => isset($params['turbojetReturnFrom']) ? $params['turbojetReturnFrom'] : '',
+                        'turbojetReturnTo'      => isset($params['turbojetReturnTo']) ? $params['turbojetReturnTo'] : '',
+                        'turbojetQuantity'      => isset($params['turbojetQuantity']) ? $params['turbojetQuantity'] : '',
+                        'turbojetClass'         => isset($params['turbojetClass']) ? $params['turbojetClass'] : '',
+                        'turbojetTicketType'    => isset($params['turbojetTicketType']) ? $params['turbojetTicketType'] : '',
+                        'turbojetDepartureFlightNo' => isset($params['turbojetDepartureFlightNo']) ? $params['turbojetDepartureFlightNo'] : '',
+                        'turbojetReturnFlightNo'    => isset($params['turbojetReturnFlightNo']) ? $params['turbojetReturnFlightNo'] : '',
+                        'hotel'         => isset($params['hotel']) ? $params['hotel'] : '',
+                        'title'         => isset($params['title']) ? $params['title'] : '',
+                        'firstName'     => isset($params['firstName']) ? $params['firstName'] : '',
+                        'lastName'      => isset($params['lastName']) ? $params['lastName'] : '',
+                        'passport'      => isset($params['passport']) ? $params['passport'] : '',
+                        'guestEmail'    => isset($params['guestEmail']) ? $params['guestEmail'] : '',
+                        'countryCode'   => isset($params['countryCode']) ? $params['countryCode'] : '',
+                        'telephone'     => isset($params['telephone']) ? $params['telephone'] : '',
+                        'promocode'     => isset($params['promocode']) ? $params['promocode'] : '',
+                        'agentReference'=> isset($params['agentReference']) ? $params['agentReference'] : '',
+                        'remark'        => isset($params['remark']) ? $params['remark'] : '',
+                        'subQtyProductPriceId'      => isset($params['subQtyProductPriceId']) ? $params['subQtyProductPriceId'] : '',
+                        'subQtyValue'   => isset($params['subQtyValue']) ? $params['subQtyValue'] : '',
+                        'totalPrice'    => isset($params['totalPrice']) ? $params['totalPrice'] : '',
+                        'info'          => isset($params['info']) ? $params['info'] : '',
+                        'orderParamsDetail'     => json_encode($params),
+                        'outTradeNo'    => $outTradeNo
+                    );
+                    $orderSaveResult = $this->grayline_ticket_model->generateOrder($orderParams);
+                    if($orderSaveResult['status'] != 0) {
+                        $result = array(
+                            'status'    => -3,
+                            'msg'       => '保存订单异常'
+                        );
+                    } else {
+                        $result = array(
+                            'status'    => 0,
+                            'msg'       => '获取成功',
+                            'data'      => $unifiedOrder
+                        );
+                    }
+                }
+                break;
+            // 预订grayline产品
+            case 'orderProduct':
+                $openid = $this->get_request('openid');
+                $id = $this->get_request('id');
+                $this->load->model('grayline_ticket_model');
+                $result = $this->grayline_ticket_model->orderProduct($openid, $id);
+                break;
         }
         echo json_encode($result);
+    }
+
+
+    public function paycallbackGrayline() {
+        $result = $this->notify();
+        @file_put_contents('/pub/logs/paycallbackGrayline', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($result) . PHP_EOL, FILE_APPEND);
+        // 收到支付回调，判断支付成功的话，将订单状态置为1
+        if($result) {
+            $this->load->model('grayline_ticket_model');
+            $this->grayline_ticket_model->update_transaction_info($result['out_trade_no'], json_encode($result));
+            if($result['result_code'] == 'SUCCESS') {
+                $this->grayline_ticket_model->updateOrderStatus($result['out_trade_no'], 1);
+            } else {
+                $this->grayline_ticket_model->updateOrderStatus($result['out_trade_no'], 2);
+            }
+        }
     }
 
 
