@@ -669,3 +669,57 @@
     "msg": "保存成功"
 }
 ```
+
+
+## 17. 酒店支付
+
+* 请求URL
+
+> /api/post?actionxm=getPay
+
+* 请求方式
+
+> post
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| params | Object | 参数集合 |
+| - openid | String | 微信用户openid |
+| - propertyID | String | 酒店id |
+| - startDate | String | 入住时间 |
+| - endDate | String | 离店时间 |
+| - guestFirstName | String |  |
+| - guestLastName | String |  |
+| - guestCountry | String |  |
+| - guestZip | String |  |
+| - guestEmail | String |  |
+| - guestPhone | String |  |
+| - rooms | String |  |
+| - rooms_roomTypeID | String |  |
+| - rooms_quantity | String |  |
+| - adults | String |  |
+| - adults_roomTypeID | String |  |
+| - adults_quantity | String |  |
+| - children | String |  |
+| - children_roomTypeID | String |  |
+| - children_quantity | String |  |
+| - frontend_total | String |  |
+| - outTradeNo | String |  |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "保存成功"
+}
+```

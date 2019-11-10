@@ -151,8 +151,10 @@ class api extends MY_Controller {
                 break;
             // 下订单
             case 'saveOrder':
+                $openid = $this->get_request('openid');
+                $id = $this->get_request('id');
                 $this->load->model('hotel_order_model');
-                $result = $this->hotel_order_model->saveOrder();
+                $result = $this->hotel_order_model->saveOrder($openid, $id);
                 break;
             // 获取支付参数
             case 'getPay':

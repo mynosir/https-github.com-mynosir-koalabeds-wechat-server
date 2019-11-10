@@ -68,13 +68,6 @@ class hotel_order_model extends MY_Model {
 
 
     /**
-     * 保存酒店订单
-     */
-    public function saveOrder() {
-    }
-
-
-    /**
      * 保存交易信息
      */
     public function update_transaction_info($out_trade_no, $transaction_info) {
@@ -101,6 +94,93 @@ class hotel_order_model extends MY_Model {
             'status'    => $status
         );
         $this->db->where($where)->update($this->table, $data);
+    }
+
+
+    /**
+     * 查找订单详情
+     */
+    public function getDetailById($id) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where id = ' . $id);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result[0]
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '未查找到对应订单信息'
+            );
+        }
+    }
+
+
+    /**
+     * 保存酒店订单
+     */
+    public function saveOrder($openid, $id) {
+        $access_token_result = $this->update_cloudbeds_access_token();
+        if($access_token_result['status']) {
+            return array(
+                'status'    => -1,
+                'msg'       => $access_token_result['msg']
+            );
+        }
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/postReservation';
+        // 查询订单信息
+        $orderDetail = $this->getDetailById($id);
+        if($orderDetail['status'] != 0) {
+            return array(
+                'status'    => -2,
+                'msg'       => $orderDetail['msg']
+            );
+        }
+        $data = array(
+            'propertyID'    => $orderDetail['propertyID'],
+            'startDate'     => $orderDetail['startDate'],
+            'endDate'       => $orderDetail['endDate'],
+            'guestFirstName'=> $orderDetail['guestFirstName'],
+            'guestLastName' => $orderDetail['guestLastName'],
+            'guestCountry'  => $orderDetail['guestCountry'],
+            'guestZip'      => $orderDetail['guestZip'],
+            'guestEmail'    => $orderDetail['guestEmail'],
+            'rooms'         => array(array(
+                'roomTypeID'    => $orderDetail['roomTypeID'],
+                'quantity'      => $orderDetail['quantity']
+            )),
+            'adults'        => array(array(
+                'roomTypeID'    => $orderDetail['roomTypeID'],
+                'quantity'      => $orderDetail['quantity']
+            )),
+            'children'      => array(array(
+                'roomTypeID'    => $orderDetail['roomTypeID'],
+                'quantity'      => $orderDetail['quantity']
+            )),
+            'paymentMethod' => 'cash'
+        );
+        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result, $data, true);
+
+
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getHotels?pageSize=' . $pageSize . '&pageNumber=' . $pageNumber;
+        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
+        // array(13) { ["success"]=> bool(true) ["reservationID"]=> string(12) "842706099534" ["status"]=> string(9) "confirmed" ["guestID"]=> int(26820944) ["guestFirstName"]=> string(6) "zequan" ["guestLastName"]=> string(3) "lin" ["guestGender"]=> string(3) "N/A" ["guestEmail"]=> string(16) "361789273@qq.com" ["startDate"]=> string(10) "2019-11-10" ["endDate"]=> string(10) "2019-11-13" ["dateCreated"]=> string(19) "2019-11-07 15:52:29" ["grandTotal"]=> int(900) ["unassigned"]=> array(1) { [0]=> array(7) { ["subReservationID"]=> string(12) "842706099534" ["roomTypeName"]=> string(29) "4 Guests Ensuite with Windows" ["roomTypeID"]=> int(197686) ["adults"]=> int(1) ["children"]=> int(0) ["dailyRates"]=> array(3) { [0]=> array(2) { ["date"]=> string(10) "2019-11-10" ["rate"]=> int(300) } [1]=> array(2) { ["date"]=> string(10) "2019-11-11" ["rate"]=> int(300) } [2]=> array(2) { ["date"]=> string(10) "2019-11-12" ["rate"]=> int(300) } } ["roomTotal"]=> int(900) } } }
+        // 根据不同返回状态更新订单状态
+        @file_put_contents('/pub/logs/saveOrder', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($apiReturnStr) . PHP_EOL, FILE_APPEND);
+        if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
+            return array(
+                'status'    => 0,
+                'msg'       => '预订成功',
+                'data'      => $apiReturnStr['data']
+            );
+        } else {
+            return array(
+                'status'    => -2,
+                'msg'       => $apiReturnStr['message']
+            );
+        }
     }
 
 }

@@ -57,7 +57,7 @@ class MY_Model extends CI_Model {
      * @param  [type] $data [description]
      * @return [type]       [description]
      */
-    public function https_request_cloudbeds($url, $access_token, $data=null) {
+    public function https_request_cloudbeds($url, $access_token, $data=null, $httpBuildQuery=false) {
         $curl = curl_init();
         // $access_token = 'FkqeKbMe7vZxyc9Ymoanc5YoRuFD1MC9QDk2ojvR';
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -65,6 +65,7 @@ class MY_Model extends CI_Model {
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token));
         if(!empty($data)) {
+            if(!!$httpBuildQuery) $data = http_build_query($data);
             curl_setopt($curl, CURLOPT_POST, 1);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         }
