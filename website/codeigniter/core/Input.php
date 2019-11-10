@@ -126,7 +126,7 @@ class CI_Input {
 		if ($xss_clean === TRUE)
 		{
 			return $this->security->xss_clean($array[$index]);
-		} 
+		}
 		return $array[$index];
 	}
 
@@ -728,7 +728,7 @@ class CI_Input {
 	* @param	string
 	* @return	string
 	*/
-	function _clean_input_keys($str){
+	function _clean_input_keys($str) {
 	    /*
 	     * 解决CodeIgniter Disallowed Key Characters问题
 	     * 新生成的 cookie 里面含有不被匹配通过的字符串

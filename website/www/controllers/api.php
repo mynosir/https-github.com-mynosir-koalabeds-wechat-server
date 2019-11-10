@@ -119,36 +119,6 @@ class api extends MY_Controller {
                     }
                 }
                 break;
-            // 获取支付参数
-            case 'getPay':
-                $params = array(
-                    'service'   => 'pay.weixin.jspay',
-                    'body'      => '支付测试',
-                    'mch_id'   => '104530000126',
-                    'is_raw'    => '1',
-                    'out_trade_no'  => '1409196838',
-                    'sub_openid'    => 'oLq-f4iaG_zt3onbC8lzZ4ODht-c',
-                    'sub_appid' => 'wx18cda3bfbb701cb7',
-                    'total_fee' => '1',
-                    'mch_create_ip' => '127.0.0.1',
-                    'notify_url'    => 'https://koalabeds-server.kakaday.com/',
-                    'nonce_str' => '1409196838'
-                );
-                $sign = $this->getSign($params, '97a36c5b28ecb6dbe194c45ebc00f46f');
-                $params['sign'] = $sign;
-                $xml = $this->arrayToXml($params);
-                $url = 'https://gateway.wepayez.com/pay/gateway';
-
-                $responseXml = $this->curlPost($url, $xml);
-                // 禁止引用外部xml实体
-                libxml_disable_entity_loader(true);
-                $unifiedOrder = simplexml_load_string($responseXml, 'SimpleXMLElement', LIBXML_NOCDATA);
-                $result = array(
-                    'status'    => 0,
-                    'msg'       => '获取成功',
-                    'data'      => $unifiedOrder
-                );
-                break;
         }
         echo json_encode($result);
     }
@@ -184,8 +154,151 @@ class api extends MY_Controller {
                 $this->load->model('hotel_order_model');
                 $result = $this->hotel_order_model->saveOrder();
                 break;
+            // 获取支付参数
+            case 'getPay':
+                $params = json_decode($this->get_request('params'), true);
+                $propertyID = isset($params['propertyID']) ? $params['propertyID'] : 0;
+                if(!isset($params['openid'])) {
+                    $result = array(
+                        'status'    => -2,
+                        'msg'       => '登录态异常'
+                    );
+                } else {
+                    // 通过酒店id获取酒店名称
+                    $this->load->model('cloudbeds_hotel_model');
+                    $hotelInfo = $this->cloudbeds_hotel_model->getHotelDetailsInDB($propertyID);
+                    if($hotelInfo['status'] != 0) {
+                        $result = array(
+                            'status'    => -1,
+                            'msg'       => '酒店信息查询异常'
+                        );
+                    } else {
+                        $hotelDetail = $hotelInfo['data'];
+                        // 生成订单号
+                        $outTradeNo = substr('cloudbeds' . date('YmdHis', time()) . uniqid(), 0, 32); // 商品订单号
+                        // 保存订单
+                        $data = array(
+                            'service'       => 'pay.weixin.jspay',
+                            'body'          => $hotelDetail['propertyName'],
+                            'mch_id'        => '104530000126',
+                            'is_raw'        => '1',
+                            'out_trade_no'  => $outTradeNo,
+                            'sub_openid'    => $params['openid'],
+                            'sub_appid'     => 'wx18cda3bfbb701cb7',
+                            'total_fee'     => '1',
+                            'mch_create_ip' => '127.0.0.1',
+                            'notify_url'    => 'https://koalabeds-server.kakaday.com/paycallback',
+                            'nonce_str'     => '1409196838'
+                        );
+                        $sign = $this->getSign($data, '97a36c5b28ecb6dbe194c45ebc00f46f');
+                        $data['sign'] = $sign;
+                        $xml = $this->arrayToXml($data);
+                        $url = 'https://gateway.wepayez.com/pay/gateway';
+                        $responseXml = $this->curlPost($url, $xml);
+                        // 禁止引用外部xml实体
+                        libxml_disable_entity_loader(true);
+                        $unifiedOrder = simplexml_load_string($responseXml, 'SimpleXMLElement', LIBXML_NOCDATA);
+                        // 保存订单
+                        $this->load->model('hotel_order_model');
+                        $orderParams = array(
+                            'openid'        => $params['openid'],
+                            'propertyID'    => $params['propertyID'],
+                            'startDate'     => $params['startDate'],
+                            'endDate'       => $params['endDate'],
+                            'guestFirstName'=> $params['guestFirstName'],
+                            'guestLastName' => $params['guestLastName'],
+                            'guestCountry'  => $params['guestCountry'],
+                            'guestZip'      => $params['guestZip'],
+                            'guestEmail'    => $params['guestEmail'],
+                            'guestPhone'    => $params['guestPhone'],
+                            'rooms'         => $params['rooms'],
+                            'adults'        => $params['adults'],
+                            'children'      => $params['children'],
+                            'frontend_total'=> $params['frontend_total'],
+                            'outTradeNo'    => $outTradeNo
+                        );
+                        $orderSaveResult = $this->hotel_order_model->generateOrder($orderParams);
+                        if($orderSaveResult['status'] != 0) {
+                            $result = array(
+                                'status'    => -3,
+                                'msg'       => '保存订单异常'
+                            );
+                        } else {
+                            $result = array(
+                                'status'    => 0,
+                                'msg'       => '获取成功',
+                                'data'      => $unifiedOrder
+                            );
+                        }
+                    }
+                }
+                break;
         }
         echo json_encode($result);
+    }
+
+
+    public function paycallback() {
+        $result = $this->notify();
+        // {"appid":"wxbb38e532bce13768","attach":"pay","bank_type":"PAB_CREDIT","cash_fee":"1","fee_type":"CNY","is_subscribe":"Y","mch_id":"1558979671","nonce_str":"iV0qBhKWXmop6Orw","openid":"otVuH1JP-Aj9FStCDNzbUOuq9RKk","out_trade_no":"gkmj_20191024211023_5db1a2bf2ffa","result_code":"SUCCESS","return_code":"SUCCESS","time_end":"20191024211031","total_fee":"1","trade_type":"JSAPI","transaction_id":"4200000442201910247202565485"}
+        @file_put_contents('/pub/logs/paycallback', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($result) . PHP_EOL, FILE_APPEND);
+        // 收到支付回调，判断支付成功的话，将订单状态置为1
+        if($result) {
+            $this->load->model('hotel_order_model');
+            $this->hotel_order_model->update_transaction_info($result['out_trade_no'], json_encode($result));
+            if($result['result_code'] == 'SUCCESS') {
+                $this->hotel_order_model->update_status($result['out_trade_no'], 1);
+            } else {
+                $this->hotel_order_model->update_status($result['out_trade_no'], 2);
+            }
+        }
+    }
+
+
+    public function notify() {
+        $config = array(
+            'mch_id'    => '104530000126',
+            'appid'     => 'wx18cda3bfbb701cb7',
+            'key'       => '97a36c5b28ecb6dbe194c45ebc00f46f'
+        );
+        $postStr = file_get_contents('php://input');
+        // 禁止引用外部xml实体
+        libxml_disable_entity_loader(true);
+        $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        @file_put_contents('/pub/logs/paynotify', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($postObj) . PHP_EOL, FILE_APPEND);
+        // if($postObj === false) {
+        //     $this->load->model('errorlog_model');
+        //     $params = array(
+        //         'content'       => 'xml解析异常(parse xml error)',
+        //         'create_time'   => time()
+        //     );
+        //     $this->errorlog_model->add($params);
+        //     return false;
+        // }
+        // if($postObj->return_code != 'SUCCESS') {
+        //     $this->load->model('errorlog_model');
+        //     $params = array(
+        //         'content'       => json_encode($postObj),
+        //         'create_time'   => time()
+        //     );
+        //     $this->errorlog_model->add($params);
+        //     return false;
+        // }
+        // if($postObj->result_code != 'SUCCESS') {
+        //     $this->load->model('errorlog_model');
+        //     $params = array(
+        //         'content'       => json_encode($postObj),
+        //         'create_time'   => time()
+        //     );
+        //     $this->errorlog_model->add($params);
+        //     return false;
+        // }
+        $arr = (array)$postObj;
+        unset($arr['sign']);
+        if(self::getSign($arr, $config['key']) == $postObj->sign) {
+            echo '<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>';
+            return $arr;
+        }
     }
 
 

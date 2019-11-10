@@ -453,4 +453,32 @@ class Cloudbeds_hotel_model extends MY_Model {
         }
     }
 
+
+    /**
+     * 查询房间费率
+     */
+    public function getRoomsFeesAndTaxes($startDate, $endDate, $roomsTotal, $roomsCount, $propertyID) {
+        $access_token_result = $this->update_cloudbeds_access_token();
+        if($access_token_result['status']) {
+            return array(
+                'status'    => -1,
+                'msg'       => $access_token_result['msg']
+            );
+        }
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getRoomsFeesAndTaxes?startDate=' . $startDate . '&endDate=' . $endDate . '&roomsTotal=' . $roomsTotal . '&roomsCount=' . $roomsCount . '&propertyID=' . $propertyID;
+        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
+        if(isset($apiReturnStr) && !!$apiReturnStr['success']) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $apiReturnStr['data']
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '查询异常'
+            );
+        }
+    }
+
 }

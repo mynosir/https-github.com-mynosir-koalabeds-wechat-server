@@ -147,12 +147,12 @@ class home extends MY_Controller {
 
     public function postReservation() {
         $curl = curl_init();
-        $access_token = 'HfOTpgLp9Ejie5mqpPmsTJIjxWZWhY4L1jWdiEZQ';
+        $access_token = '88t0MwR43Ja3Wp6mZ4uR8BX80CUt5oxWShRo01q1';
         $url = 'https://hotels.cloudbeds.com/api/v1.1/postReservation';
         $data = array(
             'propertyID'    =>  170048,
-            'startDate'     => '2019-11-14',
-            'endDate'       => '2019-11-15',
+            'startDate'     => '2019-11-16',
+            'endDate'       => '2019-11-17',
             'guestFirstName'    => 'zequan',
             'guestLastName' => 'lin',
             'guestCountry'  => 'US',
@@ -170,7 +170,7 @@ class home extends MY_Controller {
                 'roomTypeID'=> 197686,
                 'quantity'  => 0
             )),
-            'paymentMethod' => 'ebanking'
+            'paymentMethod' => 'cash'
         );
         // array(13) { ["success"]=> bool(true) ["reservationID"]=> string(12) "842706099534" ["status"]=> string(9) "confirmed" ["guestID"]=> int(26820944) ["guestFirstName"]=> string(6) "zequan" ["guestLastName"]=> string(3) "lin" ["guestGender"]=> string(3) "N/A" ["guestEmail"]=> string(16) "361789273@qq.com" ["startDate"]=> string(10) "2019-11-10" ["endDate"]=> string(10) "2019-11-13" ["dateCreated"]=> string(19) "2019-11-07 15:52:29" ["grandTotal"]=> int(900) ["unassigned"]=> array(1) { [0]=> array(7) { ["subReservationID"]=> string(12) "842706099534" ["roomTypeName"]=> string(29) "4 Guests Ensuite with Windows" ["roomTypeID"]=> int(197686) ["adults"]=> int(1) ["children"]=> int(0) ["dailyRates"]=> array(3) { [0]=> array(2) { ["date"]=> string(10) "2019-11-10" ["rate"]=> int(300) } [1]=> array(2) { ["date"]=> string(10) "2019-11-11" ["rate"]=> int(300) } [2]=> array(2) { ["date"]=> string(10) "2019-11-12" ["rate"]=> int(300) } } ["roomTotal"]=> int(900) } } }
         curl_setopt($curl, CURLOPT_URL, $url);
