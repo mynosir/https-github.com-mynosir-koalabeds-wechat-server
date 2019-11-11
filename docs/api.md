@@ -990,3 +990,40 @@ turbojetDepartureTime and turbojetReturnTime are not necessary when getProductDe
     }
 }
 ```
+
+### 6. 预订门票
+
+* 请求URL
+
+> /api/get?actionxm=orderProduct
+
+* 请求方式
+
+> get
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| openid | String | 微信用户openid |
+| id | Integer | 必填，产品ID |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+| data | Object | 结果集合 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "查询成功",
+    "data": {
+        "orderId": "GLB-20180730-10304"
+    }
+}
+```
