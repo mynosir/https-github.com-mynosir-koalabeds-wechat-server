@@ -1,0 +1,160 @@
+<style media="screen">
+.table-responsive{
+  width: 100%;
+}
+.table{
+  width: 100%;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="<?php echo $resource_url; ?>/css/uploadifive.css">
+<!-- <button type="button" class="btn btn-sm btn-primary js_addbanner" data-toggle="modal" data-target="#addModal" style="margin-bottom:10px;">新增</button> -->
+<div class="table-responsive">
+    <table class="table table-striped table-hover js_table">
+    </table>
+</div>
+<nav style="float:right;">
+    <ul class="pagination js_page"></ul>
+</nav>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">编辑</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="id" class="col-sm-4 control-label">no.</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static js_id"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="totalAmount" class="col-sm-4 control-label">totalAmount</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control js_update_totalAmount" placeholder="达成优惠金额">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="discountAmount" class="col-sm-4 control-label">discountAmount</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control js_update_discountAmount" placeholder="优惠金额">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="validateDate" class="col-sm-4 control-label">validateDate</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control js_update_validateDate" placeholder="有效期">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="status" class="col-sm-4 control-label">status</label>
+                        <div class="col-sm-8">
+                            <select class="js_select" name="">
+                              <option value="0">show</option>
+                              <option value="1">hide</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="aorder" class="col-sm-4 control-label">排序（数字越大越靠前）</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control js_update_sort" placeholder="排序（数字越大越靠前）">
+                        </div>
+                    </div>
+                    <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Warning: </strong> 点击保存前请检查信息无误，如有需要请先备份！
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary js_saveBtn">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新增</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="url" class="col-sm-4 control-label">totalAmount</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control js_add_totalAmount" placeholder="达成优惠金额">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="url" class="col-sm-4 control-label">discountAmount</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control js_add_discountAmount" placeholder="优惠金额">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="url" class="col-sm-4 control-label">validateDate</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control js_add_validateDate" placeholder="有效期">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="url" class="col-sm-4 control-label">status</label>
+                        <div class="col-sm-8">
+                            <select class="js_add_select" name="">
+                              <option value="0">show</option>
+                              <option value="1">hide</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="aorder" class="col-sm-4 control-label">排序（数字越大越靠前）</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control js_add_sort" value="100">
+                        </div>
+                    </div>
+                    <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Warning: </strong> 点击保存前请检查信息无误，如有需要请先备份！
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary js_add_saveBtn">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="uploadModal" tabindex="1" role="dialog" aria-labelledby="uploadModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">图片上传</h4>
+            </div>
+            <div class="modal-body">
+                <input id="photo" type="file" multiple="false" value="" />
+                <div>
+                    <img src="" id="prevArea" style="max-width: 100px; max-height: 100px; ">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary js_addPhoto">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script src="" charset="utf-8"></script>
+<script src="<?php echo $resource_url; ?>js/jquery.uploadifive.js"></script>
+<script src="<?php echo $resource_url; ?>js/coupon_record.js"></script>
