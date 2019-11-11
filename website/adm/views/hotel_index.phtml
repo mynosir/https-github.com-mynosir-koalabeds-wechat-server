@@ -1,0 +1,81 @@
+<style media="screen">
+  .js_table{
+    min-width: 3000px
+  }
+  .table tr,.table th{
+    /* width: 600px; */
+    height: 50px;
+  }
+  .table tr td,.table th{
+    line-height: 32px !important;
+  }
+  .table_l tr{
+    height: 51px
+  }
+  .table_r th{
+    height: 51px;
+  }
+  .table-responsive{
+    width: 100%;
+  }
+  .table_l{
+    width: 80%;
+    overflow-x: auto;
+    float: left
+  }
+  .table_r{
+    width: 20%;
+    float: left
+  }
+  .table_page{
+
+  }
+</style>
+<div class="well well-sm">
+    <form class="form-inline js_searchFrom">
+        <div class="form-group">
+            <label for="search_name">name</label>
+            <input type="text" class="form-control" id="search_name" placeholder="输入查询的酒店名">
+        </div>
+        <button type="submit" class="btn btn-sm btn-primary">搜索</button>
+    </form>
+</div>
+<!-- <button type="button" class="btn btn-sm btn-primary js_addbanner" data-toggle="modal" data-target="#addModal" style="margin-bottom:10px;">新增</button> -->
+<div class="table-responsive">
+    <div class="table_l">
+      <table class="table js_table">
+      </table>
+    </div>
+    <div class="table_r">
+      <table class="table js_table2">
+      </table>
+    </div>
+</div>
+<div class="table_page">
+  <nav style="float:right;">
+      <ul class="pagination js_page"></ul>
+  </nav>
+</div>
+
+
+
+<div class="modal fade" id="confirmModal" tabindex="1" role="dialog" aria-labelledby="confirmModal" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                温馨提示
+            </div>
+            <div class="modal-body">
+                确定要修改？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary js_sure_update">確定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<script src="<?php echo $resource_url; ?>js/hotel_index.js"></script>

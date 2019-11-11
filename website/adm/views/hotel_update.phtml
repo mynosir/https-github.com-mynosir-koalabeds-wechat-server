@@ -1,0 +1,181 @@
+<link rel="stylesheet" href="<?php echo $resource_url; ?>libs/summernote/summernote.css">
+
+<style type="text/css">
+    .prev-pic {
+        max-width: 400px;
+        max-height: 300px;
+        display: block;
+        margin: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+    .prev-frame {
+        display: inline-block;
+        position: relative;
+    }
+    .prev-frame em {
+        position: absolute;
+        right: 25px;
+        top: 20px;
+        background: red;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        color: #fff;
+        font-weight: 1000;
+        cursor: pointer;
+    }
+</style>
+
+<div class="form-group">
+    <label>propertyID</label>
+    <input type="text" class="form-control" id="propertyID" disabled value="<?php echo $info['propertyID']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyName</label>
+    <input type="text" class="form-control" id="propertyName" placeholder="please input propertyName" value="<?php echo $info['propertyName']; ?>">
+</div>
+<div class="form-group">
+    <label>酒店名(简体中文)</label>
+    <?php if(isset($info2)): ?>
+      <input type="text" class="form-control" id="propertyNameCh" placeholder="please input propertyNameCh" value="<?php echo $info2['propertyName']; ?>">
+    <?php else: ?>
+      <input type="text" class="form-control" id="propertyNameCh" placeholder="please input propertyNameCh" value="">
+    <?php endif; ?>
+</div>
+<div class="form-group">
+    <label>propertyPhone</label>
+    <input type="text" class="form-control" id="propertyPhone" placeholder="please input propertyPhone" value="<?php echo $info['propertyPhone']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyEmail</label>
+    <input type="text" class="form-control" id="propertyEmail" placeholder="please input propertyEmail" value="<?php echo $info['propertyEmail']; ?>">
+</div>
+
+<div class="form-group">
+    <label>propertyAddress1</label>
+    <input type="text" class="form-control" id="propertyAddress1" placeholder="please input propertyAddress1" value="">
+</div>
+<div class="form-group">
+    <label>propertyAddress2</label>
+    <input type="text" class="form-control" id="propertyAddress2" placeholder="please input propertyAddress2" value="<?php echo $info['propertyAddress2']; ?>">
+</div>
+<div class="form-group">
+    <label>地址(简体中文)</label>
+    <?php if(isset($info2)): ?>
+      <input type="text" class="form-control" id="propertyAddressCh" placeholder="please input propertyAddressCh" value="<?php echo $info2['propertyAddress']; ?>">
+    <?php else: ?>
+      <input type="text" class="form-control" id="propertyAddressCh" placeholder="please input propertyAddressCh" value="">
+    <?php endif; ?>
+</div>
+<div class="form-group">
+    <label>propertyCity</label>
+    <input type="text" class="form-control" id="propertyCity" value="<?php echo $info['propertyCity']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyState</label>
+    <input type="text" class="form-control" id="propertyState" value="<?php echo $info['propertyState']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyZip</label>
+    <input type="text" class="form-control" id="propertyZip" value="<?php echo $info['propertyZip']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyCountry</label>
+    <input type="text" class="form-control" id="propertyCountry" value="<?php echo $info['propertyCountry']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyLatitude</label>
+    <input type="text" class="form-control" id="propertyLatitude" value="<?php echo $info['propertyLatitude']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyLongitude</label>
+    <input type="text" class="form-control" id="propertyLongitude" value="<?php echo $info['propertyLongitude']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyCheckInTime</label>
+    <input type="text" class="form-control" id="propertyCheckInTime" value="<?php echo $info['propertyCheckInTime']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyCheckOutTime</label>
+    <input type="text" class="form-control" id="propertyCheckOutTime" value="<?php echo $info['propertyCheckOutTime']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyLateCheckOutAllowed</label>
+    <input type="text" class="form-control" id="propertyLateCheckOutAllowed" value="<?php echo $info['propertyLateCheckOutAllowed']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyLateCheckOutType</label>
+    <input type="text" class="form-control" id="propertyLateCheckOutType" value="<?php echo $info['propertyLateCheckOutType']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyLateCheckOutValue</label>
+    <input type="text" class="form-control" id="propertyLateCheckOutValue" value="<?php echo $info['propertyLateCheckOutValue']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyTermsAndConditions</label>
+    <input type="text" class="form-control" id="propertyTermsAndConditions" value="<?php echo $info['propertyTermsAndConditions']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyAmenities</label>
+    <input type="text" class="form-control" id="propertyAmenities" value="<?php echo $info['propertyAmenities']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyDescription</label>
+    <div id="descript"></div>
+</div>
+<div class="form-group">
+    <label>描述(简体中文)</label>
+    <div id="descriptCh"></div>
+</div>
+<div class="form-group">
+    <label>propertyTimezone</label>
+    <input type="text" class="form-control" id="propertyTimezone" value="<?php echo $info['propertyTimezone']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyCurrencyCode</label>
+    <input type="text" class="form-control" id="propertyCurrencyCode" value="<?php echo $info['propertyCurrencyCode']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyCurrencySymbol</label>
+    <input type="text" class="form-control" id="propertyCurrencySymbol" value="<?php echo $info['propertyCurrencySymbol']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyCurrencyPosition</label>
+    <input type="text" class="form-control" id="propertyCurrencyPosition" value="<?php echo $info['propertyCurrencyPosition']; ?>">
+</div>
+<div class="form-group">
+    <label>propertyStatus</label>
+    <!-- <input type="text" class="form-control" id="propertyStatus" value="<?php echo $info['status']; ?>"> -->
+    <select class="selectStatus">
+      <option value="0">未审核</option>
+      <option value="1">审核通过</option>
+      <option value="2">审核拒绝</option>
+    </select>
+</div>
+
+
+<textarea class="js_descript" style="display: none;"><?php echo $info['propertyDescription']; ?></textarea>
+<?php if(isset($info2)): ?>
+  <textarea class="js_descript_ch" style="display: none;"><?php echo $info2['propertyDescription']; ?></textarea>
+<?php else: ?>
+  <textarea class="js_descript_ch" style="display: none;"></textarea>
+<?php endif; ?>
+
+<input type="hidden" name="id" value="<?php echo $id; ?>" class="js_id">
+
+<button type="submit" class="btn btn-primary js_submit">保存</button>
+
+<script src="<?php echo $resource_url; ?>libs/summernote/summernote.js"></script>
+<script src="<?php echo $resource_url; ?>libs/summernote/lang/summernote-zh-CN.js"></script>
+<script src="<?php echo $resource_url; ?>libs/summernote/lang/summernote-zh-TW.js"></script>
+<script src="<?php echo $resource_url; ?>js/hotel_update.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('#descript').summernote('code', $('.js_descript').val());
+    $('#descriptCh').summernote('code', $('.js_descript_ch').val());
+    var status = <?php echo $info['status']?>;
+    $('.selectStatus').val(status);
+})
+</script>
