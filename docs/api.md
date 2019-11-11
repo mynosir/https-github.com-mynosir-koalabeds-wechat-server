@@ -774,7 +774,7 @@
 
 * 请求URL
 
-> /api/get?actionxm=getGraylineNationalityList
+> /api/get?actionxm=getGraylineProductList
 
 * 请求方式
 
