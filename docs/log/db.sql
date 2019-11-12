@@ -240,3 +240,8 @@ create table `ko_grayline_ticket` (
 -- jiang 20191112
 -- 添加中文地址字段
 alter table `ko_cloudbeds_hotels_cn` add `propertyAddress` varchar(256) comment 'cloudbeds酒店地址中文';
+
+
+-- linzequan 20191112
+-- 添加门票价格信息字段
+alter table `ko_grayline_ticket` add `subQty` text comment '门票价格信息';

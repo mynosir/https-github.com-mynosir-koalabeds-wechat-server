@@ -348,7 +348,8 @@ class api extends MY_Controller {
                         'totalPrice'    => isset($params['totalPrice']) ? $params['totalPrice'] : '',
                         'info'          => isset($params['info']) ? $params['info'] : '',
                         'orderParamsDetail'     => json_encode($params),
-                        'outTradeNo'    => $outTradeNo
+                        'outTradeNo'    => $outTradeNo,
+                        'subQty'        => isset($params['subQty']) ? json_encode($params['subQty']) : ''
                     );
                     $orderSaveResult = $this->grayline_ticket_model->generateOrder($orderParams);
                     if($orderSaveResult['status'] != 0) {
@@ -360,7 +361,10 @@ class api extends MY_Controller {
                         $result = array(
                             'status'    => 0,
                             'msg'       => '获取成功',
-                            'data'      => $unifiedOrder
+                            'data'      => array(
+                                'id'    => $orderSaveResult['data']['id'],
+                                'payParams' => $unifiedOrder
+                            )
                         );
                     }
                 }
