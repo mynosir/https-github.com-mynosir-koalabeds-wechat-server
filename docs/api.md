@@ -726,6 +726,40 @@
 }
 ```
 
+
+### 17. 酒店预订
+
+* 请求URL
+
+> /api/post?actionxm=saveOrder
+
+* 请求方式
+
+> post
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| openid | String | 微信用户openid |
+| id | String | 订单id |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "保存成功"
+}
+```
+
 ---
 
 ## Grayline

@@ -269,7 +269,10 @@ class api extends MY_Controller {
                             $result = array(
                                 'status'    => 0,
                                 'msg'       => '获取成功',
-                                'data'      => $unifiedOrder
+                                'data'      => array(
+                                    'id'    => $orderSaveResult['data']['id'],
+                                    'payParams' => $unifiedOrder
+                                )
                             );
                         }
                     }
