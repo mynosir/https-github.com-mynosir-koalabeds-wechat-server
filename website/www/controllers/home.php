@@ -147,7 +147,7 @@ class home extends MY_Controller {
 
     public function postReservation() {
         $curl = curl_init();
-        $access_token = '88t0MwR43Ja3Wp6mZ4uR8BX80CUt5oxWShRo01q1';
+        $access_token = '886bQhQs9b9wReKSuMYgwp90q3XsdFbLV2iSzEzD';
         $url = 'https://hotels.cloudbeds.com/api/v1.1/postReservation';
         $data = array(
             'propertyID'    =>  170048,

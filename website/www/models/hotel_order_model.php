@@ -138,6 +138,7 @@ class hotel_order_model extends MY_Model {
                 'msg'       => $orderDetail['msg']
             );
         }
+        $orderDetail = $orderDetail['data'];
         $data = array(
             'propertyID'    => $orderDetail['propertyID'],
             'startDate'     => $orderDetail['startDate'],
@@ -148,34 +149,32 @@ class hotel_order_model extends MY_Model {
             'guestZip'      => $orderDetail['guestZip'],
             'guestEmail'    => $orderDetail['guestEmail'],
             'rooms'         => array(array(
-                'roomTypeID'    => $orderDetail['roomTypeID'],
-                'quantity'      => $orderDetail['quantity']
+                'roomTypeID'    => $orderDetail['rooms_roomTypeID'],
+                'quantity'      => $orderDetail['rooms_quantity']
             )),
             'adults'        => array(array(
-                'roomTypeID'    => $orderDetail['roomTypeID'],
-                'quantity'      => $orderDetail['quantity']
+                'roomTypeID'    => $orderDetail['adults_roomTypeID'],
+                'quantity'      => $orderDetail['adults_quantity']
             )),
             'children'      => array(array(
-                'roomTypeID'    => $orderDetail['roomTypeID'],
-                'quantity'      => $orderDetail['quantity']
+                'roomTypeID'    => $orderDetail['children_roomTypeID'],
+                'quantity'      => $orderDetail['children_quantity']
             )),
             'paymentMethod' => 'cash'
         );
-        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result, $data, true);
-
-
-        $url = 'https://hotels.cloudbeds.com/api/v1.1/getHotels?pageSize=' . $pageSize . '&pageNumber=' . $pageNumber;
-        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
+        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token'], $data, true);
         // array(13) { ["success"]=> bool(true) ["reservationID"]=> string(12) "842706099534" ["status"]=> string(9) "confirmed" ["guestID"]=> int(26820944) ["guestFirstName"]=> string(6) "zequan" ["guestLastName"]=> string(3) "lin" ["guestGender"]=> string(3) "N/A" ["guestEmail"]=> string(16) "361789273@qq.com" ["startDate"]=> string(10) "2019-11-10" ["endDate"]=> string(10) "2019-11-13" ["dateCreated"]=> string(19) "2019-11-07 15:52:29" ["grandTotal"]=> int(900) ["unassigned"]=> array(1) { [0]=> array(7) { ["subReservationID"]=> string(12) "842706099534" ["roomTypeName"]=> string(29) "4 Guests Ensuite with Windows" ["roomTypeID"]=> int(197686) ["adults"]=> int(1) ["children"]=> int(0) ["dailyRates"]=> array(3) { [0]=> array(2) { ["date"]=> string(10) "2019-11-10" ["rate"]=> int(300) } [1]=> array(2) { ["date"]=> string(10) "2019-11-11" ["rate"]=> int(300) } [2]=> array(2) { ["date"]=> string(10) "2019-11-12" ["rate"]=> int(300) } } ["roomTotal"]=> int(900) } } }
         // 根据不同返回状态更新订单状态
         @file_put_contents('/pub/logs/saveOrder', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($apiReturnStr) . PHP_EOL, FILE_APPEND);
         if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
+            $this->update_status($orderDetail['outTradeNo'], 6);
             return array(
                 'status'    => 0,
                 'msg'       => '预订成功',
-                'data'      => $apiReturnStr['data']
+                'data'      => $apiReturnStr
             );
         } else {
+            $this->update_status($orderDetail['outTradeNo'], 5);
             return array(
                 'status'    => -2,
                 'msg'       => $apiReturnStr['message']
