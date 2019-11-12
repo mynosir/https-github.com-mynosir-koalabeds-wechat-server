@@ -119,8 +119,8 @@ create table `ko_banner` (
     primary key (`id`)
 ) engine myisam character set utf8 collate utf8_general_ci comment = '首页轮播图表';
 -- 测试数据
--- insert into ko_banner(img, link) values('https://img1.qunarzz.com/order/comp/1805/2e/6e407f088bfb902.png', 'https://baidu.com');
--- insert into ko_banner(img, link) values('https://simg1.qunarzz.com/site/images/wap/home/recommend/20160509_banner_750x376.jpg', 'https://sina.com.cn');
+insert into ko_banner(img, link) values('https://img1.qunarzz.com/order/comp/1805/2e/6e407f088bfb902.png', 'https://baidu.com');
+insert into ko_banner(img, link) values('https://simg1.qunarzz.com/site/images/wap/home/recommend/20160509_banner_750x376.jpg', 'https://sina.com.cn');
 
 
 -- linzequan 20191106
@@ -135,10 +135,10 @@ create table `ko_coupon` (
     primary key (`id`)
 ) engine myisam character set utf8 collate utf8_general_ci comment = '优惠券配置表';
 -- 测试数据
--- insert into ko_coupon(totalAmount, discountAmount, validateDate) values(500.00, 50.00, 30);
--- insert into ko_coupon(totalAmount, discountAmount, validateDate) values(300.00, 30.00, 15);
--- insert into ko_coupon(totalAmount, discountAmount, validateDate) values(200.00, 20.00, 10);
--- insert into ko_coupon(totalAmount, discountAmount, validateDate) values(100.00, 10.00, 5);
+insert into ko_coupon(totalAmount, discountAmount, validateDate) values(500.00, 50.00, 30);
+insert into ko_coupon(totalAmount, discountAmount, validateDate) values(300.00, 30.00, 15);
+insert into ko_coupon(totalAmount, discountAmount, validateDate) values(200.00, 20.00, 10);
+insert into ko_coupon(totalAmount, discountAmount, validateDate) values(100.00, 10.00, 5);
 
 
 -- linzequan 20191107
@@ -154,10 +154,10 @@ create table `ko_reviews` (
     primary key (`id`)
 ) engine myisam character set utf8 collate utf8_general_ci comment = '酒店评论表';
 -- 测试数据
--- insert into ko_reviews(propertyID, userid, rate, content, create_time) values(173691, 1, 4.5, '我是评论内容1', 1573120221);
--- insert into ko_reviews(propertyID, userid, rate, content, create_time) values(173691, 1, 4.5, '我是评论内容2', 1573120221);
--- insert into ko_reviews(propertyID, userid, rate, content, create_time) values(173691, 1, 4.5, '我是评论内容3', 1573120221);
--- insert into ko_reviews(propertyID, userid, rate, content, create_time) values(173691, 1, 4.5, '我是评论内容4', 1573120221);
+insert into ko_reviews(propertyID, userid, rate, content, create_time) values(173691, 1, 4.5, '我是评论内容1', 1573120221);
+insert into ko_reviews(propertyID, userid, rate, content, create_time) values(173691, 1, 4.5, '我是评论内容2', 1573120221);
+insert into ko_reviews(propertyID, userid, rate, content, create_time) values(173691, 1, 4.5, '我是评论内容3', 1573120221);
+insert into ko_reviews(propertyID, userid, rate, content, create_time) values(173691, 1, 4.5, '我是评论内容4', 1573120221);
 
 
 -- linzequan 20191107
@@ -235,3 +235,8 @@ create table `ko_grayline_ticket` (
     `status` int default 0 comment '订单状态。0未支付，1已支付，2支付失败，3待确认，4订单取消，5预订失败，6预订成功，7不显示',
     primary key (`id`)
 ) engine myisam character set utf8 collate utf8_general_ci comment = 'grayline票据订单表';
+
+
+-- jiang 20191112
+-- 添加中文地址字段
+alter table `ko_cloudbeds_hotels_cn` add `propertyAddress` varchar(256) comment 'cloudbeds酒店地址中文';
