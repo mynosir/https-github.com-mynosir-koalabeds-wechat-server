@@ -964,11 +964,11 @@ turbojetDepartureTime and turbojetReturnTime are not necessary when getProductDe
 
 * 请求URL
 
-> /api/get?actionxm=getGraylinePay
+> /api/post?actionxm=getGraylinePay
 
 * 请求方式
 
-> get
+> post
 
 * 请求参数
 
