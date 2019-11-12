@@ -8,7 +8,7 @@
 class Order_model extends MY_Model {
 
     private $table = 'ko_hotel_order';
-    private $fields = 'id, openid, propertyID, guestName, guestEmail, guestList, reservationID, dateCreated, dateModified, estimatedArrivalTime, source, status, total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, startDate, endDate';
+    private $fields = 'id, openid, propertyID, startDate, endDate, guestFirstName, guestLastName, guestCountry, guestZip, guestEmail, guestPhone, rooms, rooms_roomTypeID, rooms_quantity, adults, adults_roomTypeID, adults_quantity, children, children_roomTypeID, children_quantity, status, total, frontend_total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, reservationID, estimatedArrivalTime, create_time, outTradeNo, transaction_id, transaction_info';
     public function __construct() {
         parent::__construct();
     }

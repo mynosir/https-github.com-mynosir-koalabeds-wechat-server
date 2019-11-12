@@ -35,8 +35,7 @@ class Order extends MY_Controller {
             case 'getOrder':
                 $page = $this->get_request('page');
                 $size = $this->get_request('size');
-                $classify = $this->get_request('classify');
-                $result = $this->order_model->getOrder($page, $size, $classify);
+                $result = $this->order_model->getOrder($page, $size);
                 break;
             case 'getDetail':
                 $id = $this->get_request('id');
