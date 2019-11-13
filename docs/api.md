@@ -793,6 +793,45 @@
 }
 ```
 
+
+### 20. 发表评价
+
+* 请求URL
+
+> /api/post?actionxm=saveReviews
+
+* 请求方式
+
+> post
+
+* 请求参数
+
+| 请求参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| propertyID | String | 酒店id |
+| userid | Integer | 用户id |
+| rate | String | 评星 |
+| content | String | 评论内容 |
+
+* 返回参数
+
+| 返回参数 | 参数类型 | 参数说明 |
+| :--- | :--- | :--- |
+| status | Integer | 成功与否。0成功，其他失败 |
+| msg | String | 结果信息 |
+
+* 返回示例
+
+```
+{
+    "statu"： 0，
+    "msg": "取消成功"
+}
+```
+
+
+
+
 ---
 
 ## Grayline

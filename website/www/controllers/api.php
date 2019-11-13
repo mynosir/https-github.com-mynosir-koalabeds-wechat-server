@@ -386,6 +386,15 @@ class api extends MY_Controller {
                 $this->load->model('grayline_ticket_model');
                 $result = $this->grayline_ticket_model->orderProduct($openid, $id);
                 break;
+            // 发表评价
+            case 'saveReviews':
+                $params['userid'] = $this->get_request('userid');
+                $params['content'] = $this->get_request('content');
+                $params['propertyID'] = $this->get_request('propertyID');
+                $params['rate'] = $this->get_request('rate');
+                $this->load->model('reviews_model');
+                $result = $this->reviews_model->add($params);
+                break;
         }
         echo json_encode($result);
     }

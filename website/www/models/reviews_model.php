@@ -16,6 +16,26 @@ class reviews_model extends MY_Model {
 
 
     /**
+     * 保存记录
+     **/
+    public function add($params) {
+        $data = array(
+            'propertyID'    => $params['propertyID'],
+            'userid'        => $params['userid'],
+            'rate'          => $params['rate'],
+            'content'       => $params['content'],
+            'create_time'   => time()
+        );
+        $this->db->insert($this->table, $params);
+        $result = array(
+            'status'    => 0,
+            'msg'       => '保存成功！'
+        );
+        return $result;
+    }
+
+
+    /**
      * 获取酒店平均评价
      */
     public function getReviewsRate($propertyID) {
