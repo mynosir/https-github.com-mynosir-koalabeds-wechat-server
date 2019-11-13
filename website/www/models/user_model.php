@@ -88,4 +88,39 @@ class user_model extends MY_Model {
         }
     }
 
+
+    /**
+     * 获取用户语言
+     */
+    public function getLangByOpenid($openid = '') {
+        if(!$openid) {
+            return array(
+                'status'    => -1,
+                'msg'       => 'openid不可为空',
+                'data'      => array(
+                    'lang'  => 'en'
+                )
+            );
+        }
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where openid = "' . $openid . '"');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '获取成功',
+                'data'      => array(
+                    'lang'  => $result[0]['lang']
+                )
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '未找到该用户信息',
+                'data'      => array(
+                    'lang'  => 'en'
+                )
+            );
+        }
+    }
+
 }

@@ -29,14 +29,16 @@ class api extends MY_Controller {
                 $this->load->model('cloudbeds_hotel_model');
                 $type = $this->get_request('type');
                 $num = $this->get_request('num', 10);
-                $result = $this->cloudbeds_hotel_model->getRecommend($type, $num);
+                $openid = $this->get_request('openid');
+                $result = $this->cloudbeds_hotel_model->getRecommend($type, $num, $openid);
                 break;
             // 获取首页推荐酒店瀑布流
             case 'getRecommendFlow':
                 $this->load->model('cloudbeds_hotel_model');
                 $page = $this->get_request('page', 1);
                 $num = $this->get_request('num', 10);
-                $result = $this->cloudbeds_hotel_model->getRecommendFlow($page, $num);
+                $openid = $this->get_request('openid');
+                $result = $this->cloudbeds_hotel_model->getRecommendFlow($page, $num, $openid);
                 break;
             // 获取房间类型
             case 'getRoomTypes':
@@ -175,7 +177,7 @@ class api extends MY_Controller {
                 $this->load->model('user_model');
                 $result = $this->user_model->saveUserinfo($openid, $userinfo);
                 break;
-            // 保存语音
+            // 保存语言
             case 'updateLang':
                 $openid = $this->get_request('openid');
                 $lang = $this->get_request('lang', 'en');

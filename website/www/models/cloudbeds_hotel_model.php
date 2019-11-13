@@ -8,7 +8,9 @@
 class Cloudbeds_hotel_model extends MY_Model {
 
     private $table = 'ko_cloudbeds_hotels';
+    private $cn_table = 'ko_cloudbeds_hotels_cn';
     private $fields = 'id, propertyID, propertyName, propertyImage, propertyImageThumb, propertyPhone, propertyEmail, propertyAddress1, propertyAddress2, propertyCity, propertyState, propertyZip, propertyCountry, propertyLatitude, propertyLongitude, propertyCheckInTime, propertyCheckOutTime, propertyLateCheckOutAllowed, propertyLateCheckOutType, propertyLateCheckOutValue, propertyTermsAndConditions, propertyAmenities, propertyDescription, propertyTimezone, propertyCurrencyCode, propertyCurrencySymbol, propertyCurrencyPosition';
+    private $cn_fields = 'id, hid, propertyID, propertyName, propertyDescription, propertyAddress';
 
     public function __construct() {
         parent::__construct();
@@ -140,7 +142,7 @@ class Cloudbeds_hotel_model extends MY_Model {
     /**
      * 查询推荐列表
      **/
-    public function getRecommend($type = 0, $num = 10) {
+    public function getRecommend($type = 0, $num = 10, $openid) {
         if($type == 0) {
             return array(
                 'status'    => -1,
@@ -149,6 +151,12 @@ class Cloudbeds_hotel_model extends MY_Model {
         }
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `recommend` = ' . $type . ' order by id desc limit 0, ' . $num);
         $result = $query->result_array();
+        foreach($result as $k=>$v) {
+            $hotelCn = $this->getHotelCn($v['id']);
+            if($hotelCn['status'] == 0) {
+                $result[$k]['cn'] = $hotelCn['data'];
+            }
+        }
         return array(
             'status'    => 0,
             'msg'       => '查询成功',
@@ -160,10 +168,16 @@ class Cloudbeds_hotel_model extends MY_Model {
     /**
      * 获取首页推荐列表瀑布流
      **/
-    public function getRecommendFlow($page = 1, $num = 10) {
+    public function getRecommendFlow($page = 1, $num = 10, $openid) {
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `recommend` = 1 order by id desc limit ' . ($page - 1) * $num . ' , ' . $num);
         $result = $query->result_array();
         if(count($result) > 0) {
+            foreach($result as $k=>$v) {
+                $hotelCn = $this->getHotelCn($v['id']);
+                if($hotelCn['status'] == 0) {
+                    $result[$k]['cn'] = $hotelCn['data'];
+                }
+            }
             $rtn = array(
                 'status'    => 0,
                 'msg'       => '查询成功',
@@ -307,6 +321,10 @@ class Cloudbeds_hotel_model extends MY_Model {
             $tmp = $this->getHotelDetailsInDB($v['propertyID']);
             if($tmp['status'] == 0) {
                 $newHotels[$k]['details'] = $tmp['data'];
+                $hotelCn = $this->getHotelCn($tmp['data']['id']);
+                if($hotelCn['status'] == 0) {
+                    $newHotels[$k]['cn'] = $hotelCn['data'];
+                }
             } else {
                 // 不存在，从酒店列表中剔除该数据
                 unset($newHotels[$k]);
@@ -343,6 +361,10 @@ class Cloudbeds_hotel_model extends MY_Model {
                     'status'    => -2,
                     'msg'       => '查询酒店评星异常'
                 );
+            }
+            $hotelCn = $this->getHotelCn($result[0]['id']);
+            if($hotelCn['status'] == 0) {
+                $result[0]['cn'] = $hotelCn['data'];
             }
             return array(
                 'status'    => 0,
@@ -477,6 +499,27 @@ class Cloudbeds_hotel_model extends MY_Model {
             return array(
                 'status'    => -1,
                 'msg'       => '查询异常'
+            );
+        }
+    }
+
+
+    /**
+     * 获取酒店对应中文信息
+     */
+    public function getHotelCn($id) {
+        $query = $this->db->query('select ' . $this->cn_fields . ' from ' . $this->cn_table . ' where id = ' . $id);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result[0]
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '未查找到对应中文信息'
             );
         }
     }

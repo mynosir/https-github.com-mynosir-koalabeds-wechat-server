@@ -18,6 +18,7 @@
 | :--- | :--- | :--- |
 | type | Integer，不可为空 | 推荐位置，首页为2 |
 | num | Integer，可为空 | 查询个数，默认为10 |
+| openid | String | 用户微信openid |
 
 * 返回参数
 
