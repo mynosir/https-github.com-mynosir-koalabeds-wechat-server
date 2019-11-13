@@ -282,3 +282,8 @@ alter table `ko_hotel_order` add column `coupon_id` int default 0 comment '所�
 -- linzequan 20191113
 -- 酒店订单表添加原价字段
 alter table `ko_hotel_order` add column `source_prize` varchar(32) comment 'cloudbeds原价';
+
+
+-- linzequan 20191113
+-- 门票订单表添加原价字段
+alter table `ko_grayline_ticket` add column `sourcePrice` varchar(32) default '' comment '原价';

@@ -1063,6 +1063,7 @@ turbojetDepartureTime and turbojetReturnTime are not necessary when getProductDe
 | turbojetQuantity | Integer | 选填（除非详情接口返回turbojet，并且没有返回产品价格），TurboJET票据数量 |
 | turbojetClass | String | 选填（除非详情接口返回turbojet，并且没有返回产品价格），TurboJET类型，可选项：economy、super、primer-grand |
 | subQty[productPriceId] | Integer | 选填（当详情接口返回价格清单时必填） |
+| coupon_id | Integer | 优惠券id，不传或者传0表示不使用优惠券 |
 
 >>> TurboJET departure fields are necessary when getProductDetails response provides turbojet data.
 TurboJET return fields are necessary when getProductDetails response provides turbojet data and turbojet.type = ‘round-trip’.

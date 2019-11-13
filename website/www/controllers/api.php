@@ -335,6 +335,29 @@ class api extends MY_Controller {
                 } else {
                     // 生成订单号
                     $outTradeNo = substr('grayline' . date('YmdHis', time()) . uniqid(), 0, 32); // 商品订单号
+                    $total_fee = $params['frontend_total'];
+                    $source_prize = $params['frontend_total'];
+                    // 判断是否使用优惠券
+                    if(isset($params['coupon_id']) && $params['coupon_id'] > 0) {
+                        // 判断优惠券是否可用
+                        $this->load->model('coupon_model');
+                        $couponStatus = $this->coupon_model->validCoupon($params['openid'], $params['coupon_id']);
+                        // 优惠券是否有效
+                        if($couponStatus['status'] != 0) {
+                            return array(
+                                'status'    => -4,
+                                'msg'       => $couponStatus['msg']
+                            );
+                        }
+                        // 优惠券是否满足使用条件
+                        if((float)$couponStatus['data']['totalAmount'] > (float)$source_prize) {
+                            return array(
+                                'status'    => -5,
+                                'msg'       => '优惠券不满足使用条件'
+                            );
+                        }
+                        $total_fee = (float)$source_prize - (float)$couponStatus['data']['discountAmount'];
+                    }
                     // 保存订单
                     $data = array(
                         'service'       => 'pay.weixin.jspay',
@@ -391,7 +414,9 @@ class api extends MY_Controller {
                         'remark'        => isset($params['remark']) ? $params['remark'] : '',
                         'subQtyProductPriceId'      => isset($params['subQtyProductPriceId']) ? $params['subQtyProductPriceId'] : '',
                         'subQtyValue'   => isset($params['subQtyValue']) ? $params['subQtyValue'] : '',
-                        'totalPrice'    => isset($params['totalPrice']) ? $params['totalPrice'] : '',
+                        // 'totalPrice'    => isset($params['totalPrice']) ? $params['totalPrice'] : '',
+                        'totalPrice'    => $total_fee,
+                        'sourcePrice'   => $source_prize,
                         'info'          => isset($params['info']) ? $params['info'] : '',
                         'orderParamsDetail'     => json_encode($params),
                         'outTradeNo'    => $outTradeNo,
