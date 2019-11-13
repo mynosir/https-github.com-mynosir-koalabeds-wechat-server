@@ -73,7 +73,7 @@ class hotel_order_model extends MY_Model {
     public function update_transaction_info($out_trade_no, $transaction_info) {
         $transaction_info_obj = json_decode($transaction_info, true);
         $where = array(
-            'out_trade_no'  => $out_trade_no
+            'outTradeNo'    => $out_trade_no
         );
         $data = array(
             'transaction_id'    => $transaction_info_obj['transaction_id'],
@@ -88,7 +88,21 @@ class hotel_order_model extends MY_Model {
      */
     public function update_status($out_trade_no, $status) {
         $where = array(
-            'out_trade_no'  => $out_trade_no
+            'outTradeNo'    => $out_trade_no
+        );
+        $data = array(
+            'status'    => $status
+        );
+        $this->db->where($where)->update($this->table, $data);
+    }
+
+
+    /**
+     * 通过id更新订单状态
+     */
+    public function updateStatusById($id, $status) {
+        $where = array(
+            'id'    => $id
         );
         $data = array(
             'status'    => $status
@@ -167,7 +181,7 @@ class hotel_order_model extends MY_Model {
         // 根据不同返回状态更新订单状态
         @file_put_contents('/pub/logs/saveOrder', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($apiReturnStr) . PHP_EOL, FILE_APPEND);
         if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
-            $this->update_status($orderDetail['outTradeNo'], 6);
+            $this->update_status($orderDetail['outTradeNo'], 2);
             return array(
                 'status'    => 0,
                 'msg'       => '预订成功',

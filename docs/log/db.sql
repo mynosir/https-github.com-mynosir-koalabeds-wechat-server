@@ -245,3 +245,13 @@ alter table `ko_cloudbeds_hotels_cn` add `propertyAddress` varchar(256) comment 
 -- linzequan 20191112
 -- 添加门票价格信息字段
 alter table `ko_grayline_ticket` add `subQty` text comment '门票价格信息';
+
+
+-- linzequan 20191113
+-- 添加系统异常日志表
+create table `ko_errorlog` (
+    `id` int not null auto_increment comment '自增id',
+    `content` varchar(1024) not null comment '日志内容',
+    `create_time` int(11) not null comment '日志记录时间',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = '系统异常日志表';

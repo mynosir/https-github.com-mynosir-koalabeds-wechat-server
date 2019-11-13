@@ -189,6 +189,12 @@ class api extends MY_Controller {
                 $this->load->model('coupon_model');
                 $result = $this->coupon_model->getUserCoupon($openid, $ids);
                 break;
+            // 取消订单
+            case 'cancelOrder':
+                $id = $this->get_request('id');
+                $this->load->model('hotel_order_model');
+                $result = $this->hotel_order_model->updateStatusById($id, 2);
+                break;
             // 下订单
             case 'saveOrder':
                 $openid = $this->get_request('openid');
@@ -229,7 +235,7 @@ class api extends MY_Controller {
                             'sub_appid'     => 'wx18cda3bfbb701cb7',
                             'total_fee'     => '1',
                             'mch_create_ip' => '127.0.0.1',
-                            'notify_url'    => 'https://koalabeds-server.kakaday.com/paycallback',
+                            'notify_url'    => 'https://koalabeds-server.kakaday.com/api/paycallback',
                             'nonce_str'     => '1409196838'
                         );
                         $sign = $this->getSign($data, '97a36c5b28ecb6dbe194c45ebc00f46f');
@@ -300,7 +306,7 @@ class api extends MY_Controller {
                         'sub_appid'     => 'wx18cda3bfbb701cb7',
                         'total_fee'     => '1',
                         'mch_create_ip' => '127.0.0.1',
-                        'notify_url'    => 'https://koalabeds-server.kakaday.com/paycallbackGrayline',
+                        'notify_url'    => 'https://koalabeds-server.kakaday.com/api/paycallbackGrayline',
                         'nonce_str'     => '1409196838'
                     );
                     $sign = $this->getSign($data, '97a36c5b28ecb6dbe194c45ebc00f46f');
@@ -383,7 +389,7 @@ class api extends MY_Controller {
 
     public function paycallbackGrayline() {
         $result = $this->notify();
-        @file_put_contents('/pub/logs/paycallbackGrayline', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($result) . PHP_EOL, FILE_APPEND);
+        @file_put_contents('/pub/logs/paycallbackGrayline', '[' . date('Y-m-d H:i:s', time()) . ']' . json_encode($result) . PHP_EOL, FILE_APPEND);
         // 收到支付回调，判断支付成功的话，将订单状态置为1
         if($result) {
             $this->load->model('grayline_ticket_model');
@@ -391,7 +397,7 @@ class api extends MY_Controller {
             if($result['result_code'] == 'SUCCESS') {
                 $this->grayline_ticket_model->updateOrderStatus($result['out_trade_no'], 1);
             } else {
-                $this->grayline_ticket_model->updateOrderStatus($result['out_trade_no'], 2);
+                // $this->grayline_ticket_model->updateOrderStatus($result['out_trade_no'], 2);
             }
         }
     }
@@ -399,13 +405,13 @@ class api extends MY_Controller {
 
     public function paycallback() {
         $result = $this->notify();
-        // {"appid":"wxbb38e532bce13768","attach":"pay","bank_type":"PAB_CREDIT","cash_fee":"1","fee_type":"CNY","is_subscribe":"Y","mch_id":"1558979671","nonce_str":"iV0qBhKWXmop6Orw","openid":"otVuH1JP-Aj9FStCDNzbUOuq9RKk","out_trade_no":"gkmj_20191024211023_5db1a2bf2ffa","result_code":"SUCCESS","return_code":"SUCCESS","time_end":"20191024211031","total_fee":"1","trade_type":"JSAPI","transaction_id":"4200000442201910247202565485"}
-        @file_put_contents('/pub/logs/paycallback', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($result) . PHP_EOL, FILE_APPEND);
+        // {"bank_type":"CFT","cash_fee":"1","cash_fee_type":"CNY","charset":"UTF-8","fee_type":"CNY","is_subscribe":"N","local_fee_type":"CNY","local_total_fee":"1","mch_id":"104530000126","nonce_str":"1573647089880","openid":"onekpwliGdQq4_Z9aH3WSASbF8Wg","order_fee":"1","out_trade_no":"cloudbeds201911132011175dcbf2e50","out_transaction_id":"4200000462201911137229645182","pay_result":"0","rate":"89717221","result_code":"0","sign_type":"MD5","status":"0","sub_appid":"wx18cda3bfbb701cb7","sub_is_subscribe":"N","sub_openid":"oLq-f4pzzkedinC8EKDfG86HFQdg","time_end":"20191113201129","total_fee":"1","trade_type":"pay.weixin.jspay","transaction_id":"104530000126201911132187482892","version":"2.0"}
+        @file_put_contents('/pub/logs/paycallback', '[' . date('Y-m-d H:i:s', time()) . ']' . json_encode($result) . PHP_EOL, FILE_APPEND);
         // 收到支付回调，判断支付成功的话，将订单状态置为1
         if($result) {
             $this->load->model('hotel_order_model');
             $this->hotel_order_model->update_transaction_info($result['out_trade_no'], json_encode($result));
-            if($result['result_code'] == 'SUCCESS') {
+            if($result['pay_result'] == 0) {
                 $this->hotel_order_model->update_status($result['out_trade_no'], 1);
             } else {
                 $this->hotel_order_model->update_status($result['out_trade_no'], 2);
@@ -421,41 +427,78 @@ class api extends MY_Controller {
             'key'       => '97a36c5b28ecb6dbe194c45ebc00f46f'
         );
         $postStr = file_get_contents('php://input');
+        @file_put_contents('/pub/logs/paynotifyXML', $postStr);
+        // <xml><bank_type><![CDATA[CFT]]></bank_type>
+        // <cash_fee><![CDATA[1]]></cash_fee>
+        // <cash_fee_type><![CDATA[CNY]]></cash_fee_type>
+        // <charset><![CDATA[UTF-8]]></charset>
+        // <fee_type><![CDATA[CNY]]></fee_type>
+        // <is_subscribe><![CDATA[N]]></is_subscribe>
+        // <local_fee_type><![CDATA[CNY]]></local_fee_type>
+        // <local_total_fee><![CDATA[1]]></local_total_fee>
+        // <mch_id><![CDATA[104530000126]]></mch_id>
+        // <nonce_str><![CDATA[1573648705055]]></nonce_str>
+        // <openid><![CDATA[onekpwliGdQq4_Z9aH3WSASbF8Wg]]></openid>
+        // <order_fee><![CDATA[1]]></order_fee>
+        // <out_trade_no><![CDATA[cloudbeds201911132038135dcbf9355]]></out_trade_no>
+        // <out_transaction_id><![CDATA[4200000462201911136447260336]]></out_transaction_id>
+        // <pay_result><![CDATA[0]]></pay_result>
+        // <rate><![CDATA[89717221]]></rate>
+        // <result_code><![CDATA[0]]></result_code>
+        // <sign><![CDATA[BEF84DE46F64D5447D89578531C90801]]></sign>
+        // <sign_type><![CDATA[MD5]]></sign_type>
+        // <status><![CDATA[0]]></status>
+        // <sub_appid><![CDATA[wx18cda3bfbb701cb7]]></sub_appid>
+        // <sub_is_subscribe><![CDATA[N]]></sub_is_subscribe>
+        // <sub_openid><![CDATA[oLq-f4pzzkedinC8EKDfG86HFQdg]]></sub_openid>
+        // <time_end><![CDATA[20191113203824]]></time_end>
+        // <total_fee><![CDATA[1]]></total_fee>
+        // <trade_type><![CDATA[pay.weixin.jspay]]></trade_type>
+        // <transaction_id><![CDATA[104530000126201911131187127081]]></transaction_id>
+        // <version><![CDATA[2.0]]></version>
+        // </xml>
         // 禁止引用外部xml实体
         libxml_disable_entity_loader(true);
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-        @file_put_contents('/pub/logs/paynotify', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($postObj) . PHP_EOL, FILE_APPEND);
-        // if($postObj === false) {
-        //     $this->load->model('errorlog_model');
-        //     $params = array(
-        //         'content'       => 'xml解析异常(parse xml error)',
-        //         'create_time'   => time()
-        //     );
-        //     $this->errorlog_model->add($params);
-        //     return false;
-        // }
-        // if($postObj->return_code != 'SUCCESS') {
-        //     $this->load->model('errorlog_model');
-        //     $params = array(
-        //         'content'       => json_encode($postObj),
-        //         'create_time'   => time()
-        //     );
-        //     $this->errorlog_model->add($params);
-        //     return false;
-        // }
-        // if($postObj->result_code != 'SUCCESS') {
-        //     $this->load->model('errorlog_model');
-        //     $params = array(
-        //         'content'       => json_encode($postObj),
-        //         'create_time'   => time()
-        //     );
-        //     $this->errorlog_model->add($params);
-        //     return false;
-        // }
+        // $postStr = '{"bank_type":"CFT","cash_fee":"1","cash_fee_type":"CNY","charset":"UTF-8","fee_type":"CNY","is_subscribe":"N","local_fee_type":"CNY","local_total_fee":"1","mch_id":"104530000126","nonce_str":"1573647089880","openid":"onekpwliGdQq4_Z9aH3WSASbF8Wg","order_fee":"1","out_trade_no":"cloudbeds201911132011175dcbf2e50","out_transaction_id":"4200000462201911137229645182","pay_result":"0","rate":"89717221","result_code":"0","sign":"4B35434063F6316B8D927DEB424A63CE","sign_type":"MD5","status":"0","sub_appid":"wx18cda3bfbb701cb7","sub_is_subscribe":"N","sub_openid":"oLq-f4pzzkedinC8EKDfG86HFQdg","time_end":"20191113201129","total_fee":"1","trade_type":"pay.weixin.jspay","transaction_id":"104530000126201911132187482892","version":"2.0"}';
+        // $postObj = json_decode($postStr, true);
+        // var_dump($postObj);
+        @file_put_contents('/pub/logs/paynotify', '[' . date('Y-m-d H:i:s', time()) . ']' . json_encode($postObj) . PHP_EOL, FILE_APPEND);
+        if($postObj === false) {
+            $this->load->model('errorlog_model');
+            $params = array(
+                'content'       => 'xml解析异常(parse xml error)',
+                'create_time'   => time()
+            );
+            $this->errorlog_model->add($params);
+            return false;
+        }
+        $postArr = (array)$postObj;
+        // 事务结果判断
+        if($postArr['result_code'] != 0) {
+            $this->load->model('errorlog_model');
+            $params = array(
+                'content'       => json_encode($postArr),
+                'create_time'   => time()
+            );
+            $this->errorlog_model->add($params);
+            return false;
+        }
+        // 支付结果判断
+        if($postArr['pay_result'] != 0) {
+            $this->load->model('errorlog_model');
+            $params = array(
+                'content'       => json_encode($postArr),
+                'create_time'   => time()
+            );
+            $this->errorlog_model->add($params);
+            return false;
+        }
         $arr = (array)$postObj;
         unset($arr['sign']);
-        if(self::getSign($arr, $config['key']) == $postObj->sign) {
-            echo '<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>';
+        if(self::getSign($arr, $config['key']) == $postArr['sign']) {
+            // echo '<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>';
+            echo 'success';
             return $arr;
         }
     }
