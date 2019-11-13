@@ -191,7 +191,7 @@ class api extends MY_Controller {
                         'ext'       => $sendStatus
                     );
                 } else {
-                    $saveStatus = $this->smscode_model->save($phone, $code);
+                    $saveStatus = $this->smscode_model->save($phone, $code, $sendStatus);
                     if($saveStatus['status'] != 0) {
                         $result = array(
                             'status'    => -1,

@@ -8,7 +8,7 @@
 class smscode_model extends MY_Model {
 
     private $table = 'ko_smscode';
-    private $fields = 'id, phone, code, is_check, ip, create_time';
+    private $fields = 'id, phone, code, is_check, ip, sendlog, create_time';
 
     public function __construct() {
         parent::__construct();
@@ -18,10 +18,11 @@ class smscode_model extends MY_Model {
     /**
      * 保存短信验证码
      */
-    public function save($phone, $code) {
+    public function save($phone, $code, $sendlog) {
         $data = array(
             'phone' => $phone,
             'code'  => $code,
+            'sendlog'   => $sendlog
             'ip'    => $this->getIP(),
             'create_time'  => time()
         );
