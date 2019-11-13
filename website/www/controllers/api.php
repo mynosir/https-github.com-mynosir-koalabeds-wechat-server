@@ -394,7 +394,7 @@ class api extends MY_Controller {
         if($result) {
             $this->load->model('grayline_ticket_model');
             $this->grayline_ticket_model->update_transaction_info($result['out_trade_no'], json_encode($result));
-            if($result['result_code'] == 'SUCCESS') {
+            if($result['result_code'] == 0) {
                 $this->grayline_ticket_model->updateOrderStatus($result['out_trade_no'], 1);
             } else {
                 // $this->grayline_ticket_model->updateOrderStatus($result['out_trade_no'], 2);
@@ -414,7 +414,7 @@ class api extends MY_Controller {
             if($result['pay_result'] == 0) {
                 $this->hotel_order_model->update_status($result['out_trade_no'], 1);
             } else {
-                $this->hotel_order_model->update_status($result['out_trade_no'], 2);
+                // $this->hotel_order_model->update_status($result['out_trade_no'], 2);
             }
         }
     }
