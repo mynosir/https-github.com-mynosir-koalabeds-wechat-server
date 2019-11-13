@@ -64,6 +64,9 @@ class hotel_order_model extends MY_Model {
         }
         $data['total'] = $params['total_fee'];
         $data['source_prize'] = $params['source_prize'];
+        // 变更优惠券状态
+        $this->load->model('coupon_model');
+        $CI->coupon_model->updateStatus($coupon_id, 1);
         $this->db->insert($this->table, $data);
         $insertId = $this->db->insert_id();
         return array(

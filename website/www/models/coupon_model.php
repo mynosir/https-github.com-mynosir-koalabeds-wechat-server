@@ -134,4 +134,13 @@ class coupon_model extends MY_Model {
         }
     }
 
+
+    /**
+     * 使用优惠券
+     */
+    public function updateStatus($id, $status) {
+        $query = $this->db->query('update ' . $this->record_table . ' set status = ' . $status . ' where id = ' . $id);
+        return true;
+    }
+
 }
