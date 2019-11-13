@@ -8,7 +8,7 @@
 class hotel_order_model extends MY_Model {
 
     private $table = 'ko_hotel_order';
-    private $fields = 'id, openid, propertyID, startDate, endDate, guestFirstName, guestLastName, guestCountry, guestZip, guestEmail, guestPhone, rooms, rooms_roomTypeID, rooms_quantity, adults, adults_roomTypeID, adults_quantity, children, children_roomTypeID, children_quantity, status, total, frontend_total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, reservationID, estimatedArrivalTime, outTradeNo, transaction_id, transaction_info';
+    private $fields = 'id, openid, propertyID, startDate, endDate, guestFirstName, guestLastName, guestCountry, guestZip, guestEmail, guestPhone, rooms, rooms_roomTypeID, rooms_quantity, adults, adults_roomTypeID, adults_quantity, children, children_roomTypeID, children_quantity, status, total, frontend_total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, reservationID, estimatedArrivalTime, outTradeNo, transaction_id, transaction_info, coupon_id';
 
     public function __construct() {
         parent::__construct();
@@ -42,7 +42,8 @@ class hotel_order_model extends MY_Model {
             'status'        => 0,
             'frontend_total'=> $params['frontend_total'],
             // 'total'         => $params['frontend_total'],
-            'outTradeNo'    => $params['outTradeNo']
+            'outTradeNo'    => $params['outTradeNo'],
+            'coupon_id'     => $params['coupon_id']
         );
         // 查询房间对应金额
         $this->load->model('cloudbeds_hotel_model');
@@ -55,6 +56,14 @@ class hotel_order_model extends MY_Model {
             );
         }
         $data['total'] = $rate['data']['grandTotal'];
+        if($params['source_prize'] != $rate['data']['grandTotal']) {
+            return array(
+                'status'    => -2,
+                'msg'       => '价格异常'
+            );
+        }
+        $data['total'] = $params['total_fee'];
+        $data['source_prize'] = $params['source_prize'];
         $this->db->insert($this->table, $data);
         $insertId = $this->db->insert_id();
         return array(

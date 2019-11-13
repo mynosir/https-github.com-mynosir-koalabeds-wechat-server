@@ -90,6 +90,14 @@ class api extends MY_Controller {
                 $checkOutDate = $this->get_request('checkOutDate', '');     // 离店日期
                 $result = $this->cloudbeds_hotel_model->getAvailableRoomTypes($propertyID, $checkInDate, $checkOutDate);
                 break;
+            // 获取评论列表
+            case 'getReviews':
+                $propertyID = $this->get_request('propertyID', 0);
+                $page = $this->get_request('page', 1);
+                $num = $this->get_request('num', 10);
+                $this->load->model('reviews_model');
+                $result = $this->reviews_model->getReviewsList($propertyID, $page, $num);
+                break;
             // 获取openid
             case 'getOpenid':
                 $code = $this->get_request('code');         // 小程序传过来的code值
@@ -230,6 +238,29 @@ class api extends MY_Controller {
                         $hotelDetail = $hotelInfo['data'];
                         // 生成订单号
                         $outTradeNo = substr('cloudbeds' . date('YmdHis', time()) . uniqid(), 0, 32); // 商品订单号
+                        $total_fee = $params['frontend_total'];
+                        $source_prize = $params['frontend_total'];
+                        // 判断是否使用优惠券
+                        if(isset($params['coupon_id']) && $params['coupon_id'] > 0) {
+                            // 判断优惠券是否可用
+                            $this->load->model('coupon_model');
+                            $couponStatus = $this->coupon_model->validCoupon($params['openid'], $params['coupon_id']);
+                            // 优惠券是否有效
+                            if($couponStatus['status'] != 0) {
+                                return array(
+                                    'status'    => -4,
+                                    'msg'       => $couponStatus['msg']
+                                );
+                            }
+                            // 优惠券是否满足使用条件
+                            if((float)$couponStatus['data']['totalAmount'] > (float)$source_prize) {
+                                return array(
+                                    'status'    => -5,
+                                    'msg'       => '优惠券不满足使用条件'
+                                );
+                            }
+                            $total_fee = (float)$source_prize - (float)$couponStatus['data']['discountAmount'];
+                        }
                         // 保存订单
                         $data = array(
                             'service'       => 'pay.weixin.jspay',
@@ -269,7 +300,10 @@ class api extends MY_Controller {
                             'adults'        => $params['adults'],
                             'children'      => $params['children'],
                             'frontend_total'=> $params['frontend_total'],
-                            'outTradeNo'    => $outTradeNo
+                            'outTradeNo'    => $outTradeNo,
+                            'total_fee'     => $total_fee,
+                            'source_prize'  => $source_prize,
+                            'coupon_id'     => isset($params['coupon_id']) ? $params['coupon_id'] : 0
                         );
                         $orderSaveResult = $this->hotel_order_model->generateOrder($orderParams);
                         if($orderSaveResult['status'] != 0) {

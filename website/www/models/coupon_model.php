@@ -106,4 +106,32 @@ class coupon_model extends MY_Model {
         }
     }
 
+
+    /**
+     * 判断优惠券是否可用
+     */
+    public function validCoupon($openid, $id) {
+        $query = $this->db->query('select ' . $this->record_fields . ' from ' . $this->record_table . ' where id = ' . $id . ' and openid = "' . $openid . '"');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            if($result[0]['status'] == 0) {
+                return array(
+                    'status'    => 0,
+                    'msg'       => '优惠券有效',
+                    'data'      => $result[0]
+                );
+            } else {
+                return array(
+                    'status'    => -1,
+                    'msg'       => '优惠券无效'
+                );
+            }
+        } else {
+            return array(
+                'status'    => -2,
+                'msg'       => '不存在该优惠券'
+            );
+        }
+    }
+
 }

@@ -81,7 +81,7 @@ create table `ko_hotel_order` (
     `children_roomTypeID` varchar(32) default '' comment '预订的儿童房间信息',
     `children_quantity` int default 0 comment '预订的儿童房间数量',
     `status` int default 0 comment '订单状态。0未支付，1已支付，2支付失败，3待确认，4订单取消，5预订失败，6预订成功，7入住，8离店，9不显示',
-    `total` varchar(32) comment '总价格',
+    `total` varchar(32) comment '总价格（优惠后的价格）',
     `frontend_total` varchar(32) comment '小程序计算的总价格',
     `balance` varchar(32) comment '余款',
     `balanceDetailed` text comment '余款细节',
@@ -272,3 +272,13 @@ create table `ko_refund` (
     `create_time` int comment '退款时间',
     primary key (`id`)
 ) engine = myisam character set utf8 collate utf8_general_ci comment = '退款记录表';
+
+
+-- linzequan 20191113
+-- 酒店订单表添加优惠券id
+alter table `ko_hotel_order` add column `coupon_id` int default 0 comment '所使用的优惠券id';
+
+
+-- linzequan 20191113
+-- 酒店订单表添加原价字段
+alter table `ko_hotel_order` add column `source_prize` varchar(32) comment 'cloudbeds原价';

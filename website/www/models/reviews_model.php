@@ -61,4 +61,26 @@ class reviews_model extends MY_Model {
             'data'      => $result
         );
     }
+
+
+    /**
+     * 获取评论列表
+     */
+    public function getReviewsList($propertyID, $page = 1, $num = 10) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `propertyID` = ' . $propertyID . ' and status = 0 order by id desc limit ' . ($page - 1) * $num . ' , ' . $num);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            $rtn = array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result
+            );
+        } else {
+            $rtn = array(
+                'status'    => -1,
+                'msg'       => '没有更多数据'
+            );
+        }
+        return $rtn;
+    }
 }

@@ -710,6 +710,7 @@
 | - children_quantity | String |  |
 | - frontend_total | String |  |
 | - outTradeNo | String |  |
+| - coupon_id | Integer | 优惠券id，不传或者传0表示不使用优惠券 |
 
 * 返回参数
 
