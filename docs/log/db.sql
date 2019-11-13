@@ -287,3 +287,16 @@ alter table `ko_hotel_order` add column `source_prize` varchar(32) comment 'clou
 -- linzequan 20191113
 -- 门票订单表添加原价字段
 alter table `ko_grayline_ticket` add column `sourcePrice` varchar(32) default '' comment '原价';
+
+
+-- linzequan 20191114
+-- 添加短信验证码表
+create table `ko_smscode` (
+    `id` int(11) not null auto_increment comment '自增id',
+    `phone` varchar(32) not null comment '手机号码',
+    `code` varchar(32) not null comment '验证码',
+    `is_check` int(3) default 0 comment '是否已经被验证。0否，1是',
+    `ip` varchar(32) default '' comment 'ip地址',
+    `create_time` int(11) not null comment '创建时间戳',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = '短信验证码表';

@@ -169,6 +169,43 @@ class api extends MY_Controller {
                 $subQtyProductPriceId = $this->get_request('subQtyProductPriceId');
                 $result = $this->grayline_ticket_model->queryProduct($type, $productId, $date, $travelTime, $turbojetDepartureDate, $turbojetReturnDate, $turbojetDepartureTime, $turbojetReturnTime, $turbojetDepartureFrom, $turbojetDepartureTo, $turbojetReturnFrom, $turbojetReturnTo, $turbojetQuantity, $turbojetClass, $subQtyProductPriceId);
                 break;
+            // 获取短信验证码
+            case 'sendSmscode':
+                $phone = $this->get_request('phone');
+                $this->load->model('smscode_model');
+                $code = $this->smscode_model->generateCode(4);
+                $url = 'https://rest.nexmo.com/sms/json';
+                $data = array(
+                    'api_key'   => '9ba1d919',
+                    'api_secret'=> 'w11QEE6KgFq1xHYW',
+                    'to'        => $phone,
+                    'from'      => 'koalabeds',
+                    'text'      => 'code: ' . $code
+                );
+                $sendStatus = $this->curlPost($url, $data);
+                $sendStatusObj = json_decode($sendStatus, true);
+                if($sendStatusObj['messages'][0]['status'] != 0) {
+                    $result = array(
+                        'status'    => -1,
+                        'msg'       => '短信验证码发送失败',
+                        'ext'       => $sendStatus
+                    );
+                } else {
+                    $saveStatus = $this->smscode_model->save($phone, $code);
+                    if($saveStatus['status'] != 0) {
+                        $result = array(
+                            'status'    => -1,
+                            'msg'       => '获取短信验证码失败',
+                            'ext'       => $saveStatus
+                        );
+                    } else {
+                        $result = array(
+                            'status'    => 0,
+                            'msg'       => '获取短信验证码成功'
+                        );
+                    }
+                }
+                break;
         }
         echo json_encode($result);
     }
