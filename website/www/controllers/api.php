@@ -180,7 +180,7 @@ class api extends MY_Controller {
                     'api_secret'=> 'w11QEE6KgFq1xHYW',
                     'to'        => $phone,
                     'from'      => 'koalabeds',
-                    'text'      => 'code: ' . $code
+                    'text'      => '"code: ' . $code . '"'
                 );
                 $sendStatus = $this->curlPost($url, $data);
                 $sendStatusObj = json_decode($sendStatus, true);

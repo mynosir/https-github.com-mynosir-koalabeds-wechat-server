@@ -22,7 +22,7 @@ class smscode_model extends MY_Model {
         $data = array(
             'phone' => $phone,
             'code'  => $code,
-            'sendlog'   => $sendlog
+            'sendlog'   => $sendlog,
             'ip'    => $this->getIP(),
             'create_time'  => time()
         );
