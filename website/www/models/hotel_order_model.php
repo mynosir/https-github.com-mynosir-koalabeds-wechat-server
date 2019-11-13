@@ -188,10 +188,15 @@ class hotel_order_model extends MY_Model {
                 'data'      => $apiReturnStr
             );
         } else {
-            $this->update_status($orderDetail['outTradeNo'], 5);
+            // $this->update_status($orderDetail['outTradeNo'], 5);
+            // 预订失败，发起退款
+            // todo
             return array(
                 'status'    => -2,
-                'msg'       => $apiReturnStr['message']
+                'msg'       => $apiReturnStr['message'],
+                'data'      => array(
+                    'id'    => $orderDetail['data']
+                )
             );
         }
     }

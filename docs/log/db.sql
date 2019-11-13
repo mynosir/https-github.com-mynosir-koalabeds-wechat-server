@@ -255,3 +255,20 @@ create table `ko_errorlog` (
     `create_time` int(11) not null comment '日志记录时间',
     primary key (`id`)
 ) engine = myisam character set utf8 collate utf8_general_ci comment = '系统异常日志表';
+
+
+-- linzequan 20191113
+-- 修改交易详情字段
+alter table ko_hotel_order change column transaction_info transaction_info  text comment '交易详情';
+alter table ko_grayline_ticket change column transaction_info transaction_info  text comment '交易详情';
+
+
+-- linzequan 20191113
+-- 添加退款记录表
+create table `ko_refund` (
+    `id` int not null auto_increment comment '自增id',
+    `status` int comment '退款状态',
+    `info` text comment '退款接口返回详情',
+    `create_time` int comment '退款时间',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = '退款记录表';

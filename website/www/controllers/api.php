@@ -201,6 +201,10 @@ class api extends MY_Controller {
                 $id = $this->get_request('id');
                 $this->load->model('hotel_order_model');
                 $result = $this->hotel_order_model->saveOrder($openid, $id);
+                // 发起退款
+                if($result['status'] != 0) {
+                    $result['refund'] = $this->refund($result['data']);
+                }
                 break;
             // 获取支付参数
             case 'getPay':
@@ -384,6 +388,63 @@ class api extends MY_Controller {
                 break;
         }
         echo json_encode($result);
+    }
+
+
+    /**
+     * 发起退款
+     */
+    public function refund($orderInfo) {
+    // public function refund() {
+        // $this->load->model('hotel_order_model');
+        // $orderInfo = $this->hotel_order_model->getDetailById(26)['data'];
+        $transaction_info = json_decode($orderInfo['transaction_info'], true);
+        // 退款单号
+        $outRefundNo = substr('refundNo' . date('YmdHis', time()) . uniqid(), 0, 32); // 商品订单号
+        // {"bank_type":"CFT","cash_fee":"1","cash_fee_type":"CNY","charset":"UTF-8","fee_type":"CNY","is_subscribe":"N","local_fee_type":"CNY","local_total_fee":"1","mch_id":"104530000126","nonce_str":"1573649465205","openid":"onekpwliGdQq4_Z9aH3WSASbF8Wg","order_fee":"1","out_trade_no":"cloudbeds201911132050545dcbfc2ec","out_transaction_id":"4200000462201911135850457975","pay_result":"0","rate":"89717221","result_code":"0","sign_type":"MD5","status":"0","sub_appid":"wx18cda3bfbb701cb7","sub_is_subscribe":"N","sub_op
+        $data = array(
+            'service'       => 'unified.trade.refund',
+            'version'       => '2.0',
+            'charset'       => 'UTF-8',
+            'sign_type'     => 'MD5',
+            'mch_id'        => '104530000126',
+            'out_trade_no'  => $transaction_info['out_trade_no'],
+            'transaction_id'=> $orderInfo['transaction_id'],
+            'out_refund_no' => $outRefundNo,
+            'total_fee'     => $transaction_info['order_fee'],
+            'refund_fee'    => $transaction_info['order_fee'],
+            'nonce_str'     => '1409196838',
+            'op_user_id'    => '104530000126'
+        );
+        $sign = $this->getSign($data, '97a36c5b28ecb6dbe194c45ebc00f46f');
+        $data['sign'] = $sign;
+        $xml = $this->arrayToXml($data);
+        $url = 'https://gateway.wepayez.com/pay/gateway';
+        $responseXml = $this->curlPost($url, $xml);
+        // 判断退款结果
+        libxml_disable_entity_loader(true);
+        $responseObj = simplexml_load_string($responseXml, 'SimpleXMLElement', LIBXML_NOCDATA);
+        @file_put_contents('/pub/logs/refund', '[' . date('Y-m-d H:i:s', time()) . ']' . json_encode($responseObj) . PHP_EOL, FILE_APPEND);
+        $responseArr = json_decode(json_encode($responseObj), true);
+        $this->load->model('refund_model');
+        $this->refund_model->add(array(
+            'status'    => $responseArr['result_code'],
+            'info'      => json_encode($responseObj),
+            'create_time'   => time()
+        ));
+        if($responseArr['result_code'] == 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '退款成功',
+                'data'      => $responseArr
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '退款失败',
+                'data'      => $responseArr
+            );
+        }
     }
 
 

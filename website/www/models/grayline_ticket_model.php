@@ -275,13 +275,14 @@ class Grayline_ticket_model extends MY_Model {
         // }
         if($apiReturnStr['meta']['code'] == 'RESP_OKAY') {
             // 更新订单信息
-            $this->updateOrderStatus($id, 6);
+            $this->updateOrderStatus($id, 2);
             return array(
                 'status'    => 0,
                 'msg'       => '下单成功',
                 'data'      => $apiReturnStr['data']
             );
         } else {
+            // 预订失败，发起退款
             return array(
                 'status'    => 1,
                 'msg'       => '系统异常',
