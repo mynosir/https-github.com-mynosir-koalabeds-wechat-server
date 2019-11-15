@@ -301,3 +301,8 @@ create table `ko_smscode` (
     `create_time` int(11) not null comment '创建时间戳',
     primary key (`id`)
 ) engine = myisam character set utf8 collate utf8_general_ci comment = '短信验证码表';
+
+
+-- linzequan 20191115
+-- 酒店订单表添加预订信息字段
+alter table `ko_hotel_order` add column `reservationInfo` text comment '预订信息';

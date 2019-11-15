@@ -190,14 +190,14 @@ class home extends MY_Controller {
 
     public function postPayment() {
         $curl = curl_init();
-        $access_token = 'FkqeKbMe7vZxyc9Ymoanc5YoRuFD1MC9QDk2ojvR';
+        $access_token = 'SnzJW8ZZy5nP2qOKP8SkdSdotqW8L4zabfYl4RoL';
         $url = 'https://hotels.cloudbeds.com/api/v1.1/postPayment';
         $data = array(
-            'propertyID'        => 170048,
-            'reservationID'     => time(),
-            'type'              => 'credit',
+            'propertyID'        => 173267,
+            'reservationID'     => '415761234630',
+            'type'              => 'cash',
             'amount'            => 0.01,
-            'cardType'          => 'visa'
+            // 'cardType'          => 'visa'
         );
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);

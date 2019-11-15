@@ -8,7 +8,7 @@
 class hotel_order_model extends MY_Model {
 
     private $table = 'ko_hotel_order';
-    private $fields = 'id, openid, propertyID, startDate, endDate, guestFirstName, guestLastName, guestCountry, guestZip, guestEmail, guestPhone, rooms, rooms_roomTypeID, rooms_quantity, adults, adults_roomTypeID, adults_quantity, children, children_roomTypeID, children_quantity, status, total, frontend_total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, reservationID, estimatedArrivalTime, outTradeNo, transaction_id, transaction_info, coupon_id';
+    private $fields = 'id, openid, propertyID, startDate, endDate, guestFirstName, guestLastName, guestCountry, guestZip, guestEmail, guestPhone, rooms, rooms_roomTypeID, rooms_quantity, adults, adults_roomTypeID, adults_quantity, children, children_roomTypeID, children_quantity, status, total, frontend_total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, reservationID, estimatedArrivalTime, outTradeNo, transaction_id, transaction_info, coupon_id, reservationInfo';
 
     public function __construct() {
         parent::__construct();
@@ -194,6 +194,7 @@ class hotel_order_model extends MY_Model {
         @file_put_contents('/pub/logs/saveOrder', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($apiReturnStr) . PHP_EOL, FILE_APPEND);
         if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
             $this->update_status($orderDetail['outTradeNo'], 2);
+            $this->update_reservation($orderDetail['outTradeNo'], $apiReturnStr);
             return array(
                 'status'    => 0,
                 'msg'       => '预订成功',
@@ -211,6 +212,21 @@ class hotel_order_model extends MY_Model {
                 )
             );
         }
+    }
+
+
+    /**
+     * 更新预订信息
+     */
+    public function update_reservation($outTradeNo, $info) {
+        $data = array(
+            'reservationID'     => $info['reservationID'],
+            'reservationInfo'   => json_encode($info);
+        );
+        $where = array(
+            'outTradeNo'    => $outTradeNo
+        );
+        $this->db->where($where)->update($this->table, $data);
     }
 
 }
