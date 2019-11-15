@@ -194,11 +194,31 @@ class home extends MY_Controller {
         $url = 'https://hotels.cloudbeds.com/api/v1.1/postPayment';
         $data = array(
             'propertyID'        => 173267,
-            'reservationID'     => '415761234630',
-            'type'              => 'cash',
-            'amount'            => 0.01,
+            'reservationID'     => '073394286057',
+            'type'              => 'Paid at another location.',
+            'amount'            => 260,
+            'description'       => 'from Koalabeds mini program'
             // 'cardType'          => 'visa'
         );
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token));
+        if(!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        var_dump($output);
+    }
+
+
+    public function getPaymentMethods() {
+        $curl = curl_init();
+        $access_token = 'SnzJW8ZZy5nP2qOKP8SkdSdotqW8L4zabfYl4RoL';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getPaymentMethods?propertyID=173267';
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);

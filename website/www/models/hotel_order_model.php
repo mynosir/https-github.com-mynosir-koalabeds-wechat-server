@@ -66,7 +66,7 @@ class hotel_order_model extends MY_Model {
         $data['source_prize'] = $params['source_prize'];
         // 变更优惠券状态
         $this->load->model('coupon_model');
-        $CI->coupon_model->updateStatus($coupon_id, 1);
+        $CI->coupon_model->updateStatus($params['coupon_id'], 1);
         $this->db->insert($this->table, $data);
         $insertId = $this->db->insert_id();
         return array(
@@ -207,9 +207,7 @@ class hotel_order_model extends MY_Model {
             return array(
                 'status'    => -2,
                 'msg'       => $apiReturnStr['message'],
-                'data'      => array(
-                    'id'    => $orderDetail['data']
-                )
+                'data'      => $orderDetail
             );
         }
     }
@@ -221,7 +219,8 @@ class hotel_order_model extends MY_Model {
     public function update_reservation($outTradeNo, $info) {
         $data = array(
             'reservationID'     => $info['reservationID'],
-            'reservationInfo'   => json_encode($info);
+            'reservationInfo'   => json_encode($info),
+            'create_time'       => time()
         );
         $where = array(
             'outTradeNo'    => $outTradeNo
