@@ -29,7 +29,7 @@
 ```javascript
 {
    propertyID: xxx //酒店id
-   roomTypeID: xxx //房间类型id  
+   roomTypeID: xxx //房间类型id
 }
 ```
 返回值 与接口api/get?actionxm=getRoomsByHotelId中的房间一致

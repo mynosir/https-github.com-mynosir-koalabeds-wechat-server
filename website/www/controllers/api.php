@@ -361,6 +361,71 @@ class api extends MY_Controller {
                     }
                 }
                 break;
+
+            // 再次获取支付参数
+            case 'getPayAgain':
+                $id = $this->get_request('id');
+                $openid = $this->get_request('openid');
+                if(!isset($openid)) {
+                    $result = array(
+                        'status'    => -1,
+                        'msg'       => '登录态异常'
+                    );
+                } else {
+                    // 通过订单id获取订单信息
+                    $this->load->model('hotel_order_model');
+                    $orderInfo = $this->hotel_order_model->getDetailById($id);
+                    if($orderInfo['status'] != 0) {
+                        $result = array(
+                            'status'    => -2,
+                            'msg'       => '订单信息查询异常'
+                        );
+                    } else {
+                        $orderDetail = $orderInfo['data'];
+                        // 通过酒店id获取酒店信息
+                        $this->load->model('cloudbeds_hotel_model');
+                        $hotelInfo = $this->cloudbeds_hotel_model->getHotelDetailsInDB($orderDetail['propertyID']);
+                        if($hotelInfo['status'] != 0) {
+                            $result = array(
+                                'status'    => -3,
+                                'msg'       => '酒店信息查询异常'
+                            );
+                        } else {
+                            $hotelDetail = $hotelInfo['data'];
+                            // 获取支付参数
+                            $data = array(
+                                'service'       => 'pay.weixin.jspay',
+                                'body'          => $hotelDetail['propertyName'],
+                                'mch_id'        => '104530000126',
+                                'is_raw'        => '1',
+                                'out_trade_no'  => $orderDetail['outTradeNo'],
+                                'sub_openid'    => $openid,
+                                'sub_appid'     => 'wx18cda3bfbb701cb7',
+                                'total_fee'     => '1',
+                                'mch_create_ip' => '127.0.0.1',
+                                'notify_url'    => 'https://koalabeds-server.kakaday.com/api/paycallback',
+                                'nonce_str'     => '1409196838'
+                            );
+                            $sign = $this->getSign($data, '97a36c5b28ecb6dbe194c45ebc00f46f');
+                            $data['sign'] = $sign;
+                            $xml = $this->arrayToXml($data);
+                            $url = 'https://gateway.wepayez.com/pay/gateway';
+                            $responseXml = $this->curlPost($url, $xml);
+                            // 禁止引用外部xml实体
+                            libxml_disable_entity_loader(true);
+                            $unifiedOrder = simplexml_load_string($responseXml, 'SimpleXMLElement', LIBXML_NOCDATA);
+                            $result = array(
+                                'status'    => 0,
+                                'msg'       => '获取成功',
+                                'data'      => array(
+                                    'id'    => $id,
+                                    'payParams' => $unifiedOrder
+                                )
+                            );
+                        }
+                    }
+                }
+                break;
             // 获取Grayline支付参数
             case 'getGraylinePay':
                 $params = json_decode($this->get_request('params'), true);
