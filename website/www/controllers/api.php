@@ -340,7 +340,10 @@ class api extends MY_Controller {
                             'outTradeNo'    => $outTradeNo,
                             'total_fee'     => $total_fee,
                             'source_prize'  => $source_prize,
-                            'coupon_id'     => isset($params['coupon_id']) ? $params['coupon_id'] : 0
+                            'coupon_id'     => isset($params['coupon_id']) ? $params['coupon_id'] : 0,
+                            'rooms_roomTypeName'    => $params['rooms_roomTypeName'],
+                            'rooms_roomTypeDesc'    => $params['rooms_roomTypeDesc'],
+                            'rooms_roomTypeImg'     => $params['rooms_roomTypeImg']
                         );
                         $orderSaveResult = $this->hotel_order_model->generateOrder($orderParams);
                         if($orderSaveResult['status'] != 0) {

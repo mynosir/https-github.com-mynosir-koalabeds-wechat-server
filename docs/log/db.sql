@@ -306,3 +306,10 @@ create table `ko_smscode` (
 -- linzequan 20191115
 -- 酒店订单表添加预订信息字段
 alter table `ko_hotel_order` add column `reservationInfo` text comment '预订信息';
+
+
+-- linzequan 20191116
+-- 酒店订单表添加房间类型名称、房间类型描述、房间类型图片
+alter table `ko_hotel_order` add column `rooms_roomTypeName` varchar(255) comment '房间类型名称';
+alter table `ko_hotel_order` add column `rooms_roomTypeDesc` text comment '房间类型描述';
+alter table `ko_hotel_order` add column `rooms_roomTypeImg` varchar(1024) comment '房间类型图片';

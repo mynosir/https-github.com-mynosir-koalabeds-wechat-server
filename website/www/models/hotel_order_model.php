@@ -8,7 +8,7 @@
 class hotel_order_model extends MY_Model {
 
     private $table = 'ko_hotel_order';
-    private $fields = 'id, openid, propertyID, startDate, endDate, guestFirstName, guestLastName, guestCountry, guestZip, guestEmail, guestPhone, rooms, rooms_roomTypeID, rooms_quantity, adults, adults_roomTypeID, adults_quantity, children, children_roomTypeID, children_quantity, status, total, frontend_total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, reservationID, estimatedArrivalTime, outTradeNo, transaction_id, transaction_info, coupon_id, reservationInfo';
+    private $fields = 'id, openid, propertyID, startDate, endDate, guestFirstName, guestLastName, guestCountry, guestZip, guestEmail, guestPhone, rooms, rooms_roomTypeID, rooms_quantity, adults, adults_roomTypeID, adults_quantity, children, children_roomTypeID, children_quantity, status, total, frontend_total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, reservationID, estimatedArrivalTime, outTradeNo, transaction_id, transaction_info, coupon_id, reservationInfo, rooms_roomTypeName, rooms_roomTypeDesc, rooms_roomTypeImg';
 
     public function __construct() {
         parent::__construct();
@@ -43,7 +43,10 @@ class hotel_order_model extends MY_Model {
             'frontend_total'=> $params['frontend_total'],
             // 'total'         => $params['frontend_total'],
             'outTradeNo'    => $params['outTradeNo'],
-            'coupon_id'     => $params['coupon_id']
+            'coupon_id'     => $params['coupon_id'],
+            'rooms_roomTypeName'    => $params['rooms_roomTypeName'],
+            'rooms_roomTypeDesc'    => $params['rooms_roomTypeDesc'],
+            'rooms_roomTypeImg'     => $params['rooms_roomTypeImg']
         );
         // 查询房间对应金额
         $this->load->model('cloudbeds_hotel_model');
