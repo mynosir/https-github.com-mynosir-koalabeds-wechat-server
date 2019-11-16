@@ -7,6 +7,9 @@
   ...
   couponid: xxx //优惠券id，用于更新优惠券状态
   id: xxx //酒店订单id，当用户重新支付的时候可以直接根据该id进行获取支付参数
+  name: item.rooms_roomTypeName, // 房间类型名称
+  type: item.rooms_roomTypeDesc, // 房间类型描述
+  img: item.rooms_roomTypeImg  //房间类型图片
 }
 ```
 返回值： 将支付参数返回
