@@ -32,21 +32,25 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="url" class="col-sm-4 control-label">link</label>
+                        <label for="totalAmount" class="col-sm-4 control-label">totalAmount</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control js_update_link" placeholder="链接">
+                            <input type="text" class="form-control js_update_totalAmount" placeholder="totalAmount">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="photo" class="col-sm-4 control-label">img
-                            <button type="button" class="btn btn-primary js_upload" data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-plus"></span></button></label>
+                        <label for="discountAmount" class="col-sm-4 control-label">discountAmount</label>
                         <div class="col-sm-8">
-                            <img class="img-responsive js_photo_prev img-thumbnail" style="width:120px; height: 60px;">
-                            <input type="hidden" class="form-control js_photo" placeholder="将要修改的图片url粘贴到这里，留空表示不需要修改图片">
+                            <input type="text" class="form-control js_update_discountAmount" placeholder="discountAmount">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="url" class="col-sm-4 control-label">status</label>
+                        <label for="validateDate" class="col-sm-4 control-label">validateDate</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control js_update_validateDate" placeholder="validateDate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="status" class="col-sm-4 control-label">status</label>
                         <div class="col-sm-8">
                             <select class="js_select" name="">
                               <option value="0">show</option>
@@ -62,7 +66,7 @@
                     </div>
                     <div class="alert alert-warning alert-dismissible fade in" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>Warning: </strong> Check the info before click save button!
+                        <strong>Warning: </strong>Check the info before click save button!
                     </div>
                 </form>
             </div>
@@ -79,22 +83,26 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">新增</h4>
+                <h4 class="modal-title">Add</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="url" class="col-sm-4 control-label">link</label>
+                        <label for="url" class="col-sm-4 control-label">totalAmount</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control js_add_link" placeholder="link">
+                            <input type="text" class="form-control js_add_totalAmount" placeholder="totalAmount">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="photo" class="col-sm-4 control-label">img
-                            <button type="button" class="btn btn-primary js_add_upload" data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-plus"></span></button></label>
+                        <label for="url" class="col-sm-4 control-label">discountAmount</label>
                         <div class="col-sm-8">
-                            <img class="img-responsive js_add_photo_prev img-thumbnail" style="width:120px; height: 60px;">
-                            <input type="hidden" class="form-control js_add_photo" placeholder="将要修改的图片url粘贴到这里，留空表示不需要修改图片">
+                            <input type="text" class="form-control js_add_discountAmount" placeholder="discountAmount">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="url" class="col-sm-4 control-label">validateDate</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control js_add_validateDate" placeholder="validateDate">
                         </div>
                     </div>
                     <div class="form-group">
@@ -114,7 +122,7 @@
                     </div>
                     <div class="alert alert-warning alert-dismissible fade in" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>Warning: </strong> Check the info before click save button!
+                        <strong>Warning: </strong>Check the info before click save button!
                     </div>
                 </form>
             </div>
@@ -131,7 +139,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Image Upload</h4>
+                <h4 class="modal-title">图片上传</h4>
             </div>
             <div class="modal-body">
                 <input id="photo" type="file" multiple="false" value="" />
@@ -140,24 +148,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary js_addPhoto">Confirm</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<div class="modal fade" id="confirmModal" tabindex="2" role="dialog" aria-labelledby="confirmModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                Tips
-            </div>
-            <div class="modal-body">
-                Do you confirm to change?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary js_sure_delete">Confirm</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary js_addPhoto">确定</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -165,4 +157,4 @@
 
 <script src="" charset="utf-8"></script>
 <script src="<?php echo $resource_url; ?>js/jquery.uploadifive.js"></script>
-<script src="<?php echo $resource_url; ?>js/banner.js"></script>
+<script src="<?php echo $resource_url; ?>js/coupon_config.js"></script>

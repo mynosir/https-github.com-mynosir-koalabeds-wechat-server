@@ -2,10 +2,10 @@ $(function() {
     var page = {
         init: function(p) {
             var json = {
-                api: config.apiServer + 'banner/get',
+                api: config.apiServer + 'ticket/get',
                 type: 'get',
                 data: {
-                    actionxm: 'getAds',
+                    actionxm: 'getTicket',
                     page: !p ? 1 : p,
                     size: 20,
                     classify: 0
@@ -15,15 +15,50 @@ $(function() {
                 // 处理表格数据
                 var list = res['list'],
                     show = ['show','hide'],
-                    listTpl = '<tr><th>serial no.</th><th>link</th><th>image</th><th>status</th><th>sort</th><th>operation</th></tr>';
+                    status = ['to be paid','paid','payment failure','not_confirmed','order canceled','reserve fail','reserve success','no_show'],
+                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>type</th><th>productId</th><th>travelDate</th><th>travelTime</th><th>turbojetDepartureDate</th><th>turbojetReturnDate</th><th>turbojetDepartureTime</th><th>turbojetReturnTime</th><th>turbojetDepartureFrom</th><th>turbojetDepartureTo</th><th>turbojetReturnFrom</th><th>turbojetReturnTo</th><th>turbojetQuantity</th><th>turbojetClass</th><th>turbojetTicketType</th><th>turbojetDepartureFlightNo</th><th>turbojetReturnFlightNo</th><th>hotel</th><th>title</th><th>firstName</th><th>lastName</th><th>passport</th><th>guestEmail</th><th>countryCode</th><th>telephone</th><th>promocode</th><th>agentReference</th><th>remark</th><th>subQtyProductPriceId</th><th>subQtyValue</th><th>totalPrice</th><th>info</th><th>orderParamsDetail</th><th>create_time</th><th>outTradeNo</th><th>transaction_id</th><th>transaction_info</th><th>status</th></tr>';
                 for(var i in list) {
                     listTpl += '<tr>';
                     listTpl += '<td>' + list[i]['id'] + '</td>';
-                    listTpl += '<td><a href="' + list[i]['link'] + '" target="blank">' + list[i]['link'] + '</a></td>';
-                    listTpl += '<td><img src="' + list[i]['img'] + '" style="width: 120px; height: 60px;"></td>';
-                    listTpl += '<td>' + show[list[i]['status']] + '</td>';
-                    listTpl += '<td>' + list[i]['zorder'] + '</td>';
-                    listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['id'] + '">Edit</button>&nbsp;&nbsp;<button type="button" class="btn btn-sm btn-danger js_delete" data-id="' + list[i]['id'] + '">Delete</button></td>';
+                    listTpl += '<td>' + list[i]['openid'] + '</td>';
+                    listTpl += '<td>' + list[i]['type'] + '</td>';
+                    listTpl += '<td>' + list[i]['productId'] + '</td>';
+                    listTpl += '<td>' + list[i]['travelDate'] + '</td>';
+                    listTpl += '<td>' + list[i]['travelTime'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetDepartureDate'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetReturnDate'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetDepartureTime'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetReturnTime'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetDepartureFrom'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetDepartureTo'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetReturnFrom'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetReturnTo'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetQuantity'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetClass'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetTicketType'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetDepartureFlightNo'] + '</td>';
+                    listTpl += '<td>' + list[i]['turbojetReturnFlightNo'] + '</td>';
+                    listTpl += '<td>' + list[i]['hotel'] + '</td>';
+                    listTpl += '<td>' + list[i]['title'] + '</td>';
+                    listTpl += '<td>' + list[i]['firstName'] + '</td>';
+                    listTpl += '<td>' + list[i]['lastName'] + '</td>';
+                    listTpl += '<td>' + list[i]['passport'] + '</td>';
+                    listTpl += '<td>' + list[i]['guestEmail'] + '</td>';
+                    listTpl += '<td>' + list[i]['countryCode'] + '</td>';
+                    listTpl += '<td>' + list[i]['telephone'] + '</td>';
+                    listTpl += '<td>' + list[i]['promocode'] + '</td>';
+                    listTpl += '<td>' + list[i]['agentReference'] + '</td>';
+                    listTpl += '<td>' + list[i]['remark'] + '</td>';
+                    listTpl += '<td>' + list[i]['subQtyProductPriceId'] + '</td>';
+                    listTpl += '<td>' + list[i]['subQtyValue'] + '</td>';
+                    listTpl += '<td>' + list[i]['totalPrice'] + '</td>';
+                    listTpl += '<td>' + list[i]['info'] + '</td>';
+                    listTpl += '<td>' + list[i]['orderParamsDetail'] + '</td>';
+                    listTpl += '<td>' + list[i]['create_time'] + '</td>';
+                    listTpl += '<td>' + list[i]['outTradeNo'] + '</td>';
+                    listTpl += '<td>' + list[i]['transaction_id'] + '</td>';
+                    listTpl += '<td>' + list[i]['transaction_info'] + '</td>';
+                    listTpl += '<td>' + status[list[i]['status']] + '</td>';
                     listTpl += '</tr>';
                 }
                 $('.js_table').html(listTpl);
@@ -56,7 +91,7 @@ $(function() {
         },
         getDetail: function(id) {
             var json = {
-                api: config.apiServer + 'banner/get',
+                api: config.apiServer + 'ticket/get',
                 type: 'get',
                 data: {
                     actionxm: 'getDetail',
@@ -79,7 +114,7 @@ $(function() {
         },
         deletItem: function(id) {
             var json = {
-                api: config.apiServer + 'banner/post',
+                api: config.apiServer + 'ticket/post',
                 type: 'post',
                 data: {
                     actionxm: 'delete',
@@ -132,10 +167,10 @@ $(function() {
             link = $('.js_add_link').val(),
             sort = $('.js_add_sort').val();
         var json = {
-                api: config.apiServer + 'banner/post',
+                api: config.apiServer + 'ticket/post',
                 type: 'post',
                 data: {
-                    actionxm: 'addAds',
+                    actionxm: 'addTicket',
                     params: {
                         img: photo,
                         link: link,
@@ -162,10 +197,10 @@ $(function() {
             sort = $('.js_update_sort').val(),
             status = $('.js_select').val();
         var json = {
-                api: config.apiServer + 'banner/post',
+                api: config.apiServer + 'ticket/post',
                 type: 'post',
                 data: {
-                    actionxm: 'updateAds',
+                    actionxm: 'updateTicket',
                     id: id,
                     params: {
                         img: photo,
@@ -187,15 +222,15 @@ $(function() {
         Utils.requestData(json);
     });
     $('#photo').uploadifive({
-        fileTypeDesc: 'uploadfile',
+        fileTypeDesc: '上传文件',
         fileTypeExts: '*.jpg;*.jpeg;*.gif;*.png',
         multi: false,
-        buttonText: 'uploadfile',
+        buttonText: '上传文件',
         height: '25',
         width: '100',
         method: 'post',
         fileObjName: 'uploadfile',
-        uploadScript: config.apiServer + 'banner/post',
+        uploadScript: config.apiServer + 'ticket/post',
         formData: {
             'actionxm': 'upload_photo'
         },

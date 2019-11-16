@@ -15,8 +15,8 @@ class Hotel extends MY_Controller {
         $data['admin_info'] = isset($_SESSION['loginInfo']) ? $_SESSION['loginInfo'] : '';
         // $data['admin_info'] = $this->session->userdata('loginInfo');
         $data['base_url'] = $this->config->item('base_url');
-        $data['current_menu'] = 'hotel';
-        $data['current_menu_text'] = '酒店管理';
+        $data['current_menu'] = 'property';
+        $data['current_menu_text'] = 'Property';
         $data['sub_menu'] = array();
         $data['menu_list'] = $this->getMenuList();
 

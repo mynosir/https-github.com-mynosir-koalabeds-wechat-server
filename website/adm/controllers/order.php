@@ -17,7 +17,7 @@ class Order extends MY_Controller {
         $data['base_url'] = $this->config->item('base_url');
         $data['current_menu'] = 'order';
         $data['sub_menu'] = array();
-        $data['current_menu_text'] = '订单管理';
+        $data['current_menu_text'] = 'Property Order';
         $data['menu_list'] = $this->getMenuList();
         $this->load->model('order_model');
         $this->data = $data;

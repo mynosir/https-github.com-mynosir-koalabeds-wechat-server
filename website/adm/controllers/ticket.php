@@ -1,48 +1,45 @@
 <?php
 /**
- * 小程序用户管理
+ * 门票订单管理
  *
  * @author jiang <qoohj@qoohj.com>
  *
  */
-class User extends MY_Controller {
+class Ticket extends MY_Controller {
 
 
     public function __construct() {
         parent::__construct();
         $this->checkLogin();
-        // $this->load->model('user_model');
+        // $this->load->model('ticket_model');
         $data['resource_url'] = $this->resource_url;
         $data['admin_info'] = isset($_SESSION['loginInfo']) ? $_SESSION['loginInfo'] : '';
         $data['base_url'] = $this->config->item('base_url');
-        $data['current_menu'] = 'user';
+        $data['current_menu'] = 'ticket';
         $data['sub_menu'] = array();
-        $data['current_menu_text'] = 'Mini Program User';
+        $data['current_menu_text'] = 'Ticket Order';
         $data['menu_list'] = $this->getMenuList();
-        $this->load->model('user_model');
+        $this->load->model('ticket_model');
         $this->data = $data;
     }
 
 
     public function index() {
-        $this->showPage('user_index', $this->data);
+        $this->showPage('ticket_index', $this->data);
     }
 
     public function get() {
         $actionxm = $this->get_request('actionxm');
         $result = array();
         switch($actionxm) {
-            case 'getUser':
+            case 'getTicket':
                 $page = $this->get_request('page');
                 $size = $this->get_request('size');
-                // $classify = $this->get_request('classify');
-                $keyword = $this->get_request('keyword');
-                $result = $this->user_model->getUser($page, $size, $keyword);
-
+                $result = $this->ticket_model->getTicket($page, $size);
                 break;
             case 'getDetail':
                 $id = $this->get_request('id');
-                $result = $this->user_model->getDetail($id);
+                $result = $this->ticket_model->getDetail($id);
                 break;
         }
         echo json_encode($result);
@@ -52,24 +49,24 @@ class User extends MY_Controller {
         $actionxm = $this->get_request('actionxm');
         $result = array();
         switch($actionxm) {
-            case 'addUser':
+            case 'addTicket':
                 $data = $this->get_request('params');
-                $result = $this->user_model->addUser($data);
+                $result = $this->ticket_model->addTicket($data);
                 break;
-            case 'updateUser':
+            case 'updateTicket':
                 $id = $this->get_request('id');
                 $data = $this->get_request('params');
-                $result = $this->user_model->updateUser($id, $data);
+                $result = $this->ticket_model->updateTicket($id, $data);
                 break;
             case 'delete':
                 $id = $this->get_request('id');
-                $result = $this->user_model->deleteItem($id);
+                $result = $this->ticket_model->deleteItem($id);
                 break;
             case 'upload_photo':
                 if(!empty($_FILES)) {
                     $fileParts = pathinfo($_FILES['uploadfile']['name']);
                     $tempFile = $_FILES['uploadfile']['tmp_name'];
-                    $targetFolder = '/public/user/index/';
+                    $targetFolder = '/public/ticket/index/';
                     $targetPath = $_SERVER['DOCUMENT_ROOT'] . $targetFolder;
                     if(!is_dir($targetPath)) mkdir($targetPath, 0777, true);
                     $now = time();

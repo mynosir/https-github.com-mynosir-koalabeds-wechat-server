@@ -7,7 +7,7 @@
         <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
         <meta name="description" content="">
         <meta name="author" content="linzequan">
-        <title>Koalabeds在线管理后台</title>
+        <title>Koalabeds Content Manage System</title>
         <!-- Bootstrap core CSS -->
         <link href="<?php echo $resource_url; ?>css/bootstrap.min.css" rel="stylesheet">
         <!-- Custom styles for this template -->
@@ -53,12 +53,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index">Koalabeds在线管理后台</a>
+                    <a class="navbar-brand" href="index">Koalabeds Content Manage System</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="javascript:void(0)" style="color: #f1efef;">当前用户：<?php echo $admin_info['username'] . '【' . $admin_info['realname'] . '】'; ?></a></li>
-                        <li><a href="javascript:void(0)" class="js_logout">退出</a></li>
+                        <li><a href="javascript:void(0)" style="color: #f1efef;">Current User: <?php echo $admin_info['username'] . '【' . $admin_info['realname'] . '】'; ?></a></li>
+                        <li><a href="javascript:void(0)" class="js_logout">Log Out</a></li>
                     </ul>
                 </div>
             </div>
@@ -67,7 +67,7 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar js_sidebar">
                     <ul class="nav nav-sidebar">
-                        <li class="nav-header">应用菜单</li>
+                        <li class="nav-header">Application Menu</li>
                         <li class="js_item_index"><a href="/adm/index">Dashboard<span class="sr-only">(current)</span></a></li>
                         <?php
                         foreach($menu_list['appMenu'] as $v) {
@@ -85,10 +85,10 @@
                         }
                         if($menu_list['sysMenu'] == 1) {
                         ?>
-                        <li class="nav-header">系统菜单</li>
-                        <li class="js_item_menu"><a href="/adm/menu">系统菜单</a></li>
-                        <li class="js_item_role"><a href="/adm/role">角色管理</a></li>
-                        <li class="js_item_admin"><a href="/adm/admin">用户管理</a></li>
+                        <li class="nav-header">System Menu</li>
+                        <li class="js_item_menu"><a href="/adm/menu">System Menu</a></li>
+                        <li class="js_item_role"><a href="/adm/role">Role Mangage</a></li>
+                        <li class="js_item_admin"><a href="/adm/admin">User Manage</a></li>
                         <?php
                         }
                         ?>

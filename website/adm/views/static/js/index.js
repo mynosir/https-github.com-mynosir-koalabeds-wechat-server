@@ -10,7 +10,7 @@ $(function() {
             password_new = $('.js_password_new').val().trim(),
             password_new1 = $('.js_password_new1').val().trim();
         if(password_new != password_new1) {
-            alert('两次新密码不一致！');
+            alert('The two passwords you typed do not match. ');
             return;
         }
         var json = {

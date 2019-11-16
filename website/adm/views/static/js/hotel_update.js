@@ -246,7 +246,7 @@ $(function() {
         };
         var callback = function(res) {
             if(res.status == 0) {
-                alert('保存成功！');
+                alert('Save success!');
                 window.location.href = "/adm/hotel";
             } else {
                 alert(res.msg);

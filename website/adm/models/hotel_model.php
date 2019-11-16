@@ -96,7 +96,7 @@ class Hotel_model extends MY_Model {
             if($res){
               $result = array(
                   'status'    => 0,
-                  'msg'       => '更新成功！'
+                  'msg'       => 'Update Success!'
               );
               return $result;
 
@@ -129,7 +129,7 @@ class Hotel_model extends MY_Model {
               }
               $result = array(
                   'status'    => 0,
-                  'msg'       => '更新成功！'
+                  'msg'       => 'Update Success!'
               );
               return $result;
 
@@ -149,7 +149,7 @@ class Hotel_model extends MY_Model {
             // $this->db->where('hid', $id)->update($this->table, $params);
             $result = array(
                 'status'    => 0,
-                'msg'       => '更新成功！'
+                'msg'       => 'Update Success!'
             );
             return $result;
     }

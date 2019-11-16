@@ -25,7 +25,7 @@ class Admin_model extends MY_Model {
     public function doLogin($username='', $password='') {
         if($username=='' || $password=='') {
             $result['status'] = -1;
-            $result['msg'] = '账号密码都不可为空！';
+            $result['msg'] = 'The username and the password cannot be empty!';
             return $result;
         }
         $where = array(
@@ -36,13 +36,13 @@ class Admin_model extends MY_Model {
         $userinfo = $query->result_array();
         if(count($userinfo) > 0) {
             $result['status'] = 0;
-            $result['msg'] = '登录成功！';
+            $result['msg'] = 'Log in Success!';
 			$_SESSION['loginInfo'] = $userinfo[0];
             // $this->session->set_userdata('loginInfo', $userinfo[0]);
             return $result;
         } else {
             $result['status'] = -2;
-            $result['msg'] = '账号或者密码错误！';
+            $result['msg'] = 'The username or the password is incorrect！';
             return $result;
         }
     }
@@ -56,7 +56,7 @@ class Admin_model extends MY_Model {
 		$_SESSION['loginInfo'] = '';
         // $this->session->set_userdata('loginInfo', '');
         $result['status'] = 0;
-        $result['msg'] = '退出成功！';
+        $result['msg'] = 'Quit success!';
         return $result;
     }
 
@@ -82,54 +82,54 @@ class Admin_model extends MY_Model {
         // 校验数据
         if(!$data['username']) {
             $result['status'] = -1;
-            $result['msg'] = '账号不可为空！';
+            $result['msg'] = 'The username cannot be empty!';
             return $result;
         }
         if(!$data['password']) {
             $result['status'] = -1;
-            $result['msg'] = '密码不可为空！';
+            $result['msg'] = 'The password cannot be empty!';
             return $result;
         }
         if(strlen(trim($params['password'])) < 6) {
             $result['status'] = -1;
-            $result['msg'] = '密码最少为6位数字！';
+            $result['msg'] = 'The password should be at least 6 characters in length!';
             return $result;
         }
         if(!$data['realname']) {
             $result['status'] = -1;
-            $result['msg'] = '真实姓名不可为空';
+            $result['msg'] = 'The name cannot be empty!';
             return $result;
         }
         if($data['role_id']=='') {
             $result['status'] = -1;
-            $result['msg'] = '角色不可为空！';
+            $result['msg'] = 'The role cannot be empty!';
             return $result;
         }
         if($data['is_admin']=='') {
             $result['status'] = -1;
-            $result['msg'] = '是否超级管理员不可为空！';
+            $result['msg'] = "The 'is super admin' cannot be empty!";
             return $result;
         }
         if($data['telephone']!='' && !preg_match('/^1[34578]{1}\d{9}$/', $data['telephone'])) {
             $result['status'] = -1;
-            $result['msg'] = '手机号码格式不正确！';
+            $result['msg'] = 'Incorrect format of telephone number!';
             return $result;
         }
         if($data['email']!='' && !preg_match('/^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$/', $data['email'])) {
             $result['status'] = -1;
-            $result['msg'] = '邮箱格式不正确！';
+            $result['msg'] = 'Incorrect format of Email';
             return $result;
         }
         if($this->isExist($data['username'])) {
             $result['status'] = -1;
-            $result['msg'] = '用户名已经存在！';
+            $result['msg'] = 'The username is already existed';
             return $result;
         }
 
         $this->db->insert($this->table, $data);
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！'
+            'msg'       => 'Success!'
         );
 
     }
@@ -167,7 +167,7 @@ class Admin_model extends MY_Model {
         );
         if(strlen(trim($password_new)) < 6) {
             $result['status'] = -1;
-            $result['msg'] = '密码最少为6位数字！';
+            $result['msg'] = 'The password should be at least 6 characters in length!';
             return $result;
         }
         $query = $this->db->select('count(1) as num')->where($where)->get($this->table);
@@ -176,12 +176,12 @@ class Admin_model extends MY_Model {
             $this->db->query('update ' . $this->table . ' set password = "' . md5($password_new) . '" where id=' . $this->loginInfo['id']);
             return array(
                 'status'    => 0,
-                'msg'       => '操作成功！'
+                'msg'       => 'Success!'
             );
         } else {
             return array(
                 'status'    => -1,
-                'msg'       => '旧密码不正确！'
+                'msg'       => 'The old password is incorrect'
             );
         }
 
@@ -210,7 +210,7 @@ class Admin_model extends MY_Model {
             $data['password'] = md5(trim($params['password']));
             if(strlen(trim($params['password'])) < 6) {
                 $result['status'] = -1;
-                $result['msg'] = '密码最少为6位数字！';
+                $result['msg'] = 'The password should be at least 6 characters in length!';
                 return $result;
             }
         }
@@ -218,39 +218,39 @@ class Admin_model extends MY_Model {
         // 校验数据
         if(isset($data['password']) && !$data['password']) {
             $result['status'] = -1;
-            $result['msg'] = '密码不可为空！';
+            $result['msg'] = 'The username cannot be empty!';
             return $result;
         }
         if(!$data['realname']) {
             $result['status'] = -1;
-            $result['msg'] = '真实姓名不可为空';
+            $result['msg'] = 'The password cannot be empty!';
             return $result;
         }
         if($data['role_id']=='') {
             $result['status'] = -1;
-            $result['msg'] = '角色不可为空！';
+            $result['msg'] = 'The role cannot be empty!';
             return $result;
         }
         if($data['is_admin']=='') {
             $result['status'] = -1;
-            $result['msg'] = '是否超级管理员不可为空！';
+            $result['msg'] = "The 'is super admin' cannot be empty!";
             return $result;
         }
         if($data['telephone']!='' && !preg_match('/^1[34578]{1}\d{9}$/', $data['telephone'])) {
             $result['status'] = -1;
-            $result['msg'] = '手机号码格式不正确！';
+            $result['msg'] = 'Incorrect format of telephone number!';
             return $result;
         }
         if($data['email']!='' && !preg_match('/^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$/', $data['email'])) {
             $result['status'] = -1;
-            $result['msg'] = '邮箱格式不正确！';
+            $result['msg'] = 'Incorrect format of Email';
             return $result;
         }
 
         $this->db->where($where)->update($this->table, $data);
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！'
+            'msg'       => 'Success!'
         );
 
     }
@@ -266,7 +266,7 @@ class Admin_model extends MY_Model {
         $this->db->where(array('id'=> $id))->update($this->table, array('status'=> 1));
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！'
+            'msg'       => 'Success!'
         );
 
     }
@@ -283,7 +283,7 @@ class Admin_model extends MY_Model {
         $result = $query->result_array();
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！',
+            'msg'       => 'Success!',
             'data'      => $result[0]
         );
     }
@@ -352,7 +352,7 @@ class Admin_model extends MY_Model {
         $num = $pageResult[0]['num'];
         return array(
             'status'=> 0,
-            'msg'   => '操作成功！',
+            'msg'   => 'Success!',
             'data'  => array(
                 'total' => $num,
                 'size'  => $size,

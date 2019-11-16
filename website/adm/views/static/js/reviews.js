@@ -16,7 +16,7 @@ $(function() {
                 var list = res['list'],
                     sex = ['male','female'],
                     status = ['show','hide'],
-                    listTpl = '<tr><th>no.</th><th>酒店id</th><th>用户id</th><th>评星</th><th>评论内容</th><th>评论时间</th><th>status</th></tr>';
+                    listTpl = '<tr><th>serial no.</th><th>propertyId</th><th>userId</th><th>rate</th><th>comment</th><th>createTime</th><th>status</th></tr>';
                 for(var i in list) {
                     listTpl += '<tr>';
                     listTpl += '<td>' + list[i]['id'] + '</td>';

@@ -34,39 +34,39 @@
 </div>
 <div class="form-group">
     <label>propertyName</label>
-    <input type="text" class="form-control" id="propertyName" placeholder="please input propertyName" value="<?php echo $info['propertyName']; ?>">
+    <input type="text" class="form-control" id="propertyName" placeholder="propertyName" value="<?php echo $info['propertyName']; ?>">
 </div>
 <div class="form-group">
-    <label>酒店名(简体中文)</label>
+    <label>propertyName(chinese)</label>
     <?php if(isset($info2)): ?>
-      <input type="text" class="form-control" id="propertyNameCh" placeholder="please input propertyNameCh" value="<?php echo $info2['propertyName']; ?>">
+      <input type="text" class="form-control" id="propertyNameCh" placeholder="propertyNameCh" value="<?php echo $info2['propertyName']; ?>">
     <?php else: ?>
-      <input type="text" class="form-control" id="propertyNameCh" placeholder="please input propertyNameCh" value="">
+      <input type="text" class="form-control" id="propertyNameCh" placeholder="propertyNameCh" value="">
     <?php endif; ?>
 </div>
 <div class="form-group">
     <label>propertyPhone</label>
-    <input type="text" class="form-control" id="propertyPhone" placeholder="please input propertyPhone" value="<?php echo $info['propertyPhone']; ?>">
+    <input type="text" class="form-control" id="propertyPhone" placeholder="propertyPhone" value="<?php echo $info['propertyPhone']; ?>">
 </div>
 <div class="form-group">
     <label>propertyEmail</label>
-    <input type="text" class="form-control" id="propertyEmail" placeholder="please input propertyEmail" value="<?php echo $info['propertyEmail']; ?>">
+    <input type="text" class="form-control" id="propertyEmail" placeholder="propertyEmail" value="<?php echo $info['propertyEmail']; ?>">
 </div>
 
 <div class="form-group">
     <label>propertyAddress1</label>
-    <input type="text" class="form-control" id="propertyAddress1" placeholder="please input propertyAddress1" value="">
+    <input type="text" class="form-control" id="propertyAddress1" placeholder="propertyAddress1" value="">
 </div>
 <div class="form-group">
     <label>propertyAddress2</label>
-    <input type="text" class="form-control" id="propertyAddress2" placeholder="please input propertyAddress2" value="<?php echo $info['propertyAddress2']; ?>">
+    <input type="text" class="form-control" id="propertyAddress2" placeholder="propertyAddress2" value="<?php echo $info['propertyAddress2']; ?>">
 </div>
 <div class="form-group">
-    <label>地址(简体中文)</label>
+    <label>address(chinese)</label>
     <?php if(isset($info2)): ?>
-      <input type="text" class="form-control" id="propertyAddressCh" placeholder="please input propertyAddressCh" value="<?php echo $info2['propertyAddress']; ?>">
+      <input type="text" class="form-control" id="propertyAddressCh" placeholder="propertyAddressCh" value="<?php echo $info2['propertyAddress']; ?>">
     <?php else: ?>
-      <input type="text" class="form-control" id="propertyAddressCh" placeholder="please input propertyAddressCh" value="">
+      <input type="text" class="form-control" id="propertyAddressCh" placeholder="propertyAddressCh" value="">
     <?php endif; ?>
 </div>
 <div class="form-group">
@@ -126,7 +126,7 @@
     <div id="descript"></div>
 </div>
 <div class="form-group">
-    <label>描述(简体中文)</label>
+    <label>description(chinese)</label>
     <div id="descriptCh"></div>
 </div>
 <div class="form-group">
@@ -149,9 +149,9 @@
     <label>propertyStatus</label>
     <!-- <input type="text" class="form-control" id="propertyStatus" value="<?php echo $info['status']; ?>"> -->
     <select class="selectStatus">
-      <option value="0">未审核</option>
-      <option value="1">审核通过</option>
-      <option value="2">审核拒绝</option>
+      <option value="0">unchecked</option>
+      <option value="1">approve</option>
+      <option value="2">deny</option>
     </select>
 </div>
 
@@ -165,7 +165,7 @@
 
 <input type="hidden" name="id" value="<?php echo $id; ?>" class="js_id">
 
-<button type="submit" class="btn btn-primary js_submit">保存</button>
+<button type="submit" class="btn btn-primary js_submit">save</button>
 
 <script src="<?php echo $resource_url; ?>libs/summernote/summernote.js"></script>
 <script src="<?php echo $resource_url; ?>libs/summernote/lang/summernote-zh-CN.js"></script>

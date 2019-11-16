@@ -15,7 +15,7 @@ $(function() {
                 if(res.status == 0) {
                     var idx = 1,
                         list = res['data'],
-                        listTpl = '<tr><th>编号</th><th>菜单标题</th><th>控制器</th><th>排序</th><th>标志</th><th>创建账号</th><th>创建时间</th><th>更新账号</th><th>更新时间</th><th>操作</th></tr>';
+                        listTpl = '<tr><th>serial no.</th><th>menu title</th><th>controller</th><th>sort</th><th>mark</th><th>createUser</th><th>createTime</th><th>updateUser</th><th>updateTime</th><th>operation</th></tr>';
                     for(var i in list) {
                         listTpl += '<tr>';
                         listTpl += '<td>' + (idx++) + '</td>';
@@ -31,7 +31,7 @@ $(function() {
                         listTpl += '<td>' + list[i]['create_time'] + '</td>';
                         listTpl += '<td>' + list[i]['update_user'] + '</td>';
                         listTpl += '<td>' + list[i]['update_time'] + '</td>';
-                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['id'] + '">编辑</button>&nbsp;&nbsp;<button type="button" class="btn btn-sm btn-danger js_delete" data-id="' + list[i]['id'] + '">删除</button></td>';
+                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['id'] + '">Edit</button>&nbsp;&nbsp;<button type="button" class="btn btn-sm btn-danger js_delete" data-id="' + list[i]['id'] + '">Delete</button></td>';
                         listTpl += '</tr>';
                     }
                     $('.js_table').html(listTpl);

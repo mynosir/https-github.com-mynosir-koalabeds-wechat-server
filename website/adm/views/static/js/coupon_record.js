@@ -15,8 +15,8 @@ $(function() {
                 // 处理表格数据
                 var list = res['list'],
                     show = ['show','hide'],
-                    used = ['未使用','已使用'],
-                    listTpl = '<tr><th>no.</th><th>微信openid</th><th>优惠券id</th><th>status</th><th>createtime</th></tr>';
+                    used = ['unused','used'],
+                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>couponId</th><th>status</th><th>createtime</th></tr>';
                 for(var i in list) {
                     listTpl += '<tr>';
                     listTpl += '<td>' + list[i]['id'] + '</td>';
@@ -192,10 +192,10 @@ $(function() {
         Utils.requestData(json);
     });
     $('#photo').uploadifive({
-        fileTypeDesc: '上传文件',
+        fileTypeDesc: 'uploadfile',
         fileTypeExts: '*.jpg;*.jpeg;*.gif;*.png',
         multi: false,
-        buttonText: '上传文件',
+        buttonText: 'uploadfile',
         height: '25',
         width: '100',
         method: 'post',

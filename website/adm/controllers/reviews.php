@@ -17,7 +17,7 @@ class Reviews extends MY_Controller {
         $data['base_url'] = $this->config->item('base_url');
         $data['current_menu'] = 'reviews';
         $data['sub_menu'] = array();
-        $data['current_menu_text'] = '酒店评论管理';
+        $data['current_menu_text'] = 'Reviews';
         $data['menu_list'] = $this->getMenuList();
         $this->load->model('reviews_model');
         $this->data = $data;

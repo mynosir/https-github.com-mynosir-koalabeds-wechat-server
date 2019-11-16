@@ -1,42 +1,30 @@
 <?php
 /**
- * 酒店评论模型
+ * 门票订单模型
  *
  * @author jiang <qoohj@qq.com>
  *
  */
-class Reviews_model extends MY_Model {
+class Ticket_model extends MY_Model {
 
-    private $table = 'ko_reviews';
-    private $fields = 'id, propertyID, userid, rate, content, create_time, status';
-
+    private $table = 'ko_grayline_ticket';
+    private $fields = 'id, openid, type, productId, travelDate, travelTime, turbojetDepartureDate, turbojetReturnDate, turbojetDepartureTime, turbojetReturnTime, turbojetDepartureFrom, turbojetDepartureTo, turbojetReturnFrom, turbojetReturnTo, turbojetQuantity, turbojetClass, turbojetTicketType, turbojetDepartureFlightNo, turbojetReturnFlightNo, hotel, title, firstName, lastName, passport, guestEmail, countryCode, telephone, promocode, agentReference, remark, subQtyProductPriceId, subQtyValue, totalPrice, info, orderParamsDetail, create_time, outTradeNo, transaction_id, transaction_info, status';
     public function __construct() {
         parent::__construct();
     }
 
 
     /**
-     * 获取
+     * 获取广告
      * @param  integer $page [description]
      * @param  integer $size [description]
      * @return [type]        [description]
      */
-    public function getReviews($page=1, $size=20, $keyword='') {
-        if($keyword!='') {
-            $where = ' where content like \'%'. $keyword .'%\' ';
-        } else {
-            $where = ' where 1=1 ';
-        }
+    public function getTicket($page=1, $size=20) {
         $limitStart = ($page - 1) * $size;
+        $where = ' where 1=1 ';
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . $where . 'order by id asc limit ' . $limitStart . ', ' . $size);
         $result = $query->result_array();
-        foreach($result as &$item) {
-            if($item['create_time']) {
-                $item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
-            } else {
-                $item['create_time'] = '';
-            }
-        }
 
         $pageQuery = $this->db->query('select count(1) as num from ' . $this->table);
         $pageResult = $pageQuery->result_array();
@@ -50,32 +38,17 @@ class Reviews_model extends MY_Model {
         return $rtn;
     }
 
-    /**
-     * 更新评论状态
-     **/
-    public function updateStatus($id,$params) {
-        $res = $this->db->where('id', $id)->update($this->table, $params);
-        if($res){
-          $result = array(
-              'status'    => 0,
-              'msg'       => 'Update Success!'
-          );
-          return $result;
-
-        }
-
-    }
 
     /**
-     * 更新
+     * 更新广告
      * @param  [type] $id   [description]
      * @param  [type] $data [description]
      * @return [type]       [description]
      */
-    public function update($id, $data) {
+    public function updateTicket($id, $data) {
         $this->db->where('id', $id)->update($this->table, $data);
         $result['status'] = 0;
-        $result['msg'] = 'Update Success!';
+        $result['msg'] = '更新数据成功';
         return $result;
     }
 
@@ -98,7 +71,7 @@ class Reviews_model extends MY_Model {
      * @param  [type] $data [description]
      * @return [type]       [description]
      */
-    public function addBasic($data) {
+    public function addTicket($data) {
         $msg = '';
         if($data['link']=='') $msg = '链接不可为空！';
         if($data['img']=='') $msg = '图片不可为空！';
@@ -119,7 +92,7 @@ class Reviews_model extends MY_Model {
 
 
     /**
-     * 获取详情
+     * 获取广告详情
      * @param  [type] $id [description]
      * @return [type]     [description]
      */

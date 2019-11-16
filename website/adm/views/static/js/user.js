@@ -14,14 +14,13 @@ $(function() {
             var callback = function(res) {
                 // 处理表格数据
                 var list = res['list'],
-                    sex = ['male','female'],
+                    sex = ['unknown','male','female'],
 
-                    listTpl = '<tr><th>no.</th><th>openid</th><th>userinfo</th><th>avartar</th><th>city</th><th>province</th><th>country</th><th>sex</th><th>language</th><th>nickname</th><th>lang</th></tr>';
+                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>avartar</th><th>city</th><th>province</th><th>country</th><th>sex</th><th>language</th><th>nickname</th><th>lang</th></tr>';
                 for(var i in list) {
                     listTpl += '<tr>';
                     listTpl += '<td>' + list[i]['id'] + '</td>';
                     listTpl += '<td>' + list[i]['openid'] + '</td>';
-                    listTpl += '<td>' + list[i]['userinfo'] + '</td>';
                     listTpl += '<td><img src="' + list[i]['wx_avatarUrl'] + '" style="width: 60px; height: 60px;"></td>';
                     listTpl += '<td>' + list[i]['wx_city'] + '</td>';
                     listTpl += '<td>' + list[i]['wx_province'] + '</td>';

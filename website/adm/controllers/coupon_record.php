@@ -17,7 +17,7 @@ class Coupon_record extends MY_Controller {
         $data['base_url'] = $this->config->item('base_url');
         $data['current_menu'] = 'coupon_record';
         $data['sub_menu'] = array();
-        $data['current_menu_text'] = '优惠券领取管理';
+        $data['current_menu_text'] = 'Coupon Record';
         $data['menu_list'] = $this->getMenuList();
         $this->load->model('coupon_record_model');
         $this->data = $data;

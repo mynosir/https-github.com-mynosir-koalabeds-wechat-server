@@ -49,7 +49,7 @@ class Banner_model extends MY_Model {
     public function updateAds($id, $data) {
         $this->db->where('id', $id)->update($this->table, $data);
         $result['status'] = 0;
-        $result['msg'] = '更新数据成功';
+        $result['msg'] = 'Update Success!';
         return $result;
     }
 
@@ -62,7 +62,7 @@ class Banner_model extends MY_Model {
     public function deleteItem($id) {
         $this->db->where('id', $id)->delete($this->table);
         $result['status'] = 0;
-        $result['msg'] = '删除成功';
+        $result['msg'] = 'Delete Success!';
         return $result;
     }
 
@@ -74,8 +74,8 @@ class Banner_model extends MY_Model {
      */
     public function addAds($data) {
         $msg = '';
-        if($data['link']=='') $msg = '链接不可为空！';
-        if($data['img']=='') $msg = '图片不可为空！';
+        if($data['link']=='') $msg = 'The link cannot be empty!';
+        if($data['img']=='') $msg = 'The image cannot be empty!';
 
         if($msg != '') {
             return array(
@@ -87,7 +87,7 @@ class Banner_model extends MY_Model {
         $data['zorder'] = (int)$data['zorder'];
         $this->db->insert($this->table, $data);
         $result['status'] = 0;
-        $result['msg'] = '新增数据成功';
+        $result['msg'] = 'Add Success';
         return $result;
     }
 

@@ -21,7 +21,7 @@ $(function() {
             var callback = function(res) {
                 if(res.status == 0) {
                     var list = res['data']['list'],
-                        listTpl = '<tr><th>编号</th><th>账号</th><th>真实姓名</th><th>手机号码</th><th>邮箱</th><th>角色</th><th>是否超级管理员</th><th>操作</th></tr>';
+                        listTpl = '<tr><th>serial no.</th><th>account</th><th>name</th><th>telephone</th><th>email</th><th>role</th><th>is super admin</th><th>operation</th></tr>';
                     for(var i in list) {
                         listTpl += '<tr>';
                         listTpl += '<td>' + list[i]['id'] + '</td>';
@@ -30,12 +30,12 @@ $(function() {
                         listTpl += '<td>' + list[i]['telephone'] + '</td>';
                         listTpl += '<td>' + list[i]['email'] + '</td>';
                         listTpl += '<td>' + list[i]['rolename'] + '</td>';
-                        var is_admin = '<span style="color: red;">否</span>';
+                        var is_admin = '<span style="color: red;">no</span>';
                         if(list[i]['is_admin']==1) {
-                            is_admin = '<span style="color: green;">是</span>';
+                            is_admin = '<span style="color: green;">yes</span>';
                         }
                         listTpl += '<td>' + is_admin + '</td>';
-                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['id'] + '">编辑</button>&nbsp;&nbsp;<button type="button" class="btn btn-sm btn-danger js_delete" data-id="' + list[i]['id'] + '">删除</button></td>';
+                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['id'] + '">Edit</button>&nbsp;&nbsp;<button type="button" class="btn btn-sm btn-danger js_delete" data-id="' + list[i]['id'] + '">Delete</button></td>';
                         listTpl += '</tr>';
                     }
                     $('.js_table').html(listTpl);

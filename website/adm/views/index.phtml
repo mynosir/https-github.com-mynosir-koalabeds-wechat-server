@@ -1,25 +1,25 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">个人信息</h3>
+        <h3 class="panel-title">Personal Information</h3>
     </div>
     <div class="panel-body">
         <form class="form-horizontal">
             <div class="form-group">
-                <label class="col-sm-2 control-label">账号：</label>
+                <label class="col-sm-2 control-label">Account:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static" style="display: inline-block; margin-right: 30px;"><?php echo $adminDetail['username']; ?></p>
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal">修改密码</button>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal">Change Password</button>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">真实姓名：</label>
+                <label class="col-sm-2 control-label">Name:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $adminDetail['realname']; ?></p>
                 </div>
             </div>
             <?php if($adminDetail['is_admin']!='1') { ?>
             <div class="form-group">
-                <label class="col-sm-2 control-label">角色：</label>
+                <label class="col-sm-2 control-label">Role:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static">
                         <?php
@@ -34,19 +34,19 @@
             </div>
             <?php } ?>
             <div class="form-group">
-                <label class="col-sm-2 control-label">手机号码：</label>
+                <label class="col-sm-2 control-label">Telephone:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $adminDetail['telephone']; ?></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">邮箱：</label>
+                <label class="col-sm-2 control-label">Email:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $adminDetail['email']; ?></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">超级管理员：</label>
+                <label class="col-sm-2 control-label">Super Admin:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php if($adminDetail['is_admin']=='1') { echo '<span style="color: green;">是</span>'; } else { echo '<span style="color: red;">否</span>'; } ?></p>
                 </div>
@@ -58,60 +58,60 @@
 <?php if($adminDetail['is_admin']=='1') { ?>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">系统信息</h3>
+        <h3 class="panel-title">System Information</h3>
     </div>
     <div class="panel-body">
         <form class="form-horizontal">
             <div class="form-group">
-                <label class="col-sm-2 control-label">操作系统：</label>
+                <label class="col-sm-2 control-label">Operation System:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $systemInfo['uname']; ?></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">服务器信息：</label>
+                <label class="col-sm-2 control-label">Server Info:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $systemInfo['server_software']; ?></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">服务器地址：</label>
+                <label class="col-sm-2 control-label">Server Address:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $systemInfo['server_name']; ?></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">服务器端口：</label>
+                <label class="col-sm-2 control-label">Server Port:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $systemInfo['http_port']; ?></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">PHP版本：</label>
+                <label class="col-sm-2 control-label">PHP Version:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $systemInfo['php_version']; ?></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">PHP运行方式：</label>
+                <label class="col-sm-2 control-label">PHP Mode:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $systemInfo['php_sapi_name']; ?></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">MYSQL版本：</label>
+                <label class="col-sm-2 control-label">MYSQL Version:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $systemInfo['mysql_version']; ?></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">系统时间：</label>
+                <label class="col-sm-2 control-label">System Time:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $systemInfo['system_time']; ?></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">Access Token：</label>
+                <label class="col-sm-2 control-label">Access Token:</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><?php echo $systemInfo['access_token']; ?></p>
                 </div>
@@ -126,37 +126,37 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">修改密码</h4>
+                <h4 class="modal-title">Change Password</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="username" class="col-sm-3 control-label">账号</label>
+                        <label for="username" class="col-sm-3 control-label">Account</label>
                         <div class="col-sm-9">
                             <p class="form-control-static"><?php echo $adminDetail['username']; ?></p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="password_ole" class="col-sm-3 control-label"><span class="required">*</span>原密码</label>
+                        <label for="password_ole" class="col-sm-3 control-label"><span class="required">*</span>Old Password</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control js_password_old" placeholder="原密码">
+                            <input type="password" class="form-control js_password_old" placeholder="old password">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="password_new" class="col-sm-3 control-label"><span class="required">*</span>新密码</label>
+                        <label for="password_new" class="col-sm-3 control-label"><span class="required">*</span>New Password</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control js_password_new" placeholder="新密码">
+                            <input type="password" class="form-control js_password_new" placeholder="New Password">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="password_new1" class="col-sm-3 control-label"><span class="required">*</span>确认新密码</label>
+                        <label for="password_new1" class="col-sm-3 control-label"><span class="required">*</span>Confirm New Password</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control js_password_new1" placeholder="确认新密码">
+                            <input type="password" class="form-control js_password_new1" placeholder="Confirm New Password">
                         </div>
                     </div>
                     <div class="alert alert-warning alert-dismissible fade in" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>Warning: </strong> 点击保存前请检查信息无误，如有需要请先备份！
+                        <strong>Warning: </strong>Check the info before click save button!
                     </div>
                 </form>
             </div>

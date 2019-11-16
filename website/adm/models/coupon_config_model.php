@@ -5,7 +5,7 @@
  * @author jiang <qoohj@qq.com>
  *
  */
-class Coupon_model extends MY_Model {
+class Coupon_config_model extends MY_Model {
 
     private $table = 'ko_coupon';
     private $fields = 'id, totalAmount, discountAmount, validateDate, zorder, status';
@@ -49,7 +49,7 @@ class Coupon_model extends MY_Model {
     public function updateCoupon($id, $data) {
         $this->db->where('id', $id)->update($this->table, $data);
         $result['status'] = 0;
-        $result['msg'] = '更新数据成功';
+        $result['msg'] = 'Update Success!';
         return $result;
     }
 
@@ -62,7 +62,7 @@ class Coupon_model extends MY_Model {
     public function deleteItem($id) {
         $this->db->where('id', $id)->delete($this->table);
         $result['status'] = 0;
-        $result['msg'] = '删除成功';
+        $result['msg'] = 'Delete Success!';
         return $result;
     }
 
@@ -74,9 +74,9 @@ class Coupon_model extends MY_Model {
      */
     public function addCoupon($data) {
         $msg = '';
-        if($data['totalAmount']=='') $msg = '达成优惠金额不可为空！';
-        if($data['discountAmount']=='') $msg = '优惠金额不可为空！';
-        if($data['validateDate']=='') $msg = '有效期不可为空！';
+        if($data['totalAmount']=='') $msg = 'The totalAmount cannot be empty!';
+        if($data['discountAmount']=='') $msg = 'The discountAmount cannot be empty!';
+        if($data['validateDate']=='') $msg = 'The validateDate cannot be empty!';
 
         if($msg != '') {
             return array(
@@ -88,7 +88,7 @@ class Coupon_model extends MY_Model {
         $data['zorder'] = (int)$data['zorder'];
         $this->db->insert($this->table, $data);
         $result['status'] = 0;
-        $result['msg'] = '新增数据成功';
+        $result['msg'] = 'Add Success!';
         return $result;
     }
 

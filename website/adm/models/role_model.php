@@ -33,7 +33,7 @@ class Role_model extends MY_Model {
         $this->db->insert($this->table, $data);
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！'
+            'msg'       => 'Success!'
         );
 
     }
@@ -55,7 +55,7 @@ class Role_model extends MY_Model {
         $this->db->where($where)->update($this->table, $data);
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！'
+            'msg'       => 'Success!'
         );
 
     }
@@ -74,14 +74,14 @@ class Role_model extends MY_Model {
         if($result[0]['num'] > 0) {
             return array(
                 'status'    => -2,
-                'msg'       => '当前角色下存在员工，请先移除员工！'
+                'msg'       => 'Staff exists in current role,please delete staff first!'
             );
         }
 
         $this->db->delete($this->table, array('id'=> $id));
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！'
+            'msg'       => 'Success!'
         );
 
     }
@@ -98,7 +98,7 @@ class Role_model extends MY_Model {
         $result = $query->result_array();
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！',
+            'msg'       => 'Success!',
             'data'      => $result[0]
         );
     }
@@ -158,7 +158,7 @@ class Role_model extends MY_Model {
         $num = $pageResult[0]['num'];
         return array(
             'status'=> 0,
-            'msg'   => '操作成功！',
+            'msg'   => 'Success!',
             'data'  => array(
                 'total' => $num,
                 'size'  => $size,
@@ -181,7 +181,7 @@ class Role_model extends MY_Model {
         $result = $query->result_array();
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！',
+            'msg'       => 'Success!',
             'data'      => $result
         );
     }

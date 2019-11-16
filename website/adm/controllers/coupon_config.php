@@ -5,27 +5,27 @@
  * @author jiang <qoohj@qoohj.com>
  *
  */
-class Coupon extends MY_Controller {
+class Coupon_config extends MY_Controller {
 
 
     public function __construct() {
         parent::__construct();
         $this->checkLogin();
-        // $this->load->model('coupon_model');
+        // $this->load->model('coupon_config_model');
         $data['resource_url'] = $this->resource_url;
         $data['admin_info'] = isset($_SESSION['loginInfo']) ? $_SESSION['loginInfo'] : '';
         $data['base_url'] = $this->config->item('base_url');
-        $data['current_menu'] = 'coupon';
+        $data['current_menu'] = 'coupon_config';
         $data['sub_menu'] = array();
-        $data['current_menu_text'] = '优惠券配置管理';
+        $data['current_menu_text'] = 'Coupon Config';
         $data['menu_list'] = $this->getMenuList();
-        $this->load->model('coupon_model');
+        $this->load->model('coupon_config_model');
         $this->data = $data;
     }
 
 
     public function index() {
-        $this->showPage('coupon_index', $this->data);
+        $this->showPage('coupon_config_index', $this->data);
     }
 
     public function get() {
@@ -36,11 +36,11 @@ class Coupon extends MY_Controller {
                 $page = $this->get_request('page');
                 $size = $this->get_request('size');
                 $classify = $this->get_request('classify');
-                $result = $this->coupon_model->getCoupon($page, $size, $classify);
+                $result = $this->coupon_config_model->getCoupon($page, $size, $classify);
                 break;
             case 'getDetail':
                 $id = $this->get_request('id');
-                $result = $this->coupon_model->getDetail($id);
+                $result = $this->coupon_config_model->getDetail($id);
                 break;
         }
         echo json_encode($result);
@@ -52,16 +52,16 @@ class Coupon extends MY_Controller {
         switch($actionxm) {
             case 'addCoupon':
                 $data = $this->get_request('params');
-                $result = $this->coupon_model->addCoupon($data);
+                $result = $this->coupon_config_model->addCoupon($data);
                 break;
             case 'updateCoupon':
                 $id = $this->get_request('id');
                 $data = $this->get_request('params');
-                $result = $this->coupon_model->updateCoupon($id, $data);
+                $result = $this->coupon_config_model->updateCoupon($id, $data);
                 break;
             case 'delete':
                 $id = $this->get_request('id');
-                $result = $this->coupon_model->deleteItem($id);
+                $result = $this->coupon_config_model->deleteItem($id);
                 break;
             case 'upload_photo':
                 if(!empty($_FILES)) {

@@ -16,7 +16,7 @@ class Menu extends MY_Controller {
         // $data['admin_info'] = $this->session->userdata('loginInfo');
         $data['base_url'] = $this->config->item('base_url');
         $data['current_menu'] = 'menu';
-        $data['current_menu_text'] = '系统菜单';
+        $data['current_menu_text'] = 'System Menu';
         $data['sub_menu'] = array();
         $data['menu_list'] = $this->getMenuList();
         $this->data = $data;

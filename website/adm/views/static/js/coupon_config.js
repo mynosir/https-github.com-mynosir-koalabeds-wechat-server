@@ -2,7 +2,7 @@ $(function() {
     var page = {
         init: function(p) {
             var json = {
-                api: config.apiServer + 'coupon/get',
+                api: config.apiServer + 'coupon_config/get',
                 type: 'get',
                 data: {
                     actionxm: 'getCoupon',
@@ -15,7 +15,7 @@ $(function() {
                 // 处理表格数据
                 var list = res['list'],
                     show = ['show','hide'],
-                    listTpl = '<tr><th>no.</th><th>totalAmount</th><th>discountAmount</th><th>validateDate</th><th>zorder</th><th>status</th><th>operation</th></tr>';
+                    listTpl = '<tr><th>serial no.</th><th>totalAmount</th><th>discountAmount</th><th>validateDate</th><th>zorder</th><th>status</th><th>operation</th></tr>';
                 for(var i in list) {
                     listTpl += '<tr>';
                     listTpl += '<td>' + list[i]['id'] + '</td>';
@@ -24,7 +24,7 @@ $(function() {
                     listTpl += '<td>' + list[i]['validateDate'] + '</td>';
                     listTpl += '<td>' + list[i]['zorder'] + '</td>';
                     listTpl += '<td>' + show[list[i]['status']] + '</td>';
-                    listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['id'] + '">编辑</button></td>';
+                    listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['id'] + '">Edit</button></td>';
                     listTpl += '</tr>';
                 }
                 $('.js_table').html(listTpl);
@@ -57,7 +57,7 @@ $(function() {
         },
         getDetail: function(id) {
             var json = {
-                api: config.apiServer + 'coupon/get',
+                api: config.apiServer + 'coupon_config/get',
                 type: 'get',
                 data: {
                     actionxm: 'getDetail',
@@ -81,7 +81,7 @@ $(function() {
         },
         deletItem: function(id) {
             var json = {
-                api: config.apiServer + 'coupon/post',
+                api: config.apiServer + 'coupon_config/post',
                 type: 'post',
                 data: {
                     actionxm: 'delete',
@@ -135,7 +135,7 @@ $(function() {
             sort = $('.js_add_sort').val(),
             status = $('.js_add_select').val();
         var json = {
-                api: config.apiServer + 'coupon/post',
+                api: config.apiServer + 'coupon_config/post',
                 type: 'post',
                 data: {
                     actionxm: 'addCoupon',
@@ -167,7 +167,7 @@ $(function() {
             sort = $('.js_update_sort').val(),
             status = $('.js_select').val();
         var json = {
-                api: config.apiServer + 'coupon/post',
+                api: config.apiServer + 'coupon_config/post',
                 type: 'post',
                 data: {
                     actionxm: 'updateCoupon',
@@ -193,15 +193,15 @@ $(function() {
         Utils.requestData(json);
     });
     $('#photo').uploadifive({
-        fileTypeDesc: '上传文件',
+        fileTypeDesc: 'uploadfile',
         fileTypeExts: '*.jpg;*.jpeg;*.gif;*.png',
         multi: false,
-        buttonText: '上传文件',
+        buttonText: 'uploadfile',
         height: '25',
         width: '100',
         method: 'post',
         fileObjName: 'uploadfile',
-        uploadScript: config.apiServer + 'coupon/post',
+        uploadScript: config.apiServer + 'coupon_config/post',
         formData: {
             'actionxm': 'upload_photo'
         },

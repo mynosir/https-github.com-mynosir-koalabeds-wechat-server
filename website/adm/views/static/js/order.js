@@ -15,8 +15,8 @@ $(function() {
                 // 处理表格数据
                 var list = res['list'],
                     show = ['show','hide'],
-                    status = ['not_confirmed','confirmed','canceled','checked_in','checked_out','no_show'],
-                    listTpl = '<tr><th>no.</th><th>openid</th><th>酒店id</th><th>startDate</th><th>endDate</th><th>guestFirstName</th><th>guestLastName</th><th>guestCountry</th><th>guestZip</th><th>guestEmail</th><th>guestPhone</th><th>预定房间信息</th><th>预订的房间房型</th><th>预订的房间数量</th><th>预订的大人房间信息</th><th>预订的大人房间类型</th><th>预订的大人房间数量</th><th>预订的儿童房间信息</th><th>预订的儿童房间类型</th><th>预订的儿童房间数量</th><th>订单状态</th><th>总价格</th><th>小程序计算的总价格</th><th>余款</th><th>余款细节</th><th>分配的酒店房间详情</th><th>未分配的酒店房间详情</th><th>信用卡信息</th><th>预定id</th><th>到店时间，24小时制</th><th>订单生成时间</th><th>订单编号</th><th>交易单号</th><th>交易详情</th><th></th></tr>';
+                    status = ['To be paid','paid','failed','not_confirmed','confirmed','canceled','checked_in','checked_out','no_show'],
+                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>propertyID</th><th>startDate</th><th>endDate</th><th>guestFirstName</th><th>guestLastName</th><th>guestCountry</th><th>guestZip</th><th>guestEmail</th><th>guestPhone</th><th>info</th><th>type</th><th>quantity</th><th>adults_info</th><th>adults_roomTypeID</th><th>adults_quantity</th><th>children_info</th><th>children_roomTypeID</th><th>children_roomTypeID</th><th>status</th><th>total price</th><th>total price(mini program)</th><th>balance due</th><th>balance Detail</th><th>assigned</th><th>unassigned</th><th>credit card</th><th>reservationID</th><th>estimatedArrivalTime</th><th>create_time</th><th>outTradeNo</th><th>transaction_id</th><th>transaction_info</th><th></th></tr>';
                 for(var i in list) {
                     listTpl += '<tr>';
                     listTpl += '<td>' + list[i]['id'] + '</td>';
@@ -26,11 +26,9 @@ $(function() {
                     listTpl += '<td>' + list[i]['endDate'] + '</td>';
                     listTpl += '<td>' + list[i]['guestFirstName'] + '</td>';
                     listTpl += '<td>' + list[i]['guestLastName'] + '</td>';
-                    listTpl += '<td>' + list[i]['guestLastName'] + '</td>';
                     listTpl += '<td>' + list[i]['guestCountry'] + '</td>';
                     listTpl += '<td>' + list[i]['guestZip'] + '</td>';
                     listTpl += '<td>' + list[i]['guestEmail'] + '</td>';
-                    listTpl += '<td>' + list[i]['guestPhone'] + '</td>';
                     listTpl += '<td>' + list[i]['guestPhone'] + '</td>';
                     listTpl += '<td>' + list[i]['rooms'] + '</td>';
                     listTpl += '<td>' + list[i]['rooms_roomTypeID'] + '</td>';
@@ -218,10 +216,10 @@ $(function() {
         Utils.requestData(json);
     });
     $('#photo').uploadifive({
-        fileTypeDesc: '上传文件',
+        fileTypeDesc: 'uploadfile',
         fileTypeExts: '*.jpg;*.jpeg;*.gif;*.png',
         multi: false,
-        buttonText: '上传文件',
+        buttonText: 'uploadfile',
         height: '25',
         width: '100',
         method: 'post',

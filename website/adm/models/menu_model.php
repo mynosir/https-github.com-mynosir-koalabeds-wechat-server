@@ -51,7 +51,7 @@ class Menu_model extends MY_Model {
         }
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！',
+            'msg'       => 'Success!',
             'data'      => array_values($tree)
         );
     }
@@ -64,8 +64,8 @@ class Menu_model extends MY_Model {
     public function add($params) {
 
         $msg = '';
-        if($params['pid']=='') $msg = '上级菜单不可为空！';
-        if($params['name']=='') $msg = '姓名不可为空！';
+        if($params['pid']=='') $msg = 'The superial menu cannot be empty!';
+        if($params['name']=='') $msg = 'The name cannot be empty!';
         if($msg != '') {
             return array(
                 'status'    => -1,
@@ -84,7 +84,7 @@ class Menu_model extends MY_Model {
         $this->db->insert($this->table, $data);
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！'
+            'msg'       => 'Success!'
         );
 
     }
@@ -109,7 +109,7 @@ class Menu_model extends MY_Model {
         $this->db->where($where)->update($this->table, $data);
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！'
+            'msg'       => 'Success!'
         );
     }
 
@@ -127,7 +127,7 @@ class Menu_model extends MY_Model {
         if($result[0]['num'] > 0) {
             return array(
                 'status'    => -1,
-                'msg'       => '当前菜单下存在子菜单，请先删除子菜单！'
+                'msg'       => 'Children menu exists in current menu,please delete children menu first!'
             );
         }
 
@@ -150,7 +150,7 @@ class Menu_model extends MY_Model {
         $result = $query->result_array();
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！',
+            'msg'       => 'Success!',
             'data'      => $result[0]
         );
 
@@ -189,7 +189,7 @@ class Menu_model extends MY_Model {
 
         return array(
             'status'    => 0,
-            'msg'       => '操作成功！',
+            'msg'       => 'Success!',
             'data'      => $tree
         );
 

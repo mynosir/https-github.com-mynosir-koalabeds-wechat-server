@@ -16,7 +16,7 @@ $(function() {
             var callback = function(res) {
                 if(res.status == 0) {
                     var list = res['data']['list'],
-                        listTpl = '<tr><th>编号</th><th>角色名称</th><th>菜单栏权限</th><th>添加人</th><th>添加时间</th><th>更新人</th><th>更新时间</th><th>操作</th></tr>';
+                        listTpl = '<tr><th>serial no.</th><th>name</th><th>menu authorization</th><th>createUser</th><th>createTime</th><th>updateUser</th><th>updateTime</th><th>operation</th></tr>';
                     for(var i in list) {
                         listTpl += '<tr>';
                         listTpl += '<td>' + list[i]['id'] + '</td>';
@@ -26,7 +26,7 @@ $(function() {
                         listTpl += '<td>' + list[i]['create_time'] + '</td>';
                         listTpl += '<td>' + list[i]['update_user'] + '</td>';
                         listTpl += '<td>' + list[i]['update_time'] + '</td>';
-                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-id="' + list[i]['id'] + '">编辑</button>&nbsp;&nbsp;<button type="button" class="btn btn-sm btn-danger js_delete" data-id="' + list[i]['id'] + '">删除</button></td>';
+                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-id="' + list[i]['id'] + '">Edit</button>&nbsp;&nbsp;<button type="button" class="btn btn-sm btn-danger js_delete" data-id="' + list[i]['id'] + '">Delete</button></td>';
                         listTpl += '</tr>';
                     }
                     $('.js_table').html(listTpl);

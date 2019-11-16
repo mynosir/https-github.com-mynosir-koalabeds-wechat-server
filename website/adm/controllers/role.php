@@ -16,7 +16,7 @@ class Role extends MY_Controller {
         // $data['admin_info'] = $this->session->userdata('loginInfo');
         $data['base_url'] = $this->config->item('base_url');
         $data['current_menu'] = 'role';
-        $data['current_menu_text'] = '角色管理';
+        $data['current_menu_text'] = 'Role Manage';
         $data['sub_menu'] = array();
         $data['menu_list'] = $this->getMenuList();
         $this->data = $data;

@@ -17,7 +17,7 @@ class Banner extends MY_Controller {
         $data['base_url'] = $this->config->item('base_url');
         $data['current_menu'] = 'banner';
         $data['sub_menu'] = array();
-        $data['current_menu_text'] = '轮播图管理';
+        $data['current_menu_text'] = 'Banner Manage';
         $data['menu_list'] = $this->getMenuList();
         $this->load->model('banner_model');
         $this->data = $data;
