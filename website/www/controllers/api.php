@@ -53,8 +53,9 @@ class api extends MY_Controller {
                 break;
             // 获取优惠券配置信息
             case 'getCoupons':
+                $openid = $this->get_request('openid');
                 $this->load->model('coupon_model');
-                $result = $this->coupon_model->getList();
+                $result = $this->coupon_model->getList($openid);
                 break;
             // 获取城市列表
             case 'getCitys':
@@ -227,6 +228,12 @@ class api extends MY_Controller {
                 $this->load->model('cloudbeds_hotel_model');
                 $result = $this->cloudbeds_hotel_model->getRoomTypesByRoomTypeIDs($propertyID, $roomTypeID);
                 break;
+            // 获取酒店订单列表
+            case 'getHotelOrders':
+                $openid = $this->get_request('openid');
+                $this->load->model('hotel_order_model');
+                $result = $this->hotel_order_model->getListByOpenid$($openid);
+                break;
         }
         echo json_encode($result);
     }
@@ -385,7 +392,6 @@ class api extends MY_Controller {
                     }
                 }
                 break;
-
             // 再次获取支付参数
             case 'getPayAgain':
                 $id = $this->get_request('id');

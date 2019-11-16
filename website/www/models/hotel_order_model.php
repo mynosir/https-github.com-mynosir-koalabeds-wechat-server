@@ -148,6 +148,27 @@ class hotel_order_model extends MY_Model {
 
 
     /**
+     * 根据微信openid获取订单列表
+     */
+    public function getListByOpenid($openid) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where openid = "' . $openid . '" order by id desc');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '未查找到对应订单信息'
+            );
+        }
+    }
+
+
+    /**
      * 保存酒店订单
      */
     public function saveOrder($openid, $id) {

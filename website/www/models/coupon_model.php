@@ -20,10 +20,24 @@ class coupon_model extends MY_Model {
     /**
      * 查询优惠券列表
      */
-    public function getList() {
+    public function getList($openid) {
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `status` = 0 order by zorder desc, id desc');
         $result = $query->result_array();
         if(count($result) > 0) {
+            // 查询用户已经领取过的优惠券
+            $userCouponRecord = $this->getUserCouponRecord($openid);
+            $userCouponRecordIdArr = array();
+            foreach($userCouponRecord as $k=>$v) {
+                $userCouponRecordIdArr[] = $v['cid'];
+            }
+            $newResult = array();
+            foreach($result as $k=>$v) {
+                if(in_array($v['id'], $userCouponRecordIdArr)) {
+                    $result[$k]['hasRecord'] = true;
+                } else {
+                    $result[$k]['hasRecord'] = false;
+                }
+            }
             return array(
                 'status'    => 0,
                 'msg'       => '查询成功',
@@ -141,6 +155,20 @@ class coupon_model extends MY_Model {
     public function updateStatus($id, $status) {
         $query = $this->db->query('update ' . $this->record_table . ' set status = ' . $status . ' where id = ' . $id);
         return true;
+    }
+
+
+    /**
+     * 获取用户领取的优惠券列表
+     */
+    public function getUserCouponRecord($openid) {
+        $query = $this->db->query('select ' . $this->record_fields . ' from ' . $this->record_table . ' where `openid` = "' . $openid . '"');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return $result;
+        } else {
+            return array();
+        }
     }
 
 }
