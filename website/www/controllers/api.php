@@ -220,6 +220,13 @@ class api extends MY_Controller {
                     $orderDetail = $this->hotel_order_model->getDetailById($id);
                 }
                 break;
+            // 根据房间id获取房间信息
+            case 'getRoomTypeById':
+                $propertyID = $this->get_request('propertyID');
+                $roomTypeID = $this->get_request('roomTypeID');
+                $this->load->model('cloudbeds_hotel_model');
+                $result = $this->cloudbeds_hotel_model->getRoomTypesByRoomTypeIDs($propertyID, $roomTypeID);
+                break;
         }
         echo json_encode($result);
     }

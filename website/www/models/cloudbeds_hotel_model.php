@@ -194,6 +194,34 @@ class Cloudbeds_hotel_model extends MY_Model {
 
 
     /**
+     * 根据房间类型id获取信息
+     */
+    public function getRoomTypesByRoomTypeIDs($propertyID, $roomTypeID) {
+        $access_token_result = $this->update_cloudbeds_access_token();
+        if($access_token_result['status']) {
+            return array(
+                'status'    => -1,
+                'msg'       => $access_token_result['msg']
+            );
+        }
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getRoomTypes?propertyIDs=' . $propertyID . '&roomTypeIDs=' . $roomTypeID;
+        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
+        if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $apiReturnStr['data']
+            );
+        } else {
+            return array(
+                'status'    => -2,
+                'msg'       => $apiReturnStr['message']
+            );
+        }
+    }
+
+
+    /**
      * 获取酒店房型
      **/
     public function getRoomTypes($propertyIDs) {
