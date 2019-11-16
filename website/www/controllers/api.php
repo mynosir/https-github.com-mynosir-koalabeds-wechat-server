@@ -206,6 +206,20 @@ class api extends MY_Controller {
                     }
                 }
                 break;
+            // 根据订单id获取订单详情
+            case 'getHotelOrderById':
+                $id = $this->get_request('id');
+                $openid = $this->get_request('openid');
+                if(!isset($openid)) {
+                    $result = array(
+                        'status'    => -2,
+                        'msg'       => '登录态异常'
+                    );
+                } else {
+                    $this->load->model('hotel_order_model');
+                    $orderDetail = $this->hotel_order_model->getDetailById($id);
+                }
+                break;
         }
         echo json_encode($result);
     }
