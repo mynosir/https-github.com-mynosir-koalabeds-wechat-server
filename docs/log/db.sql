@@ -332,3 +332,8 @@ create table `ko_payment_log` (
     `create_time` int(11) not null comment '日志记录时间',
     primary key (`id`)
 ) engine = myisam character set utf8 collate utf8_general_ci comment = '酒店订单销账记录表';
+
+
+-- linzequan 20191118
+-- 门票订单表添加优惠券id
+alter table `ko_grayline_ticket` add column `coupon_id` int default 0 comment '所使用的优惠券id';

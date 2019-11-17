@@ -8,7 +8,7 @@
 class Grayline_ticket_model extends MY_Model {
 
     private $table = 'ko_grayline_ticket';
-    private $fields = 'id, openid, type, productId, travelDate, travelTime, turbojetDepartureDate, turbojetReturnDate, turbojetDepartureTime, turbojetReturnTime, turbojetDepartureFrom, turbojetDepartureTo, turbojetReturnFrom, turbojetReturnTo, turbojetQuantity, turbojetClass, turbojetTicketType, turbojetDepartureFlightNo, turbojetReturnFlightNo, hotel, title, firstName, lastName, passport, guestEmail, countryCode, telephone, promocode, agentReference, remark, subQty, subQtyProductPriceId, subQtyValue, totalPrice, info, orderParamsDetail, outTradeNo, transaction_id, transaction_info, status, create_time, sourcePrice, extinfo';
+    private $fields = 'id, openid, type, productId, travelDate, travelTime, turbojetDepartureDate, turbojetReturnDate, turbojetDepartureTime, turbojetReturnTime, turbojetDepartureFrom, turbojetDepartureTo, turbojetReturnFrom, turbojetReturnTo, turbojetQuantity, turbojetClass, turbojetTicketType, turbojetDepartureFlightNo, turbojetReturnFlightNo, hotel, title, firstName, lastName, passport, guestEmail, countryCode, telephone, promocode, agentReference, remark, subQty, subQtyProductPriceId, subQtyValue, totalPrice, info, orderParamsDetail, outTradeNo, transaction_id, transaction_info, status, create_time, sourcePrice, extinfo, coupon_id';
     private $email = 'wesley@koalabeds.com.hk';
     private $password = 'clcwesley1';
 
@@ -165,6 +165,12 @@ class Grayline_ticket_model extends MY_Model {
         }
         $this->db->insert($this->table, $params);
         $insertId = $this->db->insert_id();
+        // 变更优惠券状态
+        if(isset($params['coupon_id']) && $params['coupon_id'] > 0) {
+            $this->load->model('coupon_model');
+            $CI = &get_instance();
+            $CI->coupon_model->updateStatus($params['coupon_id'], 1);
+        }
         return array(
             'status'    => 0,
             'msg'       => '订单生成成功',
@@ -250,7 +256,7 @@ class Grayline_ticket_model extends MY_Model {
             'guestEmail'=> $orderDetail['guestEmail'],
             // 'subQty'    => array($orderDetail['subQtyProductPriceId']=> $orderDetail['subQtyValue']),
             'subQty'    => json_decode($orderDetail['subQty'], true),
-            'totalPrice'=> $orderDetail['totalPrice'],
+            'totalPrice'=> $orderDetail['sourcePrice'],
             'telephone' => $orderDetail['telephone']
         );
         // var_dump(http_build_query($data));exit;
