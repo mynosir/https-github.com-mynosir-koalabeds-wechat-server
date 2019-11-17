@@ -78,7 +78,7 @@ class reviews_model extends MY_Model {
             $this->load->model('user_model');
             $CI = &get_instance();
             foreach($result as $k=>$v) {
-                $result[$k]['userinfo'] = $CI->user_model->getUserinfoByOpenid($params['openid']);
+                $result[$k]['userinfo'] = $CI->user_model->getUserinfoByOpenid($v['openid']);
             }
             $rtn = array(
                 'status'    => 0,
