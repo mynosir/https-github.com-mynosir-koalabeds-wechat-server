@@ -257,7 +257,7 @@ class api extends MY_Controller {
                     );
                 } else {
                     $this->load->model('hotel_order_model');
-                    $orderDetail = $this->hotel_order_model->getDetailById($id);
+                    $result = $this->hotel_order_model->getDetailById($id);
                 }
                 break;
             // 根据房间id获取房间信息
