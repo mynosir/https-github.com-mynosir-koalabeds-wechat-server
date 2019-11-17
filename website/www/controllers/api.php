@@ -715,8 +715,20 @@ class api extends MY_Controller {
             $this->hotel_order_model->update_transaction_info($result['out_trade_no'], json_encode($result));
             if($result['pay_result'] == 0) {
                 $this->hotel_order_model->update_status($result['out_trade_no'], 1);
+                // 主动调起预约cloudbeds流程
+                $this->load->model('hotel_order_model');
+                // 通过交易单号查询订单id
+                $orderInfo = $this->hotel_order_model->getDetailByOutTradeNo($result['out_trade_no']);
+                if($orderInfo['status'] == 0) {
+                    $id = $orderInfo['data']['id'];
+                    $orderResult = $this->hotel_order_model->saveOrder($result['openid'], $id);
+                    // 发起退款
+                    if($orderResult['status'] != 0) {
+                        $this->refund($orderResult['data']);
+                    }
+                }
             } else {
-                // $this->hotel_order_model->update_status($result['out_trade_no'], 2);
+                $this->hotel_order_model->update_status($result['out_trade_no'], 0);
             }
         }
     }

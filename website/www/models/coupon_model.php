@@ -187,7 +187,7 @@ class coupon_model extends MY_Model {
 
 
     public function getUserCouponRecordForFront($openid) {
-        $query = $this->db->query('select a.totalAmount as totalAmount, a.discountAmount as discountAmount, a.validateDate as validateDate, a.status as couponStatus, b.openid as openid, b.status as status, b.create_time as create_time from ko_coupon as a left join ko_coupon_record as b on a.id = b.cid where `openid` = "' . $openid . '"');
+        $query = $this->db->query('select b.id as id, a.totalAmount as totalAmount, a.discountAmount as discountAmount, a.validateDate as validateDate, a.status as couponStatus, b.openid as openid, b.status as status, b.create_time as create_time from ko_coupon as a left join ko_coupon_record as b on a.id = b.cid where `openid` = "' . $openid . '"');
         $result = $query->result_array();
         if(count($result) > 0) {
             return $result;

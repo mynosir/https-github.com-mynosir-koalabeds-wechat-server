@@ -152,6 +152,30 @@ class hotel_order_model extends MY_Model {
 
 
     /**
+     * 通过订单编号查找订单详情
+     */
+    public function getDetailByOutTradeNo($outTradeNo) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where outTradeNo = "' . $outTradeNo . '"');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            $CI = &get_instance();
+            $this->load->model('cloudbeds_hotel_model');
+            $result[0]['hotelInfo'] = $CI->cloudbeds_hotel_model->getHotelDetailsInDB($result[0]['propertyID']);
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result[0]
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '未查找到对应订单信息'
+            );
+        }
+    }
+
+
+    /**
      * 根据微信openid获取订单列表
      */
     public function getListByOpenid($openid, $status = -1) {
@@ -238,7 +262,7 @@ class hotel_order_model extends MY_Model {
                 'data'      => $apiReturnStr
             );
         } else {
-            // $this->update_status($orderDetail['outTradeNo'], 5);
+            $this->update_status($orderDetail['outTradeNo'], -1);
             // 预订失败，发起退款
             // todo
             return array(
