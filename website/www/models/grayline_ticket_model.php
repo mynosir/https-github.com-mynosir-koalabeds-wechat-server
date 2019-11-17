@@ -258,6 +258,7 @@ class Grayline_ticket_model extends MY_Model {
         // var_dump($apiReturnStr);exit;
         $apiReturnStr = $this->http_request_grayline($url, http_build_query($data));
         // 根据不同返回状态更新订单状态
+        @file_put_contents('/pub/logs/saveGraylineOrderParams', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($data) . PHP_EOL, FILE_APPEND);
         @file_put_contents('/pub/logs/saveGraylineOrder', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($apiReturnStr) . PHP_EOL, FILE_APPEND);
         // array(2) {
         //   ["meta"]=>
@@ -282,6 +283,7 @@ class Grayline_ticket_model extends MY_Model {
                 'data'      => $apiReturnStr['data']
             );
         } else {
+            $this->updateOrderStatus($id, -1);
             // 预订失败，发起退款
             return array(
                 'status'    => 1,
@@ -307,12 +309,26 @@ class Grayline_ticket_model extends MY_Model {
 
 
     /**
+     * 通过交易单号更新订单状态
+     */
+    public function updateOrderStatusByOutTradeNo($outTradeNo, $status) {
+        $where = array(
+            'outTradeNo'    => $outTradeNo
+        );
+        $data = array(
+            'status'    => $status
+        );
+        $this->db->where($where)->update($this->table, $data);
+    }
+
+
+    /**
      * 保存交易信息
      */
     public function update_transaction_info($out_trade_no, $transaction_info) {
         $transaction_info_obj = json_decode($transaction_info, true);
         $where = array(
-            'out_trade_no'  => $out_trade_no
+            'outTradeNo'  => $out_trade_no
         );
         $data = array(
             'transaction_id'    => $transaction_info_obj['transaction_id'],
@@ -348,6 +364,28 @@ class Grayline_ticket_model extends MY_Model {
      */
     public function getOrderById($openid, $id) {
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where openid = "' . $openid . '" and id = ' . $id . ' order by id desc');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result[0]
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '未查找到对应订单信息'
+            );
+        }
+    }
+
+
+    /**
+     * 通过交易单号查询订单详情
+     */
+    public function getOrderByOutTradeNo($outTradeNo) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where outTradeNo = "' . $outTradeNo . '" order by id desc');
+        @file_put_contents('/pub/logs/paycallbackGraylineGetOrderByOutTradeNo', '[' . date('Y-m-d H:i:s', time()) . ']select ' . $this->fields . ' from ' . $this->table . ' where openid = "' . $openid . '" and outTradeNo = "' . $outTradeNo . '" order by id desc' . PHP_EOL, FILE_APPEND);
         $result = $query->result_array();
         if(count($result) > 0) {
             return array(

@@ -51,6 +51,25 @@ class api extends MY_Controller {
                 $this->load->model('banner_model');
                 $result = $this->banner_model->getList();
                 break;
+            // 获取用户语言配置
+            case 'getLang':
+                $openid = $this->get_request('openid');
+                $userinfo = $this->user_model->getUserinfoByOpenid($openid);
+                if(!!$userinfo) {
+                    $result = array(
+                        'status'    => 0,
+                        'msg'       => '查询成功',
+                        'data'      => array(
+                            'lang'  => $userinfo['lang']
+                        )
+                    );
+                } else {
+                    $result = array(
+                        'status'    => -1,
+                        'msg'       => '未找到该用户'
+                    );
+                }
+                break;
             // 获取优惠券配置信息
             case 'getCoupons':
                 $openid = $this->get_request('openid');
@@ -721,9 +740,22 @@ class api extends MY_Controller {
             $this->load->model('grayline_ticket_model');
             $this->grayline_ticket_model->update_transaction_info($result['out_trade_no'], json_encode($result));
             if($result['result_code'] == 0) {
-                $this->grayline_ticket_model->updateOrderStatus($result['out_trade_no'], 1);
+                $this->grayline_ticket_model->updateOrderStatusByOutTradeNo($result['out_trade_no'], 1);
+                // 主动调起预约门票流程
+                $this->load->model('grayline_ticket_model');
+                // 通过交易单号查询订单id
+                $orderInfo = $this->grayline_ticket_model->getOrderByOutTradeNo($result['out_trade_no']);
+                @file_put_contents('/pub/logs/paycallbackGraylineOrderInfo', '[' . date('Y-m-d H:i:s', time()) . ']' . json_encode($orderInfo) . PHP_EOL, FILE_APPEND);
+                if($orderInfo['status'] == 0) {
+                    $id = $orderInfo['data']['id'];
+                    $orderResult = $this->grayline_ticket_model->orderProduct($orderInfo['data']['openid'], $id);
+                    // 发起退款
+                    if($orderResult['status'] != 0) {
+                        $this->refund($orderResult['data']);
+                    }
+                }
             } else {
-                // $this->grayline_ticket_model->updateOrderStatus($result['out_trade_no'], 2);
+                $this->grayline_ticket_model->updateOrderStatusByOutTradeNo($result['out_trade_no'], 0);
             }
         }
     }
@@ -834,6 +866,7 @@ class api extends MY_Controller {
         }
         $arr = (array)$postObj;
         unset($arr['sign']);
+        @file_put_contents('/pub/logs/tmp', '[' . date('Y-m-d H:i:s', time()) . ']' . (self::getSign($arr, $config['key']) == $postArr['sign']) . PHP_EOL, FILE_APPEND);
         if(self::getSign($arr, $config['key']) == $postArr['sign']) {
             // echo '<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>';
             echo 'success';
