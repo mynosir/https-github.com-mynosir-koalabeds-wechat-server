@@ -385,6 +385,12 @@ class Cloudbeds_hotel_model extends MY_Model {
                             $newHotels[$k]['cn'] = $hotelCn['data'];
                         }
                     }
+                } else {
+                    $newHotels[$k]['details'] = $tmp['data'];
+                    $hotelCn = $this->getHotelCn($tmp['data']['id']);
+                    if($hotelCn['status'] == 0) {
+                        $newHotels[$k]['cn'] = $hotelCn['data'];
+                    }
                 }
             } else {
                 // 不存在，从酒店列表中剔除该数据
