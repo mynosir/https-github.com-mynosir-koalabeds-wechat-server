@@ -292,6 +292,13 @@ class api extends MY_Controller {
                 $this->load->model('cloudbeds_hotel_model');
                 $result = $this->cloudbeds_hotel_model->getHotelListInDB();
                 break;
+            // 通过门票订单id和openid获取订单信息
+            case 'getTicketByOrderIdAndOpenid':
+                $orderId = $this->get_request('orderId');
+                $openid = $this->get_request('openid');
+                $this->load->model('grayline_ticket_model');
+                $result = $this->grayline_ticket_model->getTicketByOrderIdAndOpenid($orderId, $openid);
+                break;
         }
         echo json_encode($result);
     }

@@ -302,4 +302,12 @@ class hotel_order_model extends MY_Model {
         $this->db->where($where)->update($this->table, $data);
     }
 
+
+    /**
+     *
+     */
+    public function postPayment($propertyID, $reservationID, $amount) {
+
+    }
+
 }

@@ -401,4 +401,22 @@ class Grayline_ticket_model extends MY_Model {
         }
     }
 
+
+    public function getTicketByOrderIdAndOpenid($orderId, $openid) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where id = ' . $orderId . ' and openid = "' . $openid . '"');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result[0]
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '未查找到对应订单信息'
+            );
+        }
+    }
+
 }
