@@ -232,7 +232,7 @@ class api extends MY_Controller {
             case 'getHotelOrders':
                 $openid = $this->get_request('openid');
                 $this->load->model('hotel_order_model');
-                $result = $this->hotel_order_model->getListByOpenid$($openid);
+                $result = $this->hotel_order_model->getListByOpenid($openid);
                 break;
         }
         echo json_encode($result);
@@ -588,6 +588,13 @@ class api extends MY_Controller {
                 $this->load->model('reviews_model');
                 $result = $this->reviews_model->add($params);
                 break;
+            // 取消订单
+            // case 'cancelHotelOrder':
+            //     $id = $this->get_request('id');
+            //     $openid = $this->get_request('openid');
+            //     $this->load->model('hotel_order_model');
+            //     $result =
+            //     break;
         }
         echo json_encode($result);
     }
