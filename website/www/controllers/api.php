@@ -112,6 +112,13 @@ class api extends MY_Controller {
                 $this->load->model('reviews_model');
                 $result = $this->reviews_model->getReviewsList($propertyID, $page, $num);
                 break;
+            // 根据订单id和openid获取评论列表
+            case 'getReviewsByOrderIdAndOpenid':
+                $orderId = $this->get_request('orderId');
+                $openid = $this->get_request('openid');
+                $this->load->model('reviews_model');
+                $result = $this->reviews_model->getReviewsByOrderIdAndOpenid($orderId, $openid);
+                break;
             // 获取openid
             case 'getOpenid':
                 $code = $this->get_request('code');         // 小程序传过来的code值
@@ -300,18 +307,19 @@ class api extends MY_Controller {
             case 'cancelOrder':
                 $id = $this->get_request('id');
                 $this->load->model('hotel_order_model');
-                // 查询订单信息，进行退款
-                $orderDetail = $this->hotel_order_model->getDetailById($id);
-                $refund = $this->refund($result['data']);
-                if($refund['status'] == 0) {
-                    $result = $this->hotel_order_model->updateStatusById($id, -1);
-                } else {
-                    $result = array(
-                        'status'    => -1,
-                        'msg'       => '退款失败',
-                        'ext'       => $refund
-                    );
-                }
+                $result = $this->hotel_order_model->updateStatusById($id, -1);
+                // // 查询订单信息，进行退款
+                // $orderDetail = $this->hotel_order_model->getDetailById($id);
+                // $refund = $this->refund($result['data']);
+                // if($refund['status'] == 0) {
+                //     $result = $this->hotel_order_model->updateStatusById($id, -1);
+                // } else {
+                //     $result = array(
+                //         'status'    => -1,
+                //         'msg'       => '退款失败',
+                //         'ext'       => $refund
+                //     );
+                // }
                 break;
             // 下订单
             case 'saveOrder':
@@ -628,6 +636,8 @@ class api extends MY_Controller {
             // 发表评价
             case 'saveReviews':
                 $params['userid'] = $this->get_request('userid');
+                $params['openid'] = $this->get_request('openid');
+                $params['orderId'] = $this->get_request('orderId');
                 $params['content'] = $this->get_request('content');
                 $params['propertyID'] = $this->get_request('propertyID');
                 $params['rate'] = $this->get_request('rate');

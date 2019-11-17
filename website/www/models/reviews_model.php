@@ -8,7 +8,7 @@
 class reviews_model extends MY_Model {
 
     private $table = 'ko_reviews';
-    private $fields = 'id, propertyID, userid, rate, content, create_time, status';
+    private $fields = 'id, propertyID, orderId, userid, openid, rate, content, create_time, status';
 
     public function __construct() {
         parent::__construct();
@@ -19,14 +19,19 @@ class reviews_model extends MY_Model {
      * 保存记录
      **/
     public function add($params) {
+        $this->load->model('user_model');
+        $CI = &get_instance();
+        $userid = $CI->user_model->getUserIdByOpenid($params['openid']);
         $data = array(
             'propertyID'    => $params['propertyID'],
-            'userid'        => $params['userid'],
+            'orderId'       => $params['orderId'],
+            'userid'        => $userid,
+            'openid'        => $params['openid'],
             'rate'          => $params['rate'],
             'content'       => $params['content'],
             'create_time'   => time()
         );
-        $this->db->insert($this->table, $params);
+        $this->db->insert($this->table, $data);
         $result = array(
             'status'    => 0,
             'msg'       => '保存成功！'
@@ -74,6 +79,28 @@ class reviews_model extends MY_Model {
                 'status'    => 0,
                 'msg'       => '查询成功',
                 'data'      => $result
+            );
+        } else {
+            $rtn = array(
+                'status'    => -1,
+                'msg'       => '没有更多数据'
+            );
+        }
+        return $rtn;
+    }
+
+
+    /**
+     * 获取评论，专门为个人显示，不过滤状态值
+     */
+    public function getReviewsByOrderIdAndOpenid($orderId, $openid) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `orderId` = ' . $orderId . ' and openid = "' . $openid . '"');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            $rtn = array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result[0]
             );
         } else {
             $rtn = array(

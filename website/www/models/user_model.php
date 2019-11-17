@@ -15,6 +15,17 @@ class user_model extends MY_Model {
     }
 
 
+    public function getUserIdByOpenid($openid) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where openid = "' . $openid . '"');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return $result[0]['id'];
+        } else {
+            return 0;
+        }
+    }
+
+
     public function saveUserinfo($openid, $userinfo) {
         if($userinfo == '') {
             return array(
