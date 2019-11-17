@@ -464,7 +464,8 @@ class api extends MY_Controller {
                             'rooms_roomTypeName'    => $params['rooms_roomTypeName'],
                             'rooms_roomTypeDesc'    => $params['rooms_roomTypeDesc'],
                             'rooms_roomTypeImg'     => $params['rooms_roomTypeImg'],
-                            'extinfo'       => $params['extinfo']
+                            'extinfo'       => $params['extinfo'],
+                            'unRoomRate'    => isset($params['unRoomRate']) ? $params['unRoomRate'] : $params['frontend_total']
                         );
                         $orderSaveResult = $this->hotel_order_model->generateOrder($orderParams);
                         if($orderSaveResult['status'] != 0) {

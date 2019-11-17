@@ -54,13 +54,14 @@ class hotel_order_model extends MY_Model {
         // 查询房间对应金额
         $this->load->model('cloudbeds_hotel_model');
         $CI = &get_instance();
-        $rate = $CI->cloudbeds_hotel_model->getRoomsFeesAndTaxes($data['startDate'], $data['endDate'], $data['frontend_total'], $data['rooms_quantity'], $data['propertyID']);
+        $rate = $CI->cloudbeds_hotel_model->getRoomsFeesAndTaxes($data['startDate'], $data['endDate'], $params['unRoomRate'], $data['rooms_quantity'], $data['propertyID']);
         if($rate['status'] != 0) {
             return array(
                 'status'    => -1,
                 'msg'       => $rate['msg']
             );
         }
+        @file_put_contents('/pub/logs/getPayParams_tmp1', json_encode($rate) . '------' . $rate['data']['grandTotal'] . '+++++++' . $params['source_prize']);
         $data['total'] = $rate['data']['grandTotal'];
         if($params['source_prize'] != $rate['data']['grandTotal']) {
             return array(
