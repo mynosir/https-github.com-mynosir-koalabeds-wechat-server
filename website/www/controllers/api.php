@@ -300,7 +300,18 @@ class api extends MY_Controller {
             case 'cancelOrder':
                 $id = $this->get_request('id');
                 $this->load->model('hotel_order_model');
-                $result = $this->hotel_order_model->updateStatusById($id, -1);
+                // 查询订单信息，进行退款
+                $orderDetail = $this->hotel_order_model->getDetailById($id);
+                $refund = $this->refund($result['data']);
+                if($refund['status'] == 0) {
+                    $result = $this->hotel_order_model->updateStatusById($id, -1);
+                } else {
+                    $result = array(
+                        'status'    => -1,
+                        'msg'       => '退款失败',
+                        'ext'       => $refund
+                    );
+                }
                 break;
             // 下订单
             case 'saveOrder':
