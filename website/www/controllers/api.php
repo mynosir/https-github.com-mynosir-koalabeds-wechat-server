@@ -251,6 +251,13 @@ class api extends MY_Controller {
                 $this->load->model('grayline_ticket_model');
                 $result = $this->grayline_ticket_model->getOrderList($openid);
                 break;
+            // 通过门票订单id获取订单详情
+            case 'getTicketOrderById':
+                $openid = $this->get_request('openid');
+                $id = $this->get_request('id');
+                $this->load->model('grayline_ticket_model');
+                $result = $this->grayline_ticket_model->getOrderById($openid, $id);
+                break;
         }
         echo json_encode($result);
     }

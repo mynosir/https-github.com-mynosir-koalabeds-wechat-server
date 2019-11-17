@@ -260,6 +260,31 @@ class home extends MY_Controller {
         var_dump($unifiedOrder);
     }
 
+
+    public function sms() {
+        $curl = curl_init();
+        $url = 'https://rest.nexmo.com/sms/json';
+        $data = array(
+            'api_key'   => '9ba1d919',
+            'api_secret'=> 'w11QEE6KgFq1xHYW',
+            'to'        => '8618665953630',
+            'from'      => 'koalabeds',
+            'text'      => '【koalabeds】1234',
+            'type'      => 'unicode'
+        );
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        if(!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($curl);
+        curl_close($curl);
+        var_dump($output);
+    }
+
     public function curlPost($url = '', $postData = '', $options = array()) {
         if(is_array($postData)) {
             $postData = http_build_query($postData);

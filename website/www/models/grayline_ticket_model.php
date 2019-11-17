@@ -342,4 +342,25 @@ class Grayline_ticket_model extends MY_Model {
         }
     }
 
+
+    /**
+     * 通过订单id查询订单详情
+     */
+    public function getOrderById($openid, $id) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where openid = "' . $openid . '" and id = ' . $id . ' order by id desc');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result[0]
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '未查找到对应订单信息'
+            );
+        }
+    }
+
 }
