@@ -75,6 +75,11 @@ class reviews_model extends MY_Model {
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `propertyID` = ' . $propertyID . ' and status = 0 order by id desc limit ' . ($page - 1) * $num . ' , ' . $num);
         $result = $query->result_array();
         if(count($result) > 0) {
+            $this->load->model('user_model');
+            $CI = &get_instance();
+            foreach($result as $k=>$v) {
+                $result[$k]['userinfo'] = $CI->user_model->getUserinfoByOpenid($params['openid']);
+            }
             $rtn = array(
                 'status'    => 0,
                 'msg'       => '查询成功',
