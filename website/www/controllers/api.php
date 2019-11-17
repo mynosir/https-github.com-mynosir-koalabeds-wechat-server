@@ -242,8 +242,9 @@ class api extends MY_Controller {
             // 获取酒店订单列表
             case 'getHotelOrders':
                 $openid = $this->get_request('openid');
+                $status = $this->get_request('status', -1);
                 $this->load->model('hotel_order_model');
-                $result = $this->hotel_order_model->getListByOpenid($openid);
+                $result = $this->hotel_order_model->getListByOpenid($openid, $status);
                 break;
             // 获取门票订单列表
             case 'getTicketOrders':
@@ -400,7 +401,8 @@ class api extends MY_Controller {
                             'coupon_id'     => isset($params['coupon_id']) ? $params['coupon_id'] : 0,
                             'rooms_roomTypeName'    => $params['rooms_roomTypeName'],
                             'rooms_roomTypeDesc'    => $params['rooms_roomTypeDesc'],
-                            'rooms_roomTypeImg'     => $params['rooms_roomTypeImg']
+                            'rooms_roomTypeImg'     => $params['rooms_roomTypeImg'],
+                            'extinfo'       => $params['extinfo']
                         );
                         $orderSaveResult = $this->hotel_order_model->generateOrder($orderParams);
                         if($orderSaveResult['status'] != 0) {

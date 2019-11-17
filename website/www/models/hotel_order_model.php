@@ -154,8 +154,12 @@ class hotel_order_model extends MY_Model {
     /**
      * 根据微信openid获取订单列表
      */
-    public function getListByOpenid($openid) {
-        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where openid = "' . $openid . '" order by id desc');
+    public function getListByOpenid($openid, $status = -1) {
+        $whereStr = ' openid = "' . $openid . '" ';
+        if($status != -1) {
+            $whereStr = ' openid = "' . $openid . '" and status = ' . $status . ' ';
+        }
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where ' . $whereStr . ' order by id desc');
         $result = $query->result_array();
         if(count($result) > 0) {
             $CI = &get_instance();
