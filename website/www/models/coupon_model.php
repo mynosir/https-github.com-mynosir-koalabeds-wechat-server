@@ -72,7 +72,7 @@ class coupon_model extends MY_Model {
                 );
             }
             // 判断是否已经领取对应优惠券
-            if(!!$this->checkRecordExistByID($openid, $v)) {
+            if(!!$this->checkRecordExistByCID($openid, $v)) {
                 return array(
                     'status'    => -3,
                     'msg'       => '已经领过该优惠券'
@@ -112,6 +112,20 @@ class coupon_model extends MY_Model {
      */
     public function checkRecordExistByID($openid, $id) {
         $query = $this->db->query('select ' . $this->record_fields . ' from ' . $this->record_table . ' where id = ' . $id . ' and openid = "' . $openid . '"');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * 检查是否已经领取过对应的优惠券
+     */
+    public function checkRecordExistByCID($openid, $id) {
+        $query = $this->db->query('select ' . $this->record_fields . ' from ' . $this->record_table . ' where cid = ' . $id . ' and openid = "' . $openid . '"');
         $result = $query->result_array();
         if(count($result) > 0) {
             return true;
