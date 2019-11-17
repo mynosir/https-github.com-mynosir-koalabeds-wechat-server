@@ -54,6 +54,7 @@ class api extends MY_Controller {
             // 获取用户语言配置
             case 'getLang':
                 $openid = $this->get_request('openid');
+                $this->load->model('user_model');
                 $userinfo = $this->user_model->getUserinfoByOpenid($openid);
                 if(!!$userinfo) {
                     $result = array(
@@ -299,6 +300,16 @@ class api extends MY_Controller {
                 $this->load->model('grayline_ticket_model');
                 $result = $this->grayline_ticket_model->getTicketByOrderIdAndOpenid($orderId, $openid);
                 break;
+            // 获取房间费率和总价
+            case 'getRoomsFeesAndTaxes':
+                $startDate = $this->get_request('startDate');
+                $endDate = $this->get_request('endDate');
+                $frontend_total = $this->get_request('frontend_total');
+                $rooms_quantity = $this->get_request('rooms_quantity');
+                $propertyID = $this->get_request('propertyID');
+                $this->load->model('cloudbeds_hotel_model');
+                $result = $this->cloudbeds_hotel_model->getRoomsFeesAndTaxes($data['startDate'], $data['endDate'], $data['frontend_total'], $data['rooms_quantity'], $data['propertyID']);
+                break;
         }
         echo json_encode($result);
     }
@@ -360,7 +371,10 @@ class api extends MY_Controller {
                 break;
             // 获取支付参数
             case 'getPay':
+                // $params = '{"openid":"oLq-f4hAXvgLDKvkfzslJaLIqs6A","propertyID":"171327","startDate":"2019-11-18","endDate":"2019-11-19","guestFirstName":"mp","guestLastName":"mp","guestCountry":"CN","guestZip":"000000","guestEmail":"mptest","guestPhone":"mptest","rooms":{"roomTypeID":205417,"quantity":1,"roomTypeName":"Deluxe Double Room","rate":190},"rooms_roomTypeName":"Deluxe Double Room","rooms_roomTypeImg":"https:\/\/h-img3.cloudbeds.com\/uploads\/171327\/l1000190_thumb~~5db2b05ac9259.jpg","rooms_roomTypeDesc":"Beautiful deluxe double room in H36 Guesthouse right in the centre of Jordan. <br>","adults":{"roomTypeID":205417,"quantity":10,"rate":190},"children":{"roomTypeID":205417,"quantity":1,"rate":190},"frontend_total":190,"coupon_id":"6","extinfo":""}';
+                // $params = json_decode($params, true);
                 $params = json_decode($this->get_request('params'), true);
+                @file_put_contents('/pub/logs/getPayParams', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($params) . PHP_EOL, FILE_APPEND);
                 $propertyID = isset($params['propertyID']) ? $params['propertyID'] : 0;
                 if(!isset($params['openid'])) {
                     $result = array(
@@ -456,7 +470,8 @@ class api extends MY_Controller {
                         if($orderSaveResult['status'] != 0) {
                             $result = array(
                                 'status'    => -3,
-                                'msg'       => '保存订单异常'
+                                'msg'       => '保存订单异常',
+                                'ext'       => $orderSaveResult
                             );
                         } else {
                             $result = array(
