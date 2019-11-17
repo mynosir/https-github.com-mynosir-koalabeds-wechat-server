@@ -321,3 +321,14 @@ alter table `ko_hotel_order` add column `rooms_roomTypeImg` varchar(1024) commen
 -- 酒店订单表和门票订单表添加附加信息，供客户端缓存用
 alter table `ko_hotel_order` add column `extinfo` text comment '酒店订单附加信息字段';
 alter table `ko_grayline_ticket` add column `extinfo` text comment '门票订单表添加附加信息字段';
+
+
+-- linzequan 20191117
+-- 酒店订单添加销账记录表
+create table `ko_payment_log` (
+    `id` int not null auto_increment comment '自增id',
+    `success` int comment '销账是否成功，0成功，1失败',
+    `content` varchar(1024) not null comment '日志内容',
+    `create_time` int(11) not null comment '日志记录时间',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = '酒店订单销账记录表';

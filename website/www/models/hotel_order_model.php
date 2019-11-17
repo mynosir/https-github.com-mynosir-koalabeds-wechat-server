@@ -8,7 +8,9 @@
 class hotel_order_model extends MY_Model {
 
     private $table = 'ko_hotel_order';
+    private $payment_log_table = 'ko_payment_log';
     private $fields = 'id, openid, propertyID, startDate, endDate, guestFirstName, guestLastName, guestCountry, guestZip, guestEmail, guestPhone, rooms, rooms_roomTypeID, rooms_quantity, adults, adults_roomTypeID, adults_quantity, children, children_roomTypeID, children_quantity, status, total, frontend_total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, reservationID, estimatedArrivalTime, outTradeNo, transaction_id, transaction_info, coupon_id, reservationInfo, rooms_roomTypeName, rooms_roomTypeDesc, rooms_roomTypeImg, extinfo';
+    private $payment_log_fields = 'id, success, content, create_time';
 
     public function __construct() {
         parent::__construct();
@@ -304,10 +306,52 @@ class hotel_order_model extends MY_Model {
 
 
     /**
-     *
+     * 酒店订单销账
      */
     public function postPayment($propertyID, $reservationID, $amount) {
-
+        $access_token_result = $this->update_cloudbeds_access_token();
+        if($access_token_result['status']) {
+            return array(
+                'status'    => -1,
+                'msg'       => $access_token_result['msg']
+            );
+        }
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/postPayment';
+        $data = array(
+            'propertyID'        => $propertyID,
+            'reservationID'     => $reservationID,
+            'type'              => 'Paid at another location.',
+            'amount'            => $amount,
+            'description'       => 'from Koalabeds mini program'
+            // 'cardType'          => 'visa'
+        );
+        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token'], $data, true);
+        // 写入销账表
+        if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
+            $params = array(
+                'success'   => 0,
+                'content'   => $apiReturnStr,
+                'create_time'   => time()
+            );
+            $this->db->insert($this->payment_log_table, $data);
+            return array(
+                'status'    => 0,
+                'msg'       => '操作成功',
+                'data'      => $params
+            );
+        } else {
+            $params = array(
+                'success'   => 1,
+                'content'   => $apiReturnStr,
+                'create_time'   => time()
+            );
+            $this->db->insert($this->payment_log_table, $data);
+            return array(
+                'status'    => -1,
+                'msg'       => '操作失败',
+                'data'      => $params
+            );
+        }
     }
 
 }
