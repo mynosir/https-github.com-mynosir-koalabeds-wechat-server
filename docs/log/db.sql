@@ -80,7 +80,7 @@ create table `ko_hotel_order` (
     `children` text comment '预订的儿童房间信息',
     `children_roomTypeID` varchar(32) default '' comment '预订的儿童房间信息',
     `children_quantity` int default 0 comment '预订的儿童房间数量',
-    `status` int default 0 comment '订单状态。0未支付，1已支付，2支付失败，3待确认，4订单取消，5预订失败，6预订成功，7入住，8离店，9不显示',
+    `status` int default 0 comment '0未支付，1已支付，2预定成功，-1订单取消',
     `total` varchar(32) comment '总价格（优惠后的价格）',
     `frontend_total` varchar(32) comment '小程序计算的总价格',
     `balance` varchar(32) comment '余款',
@@ -234,7 +234,7 @@ create table `ko_grayline_ticket` (
     `outTradeNo` varchar(64) comment '订单编号',
     `transaction_id` varchar(64) default '' comment '交易单号',
     `transaction_info` varchar(512) default '' comment '交易详情',
-    `status` int default 0 comment '订单状态。0未支付，1已支付，2支付失败，3待确认，4订单取消，5预订失败，6预订成功，7不显示',
+    `status` int default 0 comment '订单状态。0未支付，1已支付，2预定成功，-1订单取消',
     primary key (`id`)
 ) engine myisam character set utf8 collate utf8_general_ci comment = 'grayline票据订单表';
 
