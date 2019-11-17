@@ -485,7 +485,7 @@ class Cloudbeds_hotel_model extends MY_Model {
     /**
      * 筛选可用的房间
      */
-    public function getAvailableRoomTypes($propertyIDs, $checkInDate, $checkOutDate) {
+    public function getAvailableRoomTypes($propertyIDs, $checkInDate, $checkOutDate, $adults=-1, $children=-1) {
         $access_token_result = $this->update_cloudbeds_access_token();
         if($access_token_result['status']) {
             return array(
@@ -503,6 +503,12 @@ class Cloudbeds_hotel_model extends MY_Model {
         }
         if(!!$checkOutDate) {
             $filters[] = 'endDate=' . str_replace(' ', '%20', $checkOutDate);
+        }
+        if(!!$adults && $adults!=-1) {
+            $filters[] = 'adults=' . str_replace(' ', '%20', $adults);
+        }
+        if(!!$children && $children!=-1) {
+            $filters[] = 'children=' . str_replace(' ', '%20', $children);
         }
         $filtersStr = '';
         if(count($filters) > 0) {

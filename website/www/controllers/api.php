@@ -100,7 +100,9 @@ class api extends MY_Controller {
                 $propertyID = $this->get_request('propertyID', 0);
                 $checkInDate = $this->get_request('checkInDate', '');       // 入住日期
                 $checkOutDate = $this->get_request('checkOutDate', '');     // 离店日期
-                $result = $this->cloudbeds_hotel_model->getAvailableRoomTypes($propertyID, $checkInDate, $checkOutDate);
+                $adults = $this->get_request('adults', 1);                  // 大人数量
+                $children = $this->get_request('children', 0);              // 小孩数量
+                $result = $this->cloudbeds_hotel_model->getAvailableRoomTypes($propertyID, $checkInDate, $checkOutDate, $adults, $children);
                 break;
             // 获取评论列表
             case 'getReviews':

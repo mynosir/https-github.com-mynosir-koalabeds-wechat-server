@@ -69,8 +69,10 @@ class hotel_order_model extends MY_Model {
         $data['total'] = $params['total_fee'];
         $data['source_prize'] = $params['source_prize'];
         // 变更优惠券状态
-        $this->load->model('coupon_model');
-        $CI->coupon_model->updateStatus($params['coupon_id'], 1);
+        if(isset($params['coupon_id']) && $params['coupon_id'] > 0) {
+            $this->load->model('coupon_model');
+            $CI->coupon_model->updateStatus($params['coupon_id'], 1);
+        }
         $this->db->insert($this->table, $data);
         $insertId = $this->db->insert_id();
         return array(
@@ -230,6 +232,9 @@ class hotel_order_model extends MY_Model {
             );
         }
         $orderDetail = $orderDetail['data'];
+        $roomInfo = json_decode($orderDetail['rooms'], true);
+        $adultsInfo = json_decode($orderDetail['adults'], true);
+        $children = json_decode($orderDetail['children'], true);
         $data = array(
             'propertyID'    => $orderDetail['propertyID'],
             'startDate'     => $orderDetail['startDate'],
@@ -241,21 +246,25 @@ class hotel_order_model extends MY_Model {
             'guestEmail'    => $orderDetail['guestEmail'],
             'rooms'         => array(array(
                 'roomTypeID'    => $orderDetail['rooms_roomTypeID'],
-                'quantity'      => $orderDetail['rooms_quantity']
+                'quantity'      => $orderDetail['rooms_quantity'],
+                'rate'          => isset($roomInfo['rate']) ? $roomInfo['rate'] : 0
             )),
             'adults'        => array(array(
                 'roomTypeID'    => $orderDetail['adults_roomTypeID'],
-                'quantity'      => $orderDetail['adults_quantity']
+                'quantity'      => $orderDetail['adults_quantity'],
+                'rate'          => isset($adultsInfo['rate']) ? $adultsInfo['rate'] : 0
             )),
             'children'      => array(array(
                 'roomTypeID'    => $orderDetail['children_roomTypeID'],
-                'quantity'      => $orderDetail['children_quantity']
+                'quantity'      => $orderDetail['children_quantity'],
+                'rate'          => isset($children['rate']) ? $children['rate'] : 0
             )),
             'paymentMethod' => 'cash'
         );
         $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token'], $data, true);
         // array(13) { ["success"]=> bool(true) ["reservationID"]=> string(12) "842706099534" ["status"]=> string(9) "confirmed" ["guestID"]=> int(26820944) ["guestFirstName"]=> string(6) "zequan" ["guestLastName"]=> string(3) "lin" ["guestGender"]=> string(3) "N/A" ["guestEmail"]=> string(16) "361789273@qq.com" ["startDate"]=> string(10) "2019-11-10" ["endDate"]=> string(10) "2019-11-13" ["dateCreated"]=> string(19) "2019-11-07 15:52:29" ["grandTotal"]=> int(900) ["unassigned"]=> array(1) { [0]=> array(7) { ["subReservationID"]=> string(12) "842706099534" ["roomTypeName"]=> string(29) "4 Guests Ensuite with Windows" ["roomTypeID"]=> int(197686) ["adults"]=> int(1) ["children"]=> int(0) ["dailyRates"]=> array(3) { [0]=> array(2) { ["date"]=> string(10) "2019-11-10" ["rate"]=> int(300) } [1]=> array(2) { ["date"]=> string(10) "2019-11-11" ["rate"]=> int(300) } [2]=> array(2) { ["date"]=> string(10) "2019-11-12" ["rate"]=> int(300) } } ["roomTotal"]=> int(900) } } }
         // 根据不同返回状态更新订单状态
+        @file_put_contents('/pub/logs/saveOrderParams', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($data) . PHP_EOL, FILE_APPEND);
         @file_put_contents('/pub/logs/saveOrder', '[' . date('Y-m-d H:i:s', time()) . '](' . json_encode($apiReturnStr) . PHP_EOL, FILE_APPEND);
         if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
             $this->update_status($orderDetail['outTradeNo'], 2);

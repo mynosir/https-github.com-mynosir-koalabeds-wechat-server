@@ -52,7 +52,7 @@ class home extends MY_Controller {
 
     public function getHotels() {
         $curl = curl_init();
-        $access_token = 'fn3J6VwleQaKr5011AkkeC5uc2RRRHXmDuUreq5y';
+        $access_token = '2tBHitaksLZbyTseYm2qr1yRRrQRM9rUmjkUBo3Y';
         $url = 'https://hotels.cloudbeds.com/api/v1.1/getHotels';
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -109,8 +109,8 @@ class home extends MY_Controller {
 
     public function getAvailableRoomTypes() {
         $curl = curl_init();
-        $access_token = 'RxNFRVFOXYh1BjTIr8wQoup7vftxqmgBTZYAsgow';
-        $url = 'https://hotels.cloudbeds.com/api/v1.1/getAvailableRoomTypes?propertyIDs=170048&startDate=2019-11-10&endDate=2019-11-13&rooms=1';
+        $access_token = '2tBHitaksLZbyTseYm2qr1yRRrQRM9rUmjkUBo3Y';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getAvailableRoomTypes?propertyIDs=172068&startDate=2019-11-18&endDate=2019-11-19&rooms=1';
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
@@ -145,30 +145,52 @@ class home extends MY_Controller {
     }
 
 
+    public function getRate() {
+        $curl = curl_init();
+        $access_token = '2tBHitaksLZbyTseYm2qr1yRRrQRM9rUmjkUBo3Y';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getRate?roomTypeID=208676&startDate=2019-11-17&endDate=2019-11-18';
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '. $access_token));
+        if(!empty($data)) {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+        var_dump($output);
+    }
+
+
     public function postReservation() {
         $curl = curl_init();
-        $access_token = '886bQhQs9b9wReKSuMYgwp90q3XsdFbLV2iSzEzD';
+        $access_token = '2tBHitaksLZbyTseYm2qr1yRRrQRM9rUmjkUBo3Y';
         $url = 'https://hotels.cloudbeds.com/api/v1.1/postReservation';
         $data = array(
-            'propertyID'    =>  170048,
-            'startDate'     => '2019-11-16',
-            'endDate'       => '2019-11-17',
-            'guestFirstName'    => 'zequan',
-            'guestLastName' => 'lin',
-            'guestCountry'  => 'US',
-            'guestZip'      => '94121',
+            'propertyID'    =>  173267,
+            'startDate'     => '2019-11-18',
+            'endDate'       => '2019-11-19',
+            'guestFirstName'    => '123',
+            'guestLastName' => '123',
+            'guestCountry'  => 'CN',
+            'guestZip'      => '000000',
             'guestEmail'    => '361789273@qq.com',
             'rooms' => array(array(
-                'roomTypeID'=> 197686,
-                'quantity'  => 1
+                'roomTypeID'=> 208676,
+                'quantity'  => 1,
+                'rate'      => 100
             )),
             'adults'    => array(array(
-                'roomTypeID'=> 197686,
-                'quantity'  => 1
+                'roomTypeID'=> 208676,
+                'quantity'  => 1,
+                'rate'      => 100
             )),
             'children'  => array(array(
-                'roomTypeID'=> 197686,
-                'quantity'  => 0
+                'roomTypeID'=> 208676,
+                'quantity'  => 0,
+                'rate'      => 100
             )),
             'paymentMethod' => 'cash'
         );
