@@ -204,7 +204,7 @@ class Cloudbeds_hotel_model extends MY_Model {
                 'msg'       => $access_token_result['msg']
             );
         }
-        $url = 'https://hotels.cloudbeds.com/api/v1.1/getRoomTypes?propertyIDs=' . $propertyID . '&roomTypeIDs=' . $roomTypeID;
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getRoomTypes?propertyIDs=' . $propertyID . '&roomTypeID=' . $roomTypeID;
         $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
         if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
             return array(
