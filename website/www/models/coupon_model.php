@@ -135,6 +135,24 @@ class coupon_model extends MY_Model {
     }
 
 
+    public function getCouponByCid($cid) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where id=' . $cid);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result[0]
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '查询失败'
+            );
+        }
+    }
+
+
     /**
      * 判断优惠券是否可用
      */
@@ -143,11 +161,25 @@ class coupon_model extends MY_Model {
         $result = $query->result_array();
         if(count($result) > 0) {
             if($result[0]['status'] == 0) {
-                return array(
-                    'status'    => 0,
-                    'msg'       => '优惠券有效',
-                    'data'      => $result[0]
-                );
+                // 通过cid查询优惠券详情
+                $couponInfo = $this->getCouponByCid($result[0]['cid']);
+                if($couponInfo['status'] != 0) {
+                    return array(
+                        'status'    => -3,
+                        'msg'       => '优惠券信息异常'
+                    );
+                } else {
+                    $result[0]['totalAmount'] = $couponInfo['data']['totalAmount'];
+                    $result[0]['discountAmount'] = $couponInfo['data']['discountAmount'];
+                    $result[0]['validateDate'] = $couponInfo['data']['validateDate'];
+                    $result[0]['zorder'] = $couponInfo['data']['zorder'];
+                    $result[0]['couponStatus'] = $couponInfo['data']['status'];
+                    return array(
+                        'status'    => 0,
+                        'msg'       => '优惠券有效',
+                        'data'      => $result[0]
+                    );
+                }
             } else {
                 return array(
                     'status'    => -1,

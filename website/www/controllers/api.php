@@ -346,15 +346,16 @@ class api extends MY_Controller {
                                     'status'    => -4,
                                     'msg'       => $couponStatus['msg']
                                 );
+                            } else {
+                                // 优惠券是否满足使用条件
+                                if((float)$couponStatus['data']['totalAmount'] > (float)$source_prize) {
+                                    return array(
+                                        'status'    => -5,
+                                        'msg'       => '优惠券不满足使用条件'
+                                    );
+                                }
+                                $total_fee = (float)$source_prize - (float)$couponStatus['data']['discountAmount'];
                             }
-                            // 优惠券是否满足使用条件
-                            if((float)$couponStatus['data']['totalAmount'] > (float)$source_prize) {
-                                return array(
-                                    'status'    => -5,
-                                    'msg'       => '优惠券不满足使用条件'
-                                );
-                            }
-                            $total_fee = (float)$source_prize - (float)$couponStatus['data']['discountAmount'];
                         }
                         // 保存订单
                         $data = array(
