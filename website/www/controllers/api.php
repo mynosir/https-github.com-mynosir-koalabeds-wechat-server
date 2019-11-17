@@ -57,6 +57,17 @@ class api extends MY_Controller {
                 $this->load->model('coupon_model');
                 $result = $this->coupon_model->getList($openid);
                 break;
+            // 获取用户优惠券列表
+            case 'getCouponByOpenid':
+                $openid = $this->get_request('openid');
+                $this->load->model('coupon_model');
+                $list = $this->coupon_model->getUserCouponRecord($openid);
+                $result = array(
+                    'status'    => 0,
+                    'msg'       => '查询成功',
+                    'data'      => $list
+                );
+                break;
             // 获取城市列表
             case 'getCitys':
                 $this->load->model('cloudbeds_hotel_model');
