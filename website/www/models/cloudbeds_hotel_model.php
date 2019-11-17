@@ -369,10 +369,22 @@ class Cloudbeds_hotel_model extends MY_Model {
         foreach($newHotels as $k=>$v) {
             $tmp = $this->getHotelDetailsInDB($v['propertyID']);
             if($tmp['status'] == 0) {
-                $newHotels[$k]['details'] = $tmp['data'];
-                $hotelCn = $this->getHotelCn($tmp['data']['id']);
-                if($hotelCn['status'] == 0) {
-                    $newHotels[$k]['cn'] = $hotelCn['data'];
+                // 判断是否有传星级，有的话则进行过滤
+                if($params['rank'] > 0) {
+                    // 查询酒店对应的评星
+                    $this->load->model('reviews_model');
+                    $CI = &get_instance();
+                    $reviewsRate = $CI->reviews_model->getReviewsRate($v['propertyID']);
+                    if($reviewsRate['status'] == 0 && $reviewsRate['data']['rate'] != $params['rank']) {
+                        // 从酒店列表中剔除该数据
+                        unset($newHotels[$k]);
+                    } else {
+                        $newHotels[$k]['details'] = $tmp['data'];
+                        $hotelCn = $this->getHotelCn($tmp['data']['id']);
+                        if($hotelCn['status'] == 0) {
+                            $newHotels[$k]['cn'] = $hotelCn['data'];
+                        }
+                    }
                 }
             } else {
                 // 不存在，从酒店列表中剔除该数据
