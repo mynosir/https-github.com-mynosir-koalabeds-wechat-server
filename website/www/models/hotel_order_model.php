@@ -133,6 +133,9 @@ class hotel_order_model extends MY_Model {
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where id = ' . $id);
         $result = $query->result_array();
         if(count($result) > 0) {
+            $CI = &get_instance();
+            $this->load->model('cloudbeds_hotel_model');
+            $result[0]['hotelInfo'] = $CI->cloudbeds_hotel_model->getHotelDetailsInDB($result[0]['propertyID']);
             return array(
                 'status'    => 0,
                 'msg'       => '查询成功',
@@ -154,6 +157,11 @@ class hotel_order_model extends MY_Model {
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where openid = "' . $openid . '" order by id desc');
         $result = $query->result_array();
         if(count($result) > 0) {
+            $CI = &get_instance();
+            $this->load->model('cloudbeds_hotel_model');
+            foreach($result as $k=>$v) {
+                $result[$k]['hotelInfo'] = $CI->cloudbeds_hotel_model->getHotelDetailsInDB($v['propertyID']);
+            }
             return array(
                 'status'    => 0,
                 'msg'       => '查询成功',
