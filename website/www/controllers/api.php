@@ -298,7 +298,7 @@ class api extends MY_Controller {
             case 'cancelOrder':
                 $id = $this->get_request('id');
                 $this->load->model('hotel_order_model');
-                $result = $this->hotel_order_model->updateStatusById($id, 2);
+                $result = $this->hotel_order_model->updateStatusById($id, -1);
                 break;
             // 下订单
             case 'saveOrder':

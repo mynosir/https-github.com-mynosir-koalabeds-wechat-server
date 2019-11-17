@@ -124,6 +124,10 @@ class hotel_order_model extends MY_Model {
             'status'    => $status
         );
         $this->db->where($where)->update($this->table, $data);
+        return array(
+            'status'    => 0,
+            'msg'       => '更新成功'
+        );
     }
 
 
