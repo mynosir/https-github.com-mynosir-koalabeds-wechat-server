@@ -8,7 +8,7 @@
 class Grayline_ticket_model extends MY_Model {
 
     private $table = 'ko_grayline_ticket';
-    private $fields = 'id, openid, type, productId, travelDate, travelTime, turbojetDepartureDate, turbojetReturnDate, turbojetDepartureTime, turbojetReturnTime, turbojetDepartureFrom, turbojetDepartureTo, turbojetReturnFrom, turbojetReturnTo, turbojetQuantity, turbojetClass, turbojetTicketType, turbojetDepartureFlightNo, turbojetReturnFlightNo, hotel, title, firstName, lastName, passport, guestEmail, countryCode, telephone, promocode, agentReference, remark, subQty, subQtyProductPriceId, subQtyValue, totalPrice, info, orderParamsDetail, outTradeNo, transaction_id, transaction_info, status, create_time, sourcePrice';
+    private $fields = 'id, openid, type, productId, travelDate, travelTime, turbojetDepartureDate, turbojetReturnDate, turbojetDepartureTime, turbojetReturnTime, turbojetDepartureFrom, turbojetDepartureTo, turbojetReturnFrom, turbojetReturnTo, turbojetQuantity, turbojetClass, turbojetTicketType, turbojetDepartureFlightNo, turbojetReturnFlightNo, hotel, title, firstName, lastName, passport, guestEmail, countryCode, telephone, promocode, agentReference, remark, subQty, subQtyProductPriceId, subQtyValue, totalPrice, info, orderParamsDetail, outTradeNo, transaction_id, transaction_info, status, create_time, sourcePrice, extinfo';
     private $email = 'wesley@koalabeds.com.hk';
     private $password = 'clcwesley1';
 

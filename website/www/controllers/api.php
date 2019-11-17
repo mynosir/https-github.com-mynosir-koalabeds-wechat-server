@@ -576,7 +576,8 @@ class api extends MY_Controller {
                         'info'          => isset($params['info']) ? $params['info'] : '',
                         'orderParamsDetail'     => json_encode($params),
                         'outTradeNo'    => $outTradeNo,
-                        'subQty'        => isset($params['subQty']) ? json_encode($params['subQty']) : ''
+                        'subQty'        => isset($params['subQty']) ? json_encode($params['subQty']) : '',
+                        'extinfo'       => isset($params['extinfo']) ? $params['extinfo'] : ''
                     );
                     $orderSaveResult = $this->grayline_ticket_model->generateOrder($orderParams);
                     if($orderSaveResult['status'] != 0) {

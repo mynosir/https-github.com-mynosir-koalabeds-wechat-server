@@ -313,3 +313,9 @@ alter table `ko_hotel_order` add column `reservationInfo` text comment '预订�
 alter table `ko_hotel_order` add column `rooms_roomTypeName` varchar(255) comment '房间类型名称';
 alter table `ko_hotel_order` add column `rooms_roomTypeDesc` text comment '房间类型描述';
 alter table `ko_hotel_order` add column `rooms_roomTypeImg` varchar(1024) comment '房间类型图片';
+
+
+-- linzequan 20191117
+-- 酒店订单表和门票订单表添加附加信息，供客户端缓存用
+alter table `ko_hotel_order` add column `extinfo` text comment '酒店订单附加信息字段';
+alter table `ko_grayline_ticket` add column `extinfo` text comment '门票订单表添加附加信息字段';
