@@ -212,13 +212,13 @@ class home extends MY_Controller {
 
     public function postPayment() {
         $curl = curl_init();
-        $access_token = 'SnzJW8ZZy5nP2qOKP8SkdSdotqW8L4zabfYl4RoL';
+        $access_token = 'fytdUbjUYgCXN1z4B07dPkcDbUWDGd3EjxGULhaB';
         $url = 'https://hotels.cloudbeds.com/api/v1.1/postPayment';
         $data = array(
-            'propertyID'        => 173267,
-            'reservationID'     => '073394286057',
+            'propertyID'        => 172068,
+            'reservationID'     => '267985683407',
             'type'              => 'Paid at another location.',
-            'amount'            => 260,
+            'amount'            => 430,
             'description'       => 'from Koalabeds mini program'
             // 'cardType'          => 'visa'
         );

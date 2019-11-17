@@ -325,7 +325,9 @@ class hotel_order_model extends MY_Model {
             'description'       => 'from Koalabeds mini program'
             // 'cardType'          => 'visa'
         );
+        @file_put_contents('/pub/logs/postPaymentParams', '[' . date('Y-m-d H:i:s', time()) . ']' . json_encode($data) . PHP_EOL, FILE_APPEND);
         $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token'], $data, true);
+        @file_put_contents('/pub/logs/postPayment', '[' . date('Y-m-d H:i:s', time()) . ']' . json_encode($apiReturnStr) . PHP_EOL, FILE_APPEND);
         // 写入销账表
         if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
             $params = array(

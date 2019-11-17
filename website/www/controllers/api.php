@@ -793,8 +793,7 @@ class api extends MY_Controller {
                         $this->refund($orderResult['data']);
                     } else {
                         // 发起销账流程
-                        $paymentResult = $this->hotel_order_model->postPayment($orderInfo['data']['propertyID'], $orderResult['data']['reservationID'], $orderResult['data']['grandTotal']);
-                        @file_put_contents('/pub/logs/postPayment', '[' . date('Y-m-d H:i:s', time()) . ']' . json_encode($paymentResult) . PHP_EOL, FILE_APPEND);
+                        // $paymentResult = $this->hotel_order_model->postPayment($orderInfo['data']['propertyID'], $orderResult['data']['reservationID'], $orderResult['data']['grandTotal']);
                     }
                 }
             } else {
