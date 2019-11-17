@@ -17,8 +17,9 @@ $(function() {
                     show = ['show','hide'],
                     listTpl = '<tr><th>serial no.</th><th>totalAmount</th><th>discountAmount</th><th>validateDate</th><th>zorder</th><th>status</th><th>operation</th></tr>';
                 for(var i in list) {
+                    var listid = parseInt(i)+1;
                     listTpl += '<tr>';
-                    listTpl += '<td>' + list[i]['id'] + '</td>';
+                    listTpl += '<td>' + listid + '</td>';
                     listTpl += '<td>' + list[i]['totalAmount'] + '</td>';
                     listTpl += '<td>' + list[i]['discountAmount'] + '</td>';
                     listTpl += '<td>' + list[i]['validateDate'] + '</td>';

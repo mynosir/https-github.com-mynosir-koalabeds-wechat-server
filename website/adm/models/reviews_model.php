@@ -9,6 +9,8 @@ class Reviews_model extends MY_Model {
 
     private $table = 'ko_reviews';
     private $fields = 'id, propertyID, userid, rate, content, create_time, status';
+    private $table_wx = 'ko_user';
+    private $fields_wx = 'id, wx_nickname';
 
     public function __construct() {
         parent::__construct();
@@ -36,6 +38,13 @@ class Reviews_model extends MY_Model {
             } else {
                 $item['create_time'] = '';
             }
+        }
+
+
+        foreach ($result as $k => $v) {
+          // code...
+          $queryid = $v['userid'];
+          $result[$k]['wx_nickname'] = $this->db->query('select ' . $this->fields_wx . ' from ' . $this->table_wx . ' where id = "'.$queryid.'"')->row()->wx_nickname;
         }
 
         $pageQuery = $this->db->query('select count(1) as num from ' . $this->table);

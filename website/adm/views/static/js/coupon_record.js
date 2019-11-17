@@ -16,11 +16,13 @@ $(function() {
                 var list = res['list'],
                     show = ['show','hide'],
                     used = ['unused','used'],
-                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>couponId</th><th>status</th><th>createtime</th></tr>';
+                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>wx_nickname</th><th>couponId</th><th>status</th><th>createtime</th></tr>';
                 for(var i in list) {
+                    var listid = parseInt(i)+1;
                     listTpl += '<tr>';
-                    listTpl += '<td>' + list[i]['id'] + '</td>';
+                    listTpl += '<td>' + listid + '</td>';
                     listTpl += '<td>' + list[i]['openid'] + '</td>';
+                    listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
                     listTpl += '<td>' + list[i]['cid'] + '</td>';
                     listTpl += '<td>' + used[list[i]['status']] + '</td>';
                     listTpl += '<td>' + list[i]['create_time'] + '</td>';

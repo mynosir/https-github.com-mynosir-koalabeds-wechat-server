@@ -19,15 +19,17 @@ $(function() {
 
                     var idx = 1,
                         list = res['list'],
-                        listTpl = '<tr><th>propertyID</th><th>name</th><th>name_cn</th><th>phone</th><th>email</th><th>address1</th><th>address2</th><th>city</th><th>state</th><th>zip</th><th>country</th><th>latitude</th><th>longtitude</th><th>checkInTime</th><th>checkOutTime</th></tr>',
+                        listTpl = '<tr><th>serial no.</th><th>propertyID</th><th>name</th><th>name_cn</th><th>phone</th><th>email</th><th>address1</th><th>address2</th><th>city</th><th>state</th><th>zip</th><th>country</th><th>latitude</th><th>longtitude</th><th>checkInTime</th><th>checkOutTime</th></tr>',
                         listTpl2 = '<tr><th>status</th><th>operation</th></tr>',
                         hotelStatus = ['unchecked','approve','deny'];
 
                     for(var i in list) {
+                        var listid = parseInt(i)+1;
                         if(list[i]['name_cn'] ==undefined){
                           list[i]['name_cn'] = ''
                         }
                         listTpl += '<tr>';
+                        listTpl += '<td>' + listid + '</td>';
                         listTpl += '<td>' + list[i]['propertyID'] + '</td>';
                         listTpl += '<td>' + list[i]['propertyName'] + '</td>';
                         listTpl += '<td>' + list[i]['name_cn'] + '</td>';

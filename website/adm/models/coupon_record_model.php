@@ -9,6 +9,8 @@ class Coupon_record_model extends MY_Model {
 
     private $table = 'ko_coupon_record';
     private $fields = 'id, openid, cid, status, create_time';
+    private $table_wx = 'ko_user';
+    private $fields_wx = 'openid, wx_nickname';
 
     public function __construct() {
         parent::__construct();
@@ -26,7 +28,11 @@ class Coupon_record_model extends MY_Model {
         $where = ' where 1=1 ';
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . $where . 'order by id asc limit ' . $limitStart . ', ' . $size);
         $result = $query->result_array();
-
+        foreach ($result as $k => $v) {
+          // code...
+          $queryOpenid = $v['openid'];
+          $result[$k]['wx_nickname'] = $this->db->query('select ' . $this->fields_wx . ' from ' . $this->table_wx . ' where openid = "'.$queryOpenid.'"')->row()->wx_nickname;
+        }
         $pageQuery = $this->db->query('select count(1) as num from ' . $this->table);
         $pageResult = $pageQuery->result_array();
         $num = $pageResult[0]['num'];

@@ -1,6 +1,6 @@
 $(function() {
     var page = {
-        init: function(p) {
+        init: function(p, nickname, status) {
             var json = {
                 api: config.apiServer + 'ticket/get',
                 type: 'get',
@@ -8,7 +8,8 @@ $(function() {
                     actionxm: 'getTicket',
                     page: !p ? 1 : p,
                     size: 20,
-                    classify: 0
+                    nickname: nickname,
+                    status: status
                 }
             };
             var callback = function(res) {
@@ -16,28 +17,31 @@ $(function() {
                 var list = res['list'],
                     show = ['show','hide'],
                     status = ['to be paid','paid','payment failure','not_confirmed','order canceled','reserve fail','reserve success','no_show'],
-                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>type</th><th>productId</th><th>travelDate</th><th>travelTime</th><th>turbojetDepartureDate</th><th>turbojetReturnDate</th><th>turbojetDepartureTime</th><th>turbojetReturnTime</th><th>turbojetDepartureFrom</th><th>turbojetDepartureTo</th><th>turbojetReturnFrom</th><th>turbojetReturnTo</th><th>turbojetQuantity</th><th>turbojetClass</th><th>turbojetTicketType</th><th>turbojetDepartureFlightNo</th><th>turbojetReturnFlightNo</th><th>hotel</th><th>title</th><th>firstName</th><th>lastName</th><th>passport</th><th>guestEmail</th><th>countryCode</th><th>telephone</th><th>promocode</th><th>agentReference</th><th>remark</th><th>subQtyProductPriceId</th><th>subQtyValue</th><th>totalPrice</th><th>info</th><th>orderParamsDetail</th><th>create_time</th><th>outTradeNo</th><th>transaction_id</th><th>transaction_info</th><th>status</th></tr>';
+                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>wx_nickname</th><th>type</th><th>productId</th><th>hotel</th><th>title</th><th>firstName</th><th>lastName</th><th>passport</th><th>guestEmail</th><th>countryCode</th><th>telephone</th><th>promocode</th><th>agentReference</th><th>remark</th><th>subQtyProductPriceId</th><th>subQtyValue</th><th>totalPrice</th><th>info</th><th>create_time</th><th>outTradeNo</th><th>transaction_id</th><th>transaction_info</th><th>status</th></tr>';
+                    // <th>travelDate</th><th>travelTime</th><th>turbojetDepartureDate</th><th>turbojetReturnDate</th><th>turbojetDepartureTime</th><th>turbojetReturnTime</th><th>turbojetDepartureFrom</th><th>turbojetDepartureTo</th><th>turbojetReturnFrom</th><th>turbojetReturnTo</th><th>turbojetQuantity</th><th>turbojetClass</th><th>turbojetTicketType</th><th>turbojetDepartureFlightNo</th><th>turbojetReturnFlightNo</th>
                 for(var i in list) {
+                    var listid = parseInt(i)+1;
                     listTpl += '<tr>';
-                    listTpl += '<td>' + list[i]['id'] + '</td>';
+                    listTpl += '<td>' + listid + '</td>';
                     listTpl += '<td>' + list[i]['openid'] + '</td>';
+                    listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
                     listTpl += '<td>' + list[i]['type'] + '</td>';
                     listTpl += '<td>' + list[i]['productId'] + '</td>';
-                    listTpl += '<td>' + list[i]['travelDate'] + '</td>';
-                    listTpl += '<td>' + list[i]['travelTime'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetDepartureDate'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetReturnDate'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetDepartureTime'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetReturnTime'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetDepartureFrom'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetDepartureTo'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetReturnFrom'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetReturnTo'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetQuantity'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetClass'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetTicketType'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetDepartureFlightNo'] + '</td>';
-                    listTpl += '<td>' + list[i]['turbojetReturnFlightNo'] + '</td>';
+                    // listTpl += '<td>' + list[i]['travelDate'] + '</td>';
+                    // listTpl += '<td>' + list[i]['travelTime'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetDepartureDate'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetReturnDate'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetDepartureTime'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetReturnTime'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetDepartureFrom'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetDepartureTo'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetReturnFrom'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetReturnTo'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetQuantity'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetClass'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetTicketType'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetDepartureFlightNo'] + '</td>';
+                    // listTpl += '<td>' + list[i]['turbojetReturnFlightNo'] + '</td>';
                     listTpl += '<td>' + list[i]['hotel'] + '</td>';
                     listTpl += '<td>' + list[i]['title'] + '</td>';
                     listTpl += '<td>' + list[i]['firstName'] + '</td>';
@@ -53,7 +57,7 @@ $(function() {
                     listTpl += '<td>' + list[i]['subQtyValue'] + '</td>';
                     listTpl += '<td>' + list[i]['totalPrice'] + '</td>';
                     listTpl += '<td>' + list[i]['info'] + '</td>';
-                    listTpl += '<td>' + list[i]['orderParamsDetail'] + '</td>';
+                    // listTpl += '<td>' + list[i]['orderParamsDetail'] + '</td>';
                     listTpl += '<td>' + list[i]['create_time'] + '</td>';
                     listTpl += '<td>' + list[i]['outTradeNo'] + '</td>';
                     listTpl += '<td>' + list[i]['transaction_id'] + '</td>';
@@ -243,4 +247,14 @@ $(function() {
             }
         }
     });
+    $('.js_searchFrom').submit(function(e) {
+        e.preventDefault();
+        // var p = $('.js_page li[class=active] a').data('page');
+        var nickname = $('#nickname').val();
+        var status = $('#status').val();
+        // console.log(nickname);
+        // console.log(status);
+        page.init(1, nickname, status);
+    });
+
 });

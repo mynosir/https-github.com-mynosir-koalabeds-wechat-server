@@ -16,17 +16,18 @@ $(function() {
                 var list = res['list'],
                     sex = ['unknown','male','female'],
 
-                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>avartar</th><th>city</th><th>province</th><th>country</th><th>sex</th><th>language</th><th>nickname</th><th>lang</th></tr>';
+                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>avartar</th><th>city</th><th>province</th><th>country</th><th>sex</th><th>nickname</th><th>lang</th></tr>';
                 for(var i in list) {
+                    var listid = parseInt(i)+1;
                     listTpl += '<tr>';
-                    listTpl += '<td>' + list[i]['id'] + '</td>';
+                    listTpl += '<td>' + listid + '</td>';
                     listTpl += '<td>' + list[i]['openid'] + '</td>';
                     listTpl += '<td><img src="' + list[i]['wx_avatarUrl'] + '" style="width: 60px; height: 60px;"></td>';
                     listTpl += '<td>' + list[i]['wx_city'] + '</td>';
                     listTpl += '<td>' + list[i]['wx_province'] + '</td>';
                     listTpl += '<td>' + list[i]['wx_country'] + '</td>';
                     listTpl += '<td>' + sex[list[i]['wx_sex']] + '</td>';
-                    listTpl += '<td>' + list[i]['wx_language'] + '</td>';
+                    // listTpl += '<td>' + list[i]['wx_language'] + '</td>';
                     listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
                     listTpl += '<td>' + list[i]['lang'] + '</td>';
                     listTpl += '</tr>';

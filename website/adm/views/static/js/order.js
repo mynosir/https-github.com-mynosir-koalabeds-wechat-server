@@ -1,6 +1,6 @@
 $(function() {
     var page = {
-        init: function(p) {
+        init: function(p, nickname, status) {
             var json = {
                 api: config.apiServer + 'order/get',
                 type: 'get',
@@ -8,7 +8,8 @@ $(function() {
                     actionxm: 'getOrder',
                     page: !p ? 1 : p,
                     size: 20,
-                    classify: 0
+                    nickname: nickname,
+                    status: status
                 }
             };
             var callback = function(res) {
@@ -16,11 +17,44 @@ $(function() {
                 var list = res['list'],
                     show = ['show','hide'],
                     status = ['To be paid','paid','failed','not_confirmed','confirmed','canceled','checked_in','checked_out','no_show'],
-                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>propertyID</th><th>startDate</th><th>endDate</th><th>guestFirstName</th><th>guestLastName</th><th>guestCountry</th><th>guestZip</th><th>guestEmail</th><th>guestPhone</th><th>info</th><th>type</th><th>quantity</th><th>adults_info</th><th>adults_roomTypeID</th><th>adults_quantity</th><th>children_info</th><th>children_roomTypeID</th><th>children_roomTypeID</th><th>status</th><th>total price</th><th>total price(mini program)</th><th>balance due</th><th>balance Detail</th><th>assigned</th><th>unassigned</th><th>credit card</th><th>reservationID</th><th>estimatedArrivalTime</th><th>create_time</th><th>outTradeNo</th><th>transaction_id</th><th>transaction_info</th><th></th></tr>';
+                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>wx_nickname</th><th>propertyID</th><th>startDate</th><th>endDate</th><th>guestFirstName</th><th>guestLastName</th><th>guestCountry</th><th>guestZip</th><th>guestEmail</th><th>guestPhone</th><th>type</th><th>quantity</th><th>adults_roomTypeID</th><th>adults_quantity</th><th>children_roomTypeID</th><th>children_quantity</th><th>status</th><th>total price</th><th>total price(mini program)</th><th>balance due</th><th>balance Detail</th><th>assigned</th><th>unassigned</th><th>credit card</th><th>reservationID</th><th>estimatedArrivalTime</th><th>create_time</th><th>outTradeNo</th><th>transaction_id</th><th></th></tr>';
+                    // console.log(list);
                 for(var i in list) {
+                    // if (list[i]['startDate']==null) {
+                    //   list[i]['startDate']='';
+                    // }
+                    // if (list[i]['startDate']==null) {
+                    //   list[i]['startDate']='';
+                    // }
+                    // if (list[i]['startDate']==null) {
+                    //   list[i]['startDate']='';
+                    // }
+                    // if (list[i]['startDate']==null) {
+                    //   list[i]['startDate']='';
+                    // }
+                    // if (list[i]['startDate']==null) {
+                    //   list[i]['startDate']='';
+                    // }
+                    // if (list[i]['startDate']==null) {
+                    //   list[i]['startDate']='';
+                    // }
+                    // if (list[i]['startDate']==null) {
+                    //   list[i]['startDate']='';
+                    // }
+                    // if (list[i]['startDate']==null) {
+                    //   list[i]['startDate']='';
+                    // }
+                    // if (list[i]['startDate']==null) {
+                    //   list[i]['startDate']='';
+                    // }
+                    // if (list[i]['startDate']==null) {
+                    //   list[i]['startDate']='';
+                    // }
+                    var listid = parseInt(i)+1;
                     listTpl += '<tr>';
-                    listTpl += '<td>' + list[i]['id'] + '</td>';
+                    listTpl += '<td>' + listid + '</td>';
                     listTpl += '<td>' + list[i]['openid'] + '</td>';
+                    listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
                     listTpl += '<td>' + list[i]['propertyID'] + '</td>';
                     listTpl += '<td>' + list[i]['startDate'] + '</td>';
                     listTpl += '<td>' + list[i]['endDate'] + '</td>';
@@ -30,15 +64,15 @@ $(function() {
                     listTpl += '<td>' + list[i]['guestZip'] + '</td>';
                     listTpl += '<td>' + list[i]['guestEmail'] + '</td>';
                     listTpl += '<td>' + list[i]['guestPhone'] + '</td>';
-                    listTpl += '<td>' + list[i]['rooms'] + '</td>';
+                    // listTpl += '<td>' + list[i]['rooms'] + '</td>';
                     listTpl += '<td>' + list[i]['rooms_roomTypeID'] + '</td>';
                     listTpl += '<td>' + list[i]['rooms_quantity'] + '</td>';
-                    listTpl += '<td>' + list[i]['adults'] + '</td>';
+                    // listTpl += '<td>' + list[i]['adults'] + '</td>';
                     listTpl += '<td>' + list[i]['adults_roomTypeID'] + '</td>';
                     listTpl += '<td>' + list[i]['adults_quantity'] + '</td>';
-                    listTpl += '<td>' + list[i]['children'] + '</td>';
+                    // listTpl += '<td>' + list[i]['children'] + '</td>';
                     listTpl += '<td>' + list[i]['children_roomTypeID'] + '</td>';
-                    listTpl += '<td>' + list[i]['children_quantity'] + '</td>';
+                    listTpl += '<td>' + list[i]['children_quantity']['quantity'] + '</td>';
                     listTpl += '<td>' + status[list[i]['status']] + '</td>';
                     listTpl += '<td>' + list[i]['total'] + '</td>';
                     listTpl += '<td>' + list[i]['frontend_total'] + '</td>';
@@ -52,7 +86,7 @@ $(function() {
                     listTpl += '<td>' + list[i]['create_time'] + '</td>';
                     listTpl += '<td>' + list[i]['outTradeNo'] + '</td>';
                     listTpl += '<td>' + list[i]['transaction_id'] + '</td>';
-                    listTpl += '<td>' + list[i]['transaction_info'] + '</td>';
+                    // listTpl += '<td>' + list[i]['transaction_info'] + '</td>';
                     listTpl += '</tr>';
                 }
                 $('.js_table').html(listTpl);
@@ -237,4 +271,14 @@ $(function() {
             }
         }
     });
+    $('.js_searchFrom').submit(function(e) {
+        e.preventDefault();
+        // var p = $('.js_page li[class=active] a').data('page');
+        var nickname = $('#nickname').val();
+        var status = $('#status').val();
+        // console.log(nickname);
+        // console.log(status);
+        page.init(1, nickname, status);
+    });
+
 });

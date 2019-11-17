@@ -35,7 +35,9 @@ class Ticket extends MY_Controller {
             case 'getTicket':
                 $page = $this->get_request('page');
                 $size = $this->get_request('size');
-                $result = $this->ticket_model->getTicket($page, $size);
+                $nickname = $this->get_request('nickname');
+                $status = $this->get_request('status');
+                $result = $this->ticket_model->getTicket($page, $size, $nickname, $status);
                 break;
             case 'getDetail':
                 $id = $this->get_request('id');

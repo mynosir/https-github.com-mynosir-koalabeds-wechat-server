@@ -16,12 +16,14 @@ $(function() {
                 var list = res['list'],
                     sex = ['male','female'],
                     status = ['show','hide'],
-                    listTpl = '<tr><th>serial no.</th><th>propertyId</th><th>userId</th><th>rate</th><th>comment</th><th>createTime</th><th>status</th></tr>';
+                    listTpl = '<tr><th>serial no.</th><th>propertyId</th><th>wx_nickname</th><th>rate</th><th>comment</th><th>createTime</th><th>status</th></tr>';
                 for(var i in list) {
+                    var listid = parseInt(i)+1;
                     listTpl += '<tr>';
-                    listTpl += '<td>' + list[i]['id'] + '</td>';
+                    listTpl += '<td>' + listid + '</td>';
                     listTpl += '<td>' + list[i]['propertyID'] + '</td>';
-                    listTpl += '<td>' + list[i]['userid'] + '</td>';
+                    // listTpl += '<td>' + list[i]['userid'] + '</td>';
+                    listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
                     listTpl += '<td>' + list[i]['rate'] + '</td>';
                     listTpl += '<td>' + list[i]['content'] + '</td>';
                     listTpl += '<td>' + list[i]['create_time'] + '</td>';
