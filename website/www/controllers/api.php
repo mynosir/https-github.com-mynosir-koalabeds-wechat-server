@@ -61,7 +61,7 @@ class api extends MY_Controller {
             case 'getCouponByOpenid':
                 $openid = $this->get_request('openid');
                 $this->load->model('coupon_model');
-                $list = $this->coupon_model->getUserCouponRecord($openid);
+                $list = $this->coupon_model->getUserCouponRecordForFront($openid);
                 $result = array(
                     'status'    => 0,
                     'msg'       => '查询成功',
