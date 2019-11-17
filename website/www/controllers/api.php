@@ -258,6 +258,11 @@ class api extends MY_Controller {
                 $this->load->model('grayline_ticket_model');
                 $result = $this->grayline_ticket_model->getOrderById($openid, $id);
                 break;
+            // 从数据库中获取酒店列表
+            case 'getHotelListInDB':
+                $this->load->model('cloudbeds_hotel_model');
+                $result = $this->cloudbeds_hotel_model->getHotelListInDB();
+                break;
         }
         echo json_encode($result);
     }

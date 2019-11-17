@@ -271,6 +271,27 @@ class Cloudbeds_hotel_model extends MY_Model {
 
 
     /**
+     * 从数据库中查询酒店列表
+     */
+    public function getHotelListInDB() {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' order by id desc');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '没有数据'
+            );
+        }
+    }
+
+
+    /**
      * 搜索酒店
      */
     public function searchHotels($params) {
