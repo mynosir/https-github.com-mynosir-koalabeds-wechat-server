@@ -308,7 +308,7 @@ class api extends MY_Controller {
                 $rooms_quantity = $this->get_request('rooms_quantity');
                 $propertyID = $this->get_request('propertyID');
                 $this->load->model('cloudbeds_hotel_model');
-                $result = $this->cloudbeds_hotel_model->getRoomsFeesAndTaxes($data['startDate'], $data['endDate'], $data['frontend_total'], $data['rooms_quantity'], $data['propertyID']);
+                $result = $this->cloudbeds_hotel_model->getRoomsFeesAndTaxes($startDate, $endDate, $frontend_total, $rooms_quantity, $propertyID);
                 break;
         }
         echo json_encode($result);
