@@ -245,6 +245,12 @@ class api extends MY_Controller {
                 $this->load->model('hotel_order_model');
                 $result = $this->hotel_order_model->getListByOpenid($openid);
                 break;
+            // 获取门票订单列表
+            case 'getTicketOrders':
+                $openid = $this->get_request('openid');
+                $this->load->model('grayline_ticket_model');
+                $result = $this->grayline_ticket_model->getOrderList($openid);
+                break;
         }
         echo json_encode($result);
     }

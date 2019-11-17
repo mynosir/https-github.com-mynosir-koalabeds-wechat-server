@@ -321,4 +321,25 @@ class Grayline_ticket_model extends MY_Model {
         $this->db->where($where)->update($this->table, $data);
     }
 
+
+    /**
+     * 根据微信openid获取订单列表
+     */
+    public function getOrderList($openid) {
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where openid = "' . $openid . '" order by id desc');
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '未查找到对应订单信息'
+            );
+        }
+    }
+
 }
