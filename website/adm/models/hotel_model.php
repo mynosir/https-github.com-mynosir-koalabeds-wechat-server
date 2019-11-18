@@ -10,7 +10,7 @@ class Hotel_model extends MY_Model {
     private $table = 'ko_cloudbeds_hotels';
     private $cn_table = 'ko_cloudbeds_hotels_cn';
     private $fields = 'id, propertyID, propertyName, propertyImageThumb, propertyPhone, propertyEmail, propertyCity, propertyState,status';
-    private $hotel_fields = 'id,propertyID,propertyName,propertyImage,propertyImageThumb,propertyPhone,propertyEmail,propertyAddress1,propertyAddress2,propertyCity,propertyState,propertyZip,propertyCountry,propertyLatitude,propertyLongitude,propertyCheckInTime,propertyCheckOutTime,propertyLateCheckOutAllowed,propertyLateCheckOutType,propertyLateCheckOutValue,propertyTermsAndConditions,propertyAmenities,propertyDescription,propertyTimezone,propertyCurrencyCode,propertyCurrencySymbol,propertyCurrencyPosition,status';
+    private $hotel_fields = 'id,propertyID,propertyName,propertyImage,propertyImageThumb,propertyPhone,propertyEmail,propertyAddress1,propertyAddress2,propertyCity,propertyState,propertyZip,propertyCountry,propertyLatitude,propertyLongitude,propertyCheckInTime,propertyCheckOutTime,propertyLateCheckOutAllowed,propertyLateCheckOutType,propertyLateCheckOutValue,propertyTermsAndConditions,propertyAmenities,propertyDescription,propertyTimezone,propertyCurrencyCode,propertyCurrencySymbol,propertyCurrencyPosition,status,recommend';
     private $cn_hotel_fields = 'id, hid, propertyID, propertyName, propertyDescription, propertyAddress';
     private $school_fields = 'id, name, type, area';
 
@@ -92,7 +92,7 @@ class Hotel_model extends MY_Model {
      * 更新酒店状态
      **/
     public function updateStatus($id,$params) {
-            $res = $this->db->where('id', $id)->updateStatus($this->table, $params);
+            $res = $this->db->where('id', $id)->update($this->table, $params);
             if($res){
               $result = array(
                   'status'    => 0,
@@ -103,7 +103,22 @@ class Hotel_model extends MY_Model {
             }
 
     }
+    /**
+     * 更新酒店推荐位
+     **/
+    public function updateRecommend($id,$params) {
+            $res = $this->db->where('id', $id)->update($this->table, $params);
+            if($res){
+              $result = array(
+                  'status'    => 0,
+                  'msg'       => 'Update Success!'
+              );
+              return $result;
 
+            }
+
+    }
+// updateRecommend
     /**
      * 更新酒店信息
      **/

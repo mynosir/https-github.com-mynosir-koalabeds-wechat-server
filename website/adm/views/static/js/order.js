@@ -16,46 +16,82 @@ $(function() {
                 // 处理表格数据
                 var list = res['list'],
                     show = ['show','hide'],
-                    status = ['To be paid','paid','failed','not_confirmed','confirmed','canceled','checked_in','checked_out','no_show'],
-                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>wx_nickname</th><th>propertyID</th><th>startDate</th><th>endDate</th><th>guestFirstName</th><th>guestLastName</th><th>guestCountry</th><th>guestZip</th><th>guestEmail</th><th>guestPhone</th><th>type</th><th>quantity</th><th>adults_roomTypeID</th><th>adults_quantity</th><th>children_roomTypeID</th><th>children_quantity</th><th>status</th><th>total price</th><th>total price(mini program)</th><th>balance due</th><th>balance Detail</th><th>assigned</th><th>unassigned</th><th>credit card</th><th>reservationID</th><th>estimatedArrivalTime</th><th>create_time</th><th>outTradeNo</th><th>transaction_id</th><th></th></tr>';
+                    // status = ['to be paid','paid','reserve success','reserve cancelled'],
+                    statusArray = [
+                      {
+                      'status': 0,
+                      'value': 'to be paid'
+                      },
+                      {
+                        'status': 1,
+                        'value': 'paid'
+                      },
+                      {
+                        'status': 2,
+                        'value': 'reserve success'
+                      },
+                      {
+                        'status': -1,
+                        'value': 'reserve cancelled'
+                      }
+                    ],
+                    listTpl = '<tr><th>serial no.</th><th>propertyID</th><th>reservationID</th><th>wx_nickname</th><th>total price</th><th>balance due</th><th>startDate</th><th>endDate</th><th>guestFirstName</th><th>guestLastName</th><th>guestCountry</th><th>guestZip</th><th>guestEmail</th><th>guestPhone</th><th>type</th><th>quantity</th><th>adults_roomTypeID</th><th>adults_quantity</th><th>children_roomTypeID</th><th>children_quantity</th><th>assigned</th><th>unassigned</th><th>credit card</th><th>estimatedArrivalTime</th><th>create_time</th><th>outTradeNo</th><th>transaction_id</th><th></th></tr>';
+                    listTpl2 = '<tr><th>status</th></tr>';
+
                     // console.log(list);
+                function getStatus(status) {
+                  for (var i = 0; i < statusArray.length; i++) {
+                    if (statusArray[i]['status']==status) {
+                      return statusArray[i]['value'];
+                    }
+                  }
+                }
                 for(var i in list) {
-                    // if (list[i]['startDate']==null) {
-                    //   list[i]['startDate']='';
-                    // }
-                    // if (list[i]['startDate']==null) {
-                    //   list[i]['startDate']='';
-                    // }
-                    // if (list[i]['startDate']==null) {
-                    //   list[i]['startDate']='';
-                    // }
-                    // if (list[i]['startDate']==null) {
-                    //   list[i]['startDate']='';
-                    // }
-                    // if (list[i]['startDate']==null) {
-                    //   list[i]['startDate']='';
-                    // }
-                    // if (list[i]['startDate']==null) {
-                    //   list[i]['startDate']='';
-                    // }
-                    // if (list[i]['startDate']==null) {
-                    //   list[i]['startDate']='';
-                    // }
-                    // if (list[i]['startDate']==null) {
-                    //   list[i]['startDate']='';
-                    // }
-                    // if (list[i]['startDate']==null) {
-                    //   list[i]['startDate']='';
-                    // }
-                    // if (list[i]['startDate']==null) {
-                    //   list[i]['startDate']='';
-                    // }
+                    if(list[i]['total']==null){
+                      list[i]['total']='';
+                    }
+                    if(list[i]['startDate']==null){
+                      list[i]['startDate']='';
+                    }
+                    if(list[i]['endDate']==null){
+                      list[i]['endDate']='';
+                    }
+                    if(list[i]['balance']==null){
+                      list[i]['balance']='';
+                    }
+                    if(list[i]['assigned']==null){
+                      list[i]['assigned']='';
+                    }
+                    if(list[i]['unassigned']==null){
+                      list[i]['unassigned']='';
+                    }
+                    if(list[i]['cardsOnFile']==null){
+                      list[i]['cardsOnFile']='';
+                    }
+                    if(list[i]['reservationID']==null){
+                      list[i]['reservationID']='';
+                    }
+                    if(list[i]['estimatedArrivalTime']==null){
+                      list[i]['estimatedArrivalTime']='';
+                    }
+                    if(list[i]['cardsOnFile']==null){
+                      list[i]['cardsOnFile']='';
+                    }
+                    if(list[i]['outTradeNo']==null){
+                      list[i]['outTradeNo']='';
+                    }
                     var listid = parseInt(i)+1;
                     listTpl += '<tr>';
+                    listTpl2 += '<tr>';
                     listTpl += '<td>' + listid + '</td>';
-                    listTpl += '<td>' + list[i]['openid'] + '</td>';
-                    listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
+                    // listTpl += '<td>' + list[i]['openid'] + '</td>';
                     listTpl += '<td>' + list[i]['propertyID'] + '</td>';
+                    listTpl += '<td>' + list[i]['reservationID'] + '</td>';
+                    listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
+                    listTpl += '<td>' + list[i]['total'] + '</td>';
+                    listTpl += '<td>' + list[i]['balance'] + '</td>';
+                    // listTpl += '<td>' + list[i]['source_prize'] + '</td>';
+                    // listTpl += '<td>' + list[i]['coupon_id'] + '</td>';
                     listTpl += '<td>' + list[i]['startDate'] + '</td>';
                     listTpl += '<td>' + list[i]['endDate'] + '</td>';
                     listTpl += '<td>' + list[i]['guestFirstName'] + '</td>';
@@ -72,24 +108,25 @@ $(function() {
                     listTpl += '<td>' + list[i]['adults_quantity'] + '</td>';
                     // listTpl += '<td>' + list[i]['children'] + '</td>';
                     listTpl += '<td>' + list[i]['children_roomTypeID'] + '</td>';
-                    listTpl += '<td>' + list[i]['children_quantity']['quantity'] + '</td>';
-                    listTpl += '<td>' + status[list[i]['status']] + '</td>';
-                    listTpl += '<td>' + list[i]['total'] + '</td>';
-                    listTpl += '<td>' + list[i]['frontend_total'] + '</td>';
-                    listTpl += '<td>' + list[i]['balance'] + '</td>';
-                    listTpl += '<td>' + list[i]['balanceDetailed'] + '</td>';
+                    listTpl += '<td>' + list[i]['children_quantity'] + '</td>';
+                    // listTpl += '<td>' + getStatus(list[i]['status']) + '</td>';
+                    // listTpl += '<td>' + list[i]['frontend_total'] + '</td>';
+                    // listTpl += '<td>' + list[i]['balanceDetailed'] + '</td>';
                     listTpl += '<td>' + list[i]['assigned'] + '</td>';
                     listTpl += '<td>' + list[i]['unassigned'] + '</td>';
                     listTpl += '<td>' + list[i]['cardsOnFile'] + '</td>';
-                    listTpl += '<td>' + list[i]['reservationID'] + '</td>';
                     listTpl += '<td>' + list[i]['estimatedArrivalTime'] + '</td>';
                     listTpl += '<td>' + list[i]['create_time'] + '</td>';
                     listTpl += '<td>' + list[i]['outTradeNo'] + '</td>';
                     listTpl += '<td>' + list[i]['transaction_id'] + '</td>';
                     // listTpl += '<td>' + list[i]['transaction_info'] + '</td>';
                     listTpl += '</tr>';
+                    listTpl2 += '<td>' + getStatus(list[i]['status']) + '</td>';
+                    listTpl2 += '</tr>';
                 }
-                $('.js_table').html(listTpl);
+                $('.js_table').html(listTpl)
+                $('.js_table2').html(listTpl2);
+
                 // 处理分页
                 var pageTpl = '',
                     total = parseInt(res.total),

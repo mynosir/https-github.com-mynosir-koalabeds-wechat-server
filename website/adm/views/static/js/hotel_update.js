@@ -162,6 +162,7 @@ $(function() {
             propertyCurrencySymbol = $('#propertyCurrencySymbol').val(),
             propertyCurrencyPosition = $('#propertyCurrencyPosition').val(),
             propertyStatus = $('.selectStatus').val(),
+            propertyRecommend = $('.selectRecommend').val(),
             propertyNameCh = $('#propertyNameCh').val(),
             propertyAddressCh = $('#propertyAddressCh').val(),
             propertyDescriptionCh = $('#descriptCh').summernote('code');
@@ -232,6 +233,7 @@ $(function() {
                       propertyCurrencyCode: propertyCurrencyCode||'',
                       propertyCurrencySymbol: propertyCurrencySymbol||'',
                       propertyCurrencyPosition: propertyCurrencyPosition||'',
+                      recommend: propertyRecommend||'',
                       status: propertyStatus||''
                     },
                     ch: {

@@ -20,7 +20,8 @@ $(function() {
                     var idx = 1,
                         list = res['list'],
                         listTpl = '<tr><th>serial no.</th><th>propertyID</th><th>name</th><th>name_cn</th><th>phone</th><th>email</th><th>address1</th><th>address2</th><th>city</th><th>state</th><th>zip</th><th>country</th><th>latitude</th><th>longtitude</th><th>checkInTime</th><th>checkOutTime</th></tr>',
-                        listTpl2 = '<tr><th>status</th><th>operation</th></tr>',
+                        listTpl2 = '<tr><th>recommend</th><th>status</th><th>operation</th></tr>',
+                        recommend = ['Not','Recommend','Waterfall'],
                         hotelStatus = ['unchecked','approve','deny'];
 
                     for(var i in list) {
@@ -48,6 +49,7 @@ $(function() {
                         listTpl += '<td>' + list[i]['propertyCheckOutTime'] + '</td>';
                         listTpl += '</tr>';
                         listTpl2 += '<tr>';
+                        listTpl2 += '<td><select data-id='+list[i]['id']+' class="form-control selectRecommend"><option value="0">'+recommend[0]+'</option><option value="1">'+recommend[1]+'</option><option value="2">'+recommend[2]+'</option></select></td>';
                         listTpl2 += '<td><select data-id='+list[i]['id']+' class="form-control selectSection"><option value="0">'+hotelStatus[0]+'</option><option value="1">'+hotelStatus[1]+'</option><option value="2">'+hotelStatus[2]+'</option></select></td>';
                         listTpl2 += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-id="' + list[i]['id'] + '">Edit</button></td>';
                         listTpl2 += '</tr>';
@@ -57,8 +59,10 @@ $(function() {
                 // } else {
                 //     alert(res.msg);
                 // }
+
                     for(var i in list){
                       $('.selectSection').eq(i).val(list[i]['status']);
+                      $('.selectRecommend').eq(i).val(list[i]['recommend']);
                     }
 
                     // 处理分页
@@ -96,6 +100,12 @@ $(function() {
             $('#confirmModal').modal('show');
         },
 
+        updateConfirmTip2: function(id,recommend) {
+          $('#confirmModal2').find('.js_sure_update2').attr('data-id', id);
+            $('#confirmModal2').find('.js_sure_update2').attr('data-recommend', recommend);
+            $('#confirmModal2').modal('show');
+        },
+
         updateItem: function(id,status) {
           var json = {
               api: config.apiServer + 'hotel/post',
@@ -116,7 +126,30 @@ $(function() {
           json.callback = callback;
           Utils.requestData(json);
 
+        },
+
+        updateRecommend: function(id,recommend) {
+          var json = {
+              api: config.apiServer + 'hotel/post',
+              type: 'post',
+              data: {
+                  actionxm: 'updateRecommend',
+                  id: id,
+                  params: {
+                    recommend: recommend
+                  }
+              }
+          };
+          var callback = function(res) {
+              $('#confirmModal2').modal('hide');
+              alert(res.msg);
+              window.location.reload();
+          };
+          json.callback = callback;
+          Utils.requestData(json);
+
         }
+
     };
 
     $('body').delegate('.js_pageItem', 'click', function(e) {
@@ -137,13 +170,31 @@ $(function() {
       page.updateConfirmTip(id,selectedStatus)
     });
 
+    $('body').delegate('.selectRecommend', 'change', function(e) {
+
+      var id = $(e.currentTarget).data('id');
+      var selectedRecommend = e.currentTarget.options.selectedIndex;
+      page.updateConfirmTip2(id,selectedRecommend)
+    });
+
     $('body').delegate('.js_sure_update', 'click', function(e) {
       var id = $(e.currentTarget).data('id');
       var status = $(e.currentTarget).data('status');
       page.updateItem(id,status);
     });
 
+    $('body').delegate('.js_sure_update2', 'click', function(e) {
+      var id = $(e.currentTarget).data('id');
+      var recommend = $(e.currentTarget).data('recommend');
+      page.updateRecommend(id,recommend);
+    });
+
     $('#confirmModal').on('hide.bs.modal', function () {
+      // 执行一些动作...
+      window.location.reload();
+    })
+
+    $('#confirmModal2').on('hide.bs.modal', function () {
       // 执行一些动作...
       window.location.reload();
     })

@@ -58,6 +58,12 @@ class Ticket_model extends MY_Model {
           // code...
           $queryOpenid = $v['openid'];
           $result[$k]['wx_nickname'] = $this->db->query('select ' . $this->fields_wx . ' from ' . $this->table_wx . ' where openid = "'.$queryOpenid.'"')->row()->wx_nickname;
+          if($result[$k]['create_time']) {
+              $result[$k]['create_time'] = date('Y-m-d H:i:s', $result[$k]['create_time']);
+          } else {
+              $result[$k]['create_time'] = '';
+          }
+
         }
         $pageQuery = $this->db->query('select count(1) as num from ' . $this->table);
         $pageResult = $pageQuery->result_array();

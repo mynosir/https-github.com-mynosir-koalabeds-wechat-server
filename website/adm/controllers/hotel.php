@@ -81,6 +81,11 @@ class Hotel extends MY_Controller {
               $params = $this->get_request('params');
               $result = $this->hotel_model->updateStatus($id,$params);
               break;
+          case 'updateRecommend':
+              $id = $this->get_request('id');
+              $params = $this->get_request('params');
+              $result = $this->hotel_model->updateRecommend($id,$params);
+              break;
           // case 'updateCh':
           //     $id = $this->get_request('id');
           //     $params = $this->get_request('params');

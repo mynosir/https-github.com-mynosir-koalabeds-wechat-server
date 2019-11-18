@@ -146,6 +146,15 @@
     <input type="text" class="form-control" id="propertyCurrencyPosition" value="<?php echo $info['propertyCurrencyPosition']; ?>">
 </div>
 <div class="form-group">
+    <label>recommend</label>
+    <!-- <input type="text" class="form-control" id="propertyStatus" value="<?php echo $info['status']; ?>"> -->
+    <select class="selectRecommend">
+      <option value="0">not recommend</option>
+      <option value="1">recommend</option>
+      <option value="2">waterfall</option>
+    </select>
+</div>
+<div class="form-group">
     <label>propertyStatus</label>
     <!-- <input type="text" class="form-control" id="propertyStatus" value="<?php echo $info['status']; ?>"> -->
     <select class="selectStatus">
@@ -176,6 +185,8 @@ $(function() {
     $('#descript').summernote('code', $('.js_descript').val());
     $('#descriptCh').summernote('code', $('.js_descript_ch').val());
     var status = <?php echo $info['status']?>;
+    var recommend = <?php echo $info['recommend']?>;
     $('.selectStatus').val(status);
+    $('.selectRecommend').val(recommend);
 })
 </script>

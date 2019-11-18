@@ -17,13 +17,40 @@ $(function() {
                 var list = res['list'],
                     show = ['show','hide'],
                     status = ['to be paid','paid','payment failure','not_confirmed','order canceled','reserve fail','reserve success','no_show'],
-                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>wx_nickname</th><th>type</th><th>productId</th><th>hotel</th><th>title</th><th>firstName</th><th>lastName</th><th>passport</th><th>guestEmail</th><th>countryCode</th><th>telephone</th><th>promocode</th><th>agentReference</th><th>remark</th><th>subQtyProductPriceId</th><th>subQtyValue</th><th>totalPrice</th><th>info</th><th>create_time</th><th>outTradeNo</th><th>transaction_id</th><th>transaction_info</th><th>status</th></tr>';
+                    statusArray = [
+                      {
+                      'status': 0,
+                      'value': 'to be paid'
+                      },
+                      {
+                        'status': 1,
+                        'value': 'paid'
+                      },
+                      {
+                        'status': 2,
+                        'value': 'reserve success'
+                      },
+                      {
+                        'status': -1,
+                        'value': 'reserve cancelled'
+                      }
+                    ],
+                    listTpl = '<tr><th>serial no.</th><th>wx_nickname</th><th>type</th><th>productId</th><th>hotel</th><th>title</th><th>firstName</th><th>lastName</th><th>passport</th><th>guestEmail</th><th>countryCode</th><th>telephone</th><th>promocode</th><th>agentReference</th><th>remark</th><th>subQtyProductPriceId</th><th>subQtyValue</th><th>totalPrice</th><th>info</th><th>create_time</th><th>outTradeNo</th><th>transaction_id</th><th>transaction_info</th></tr>';
+                    listTpl2 = '<tr><th>status</th></tr>';
                     // <th>travelDate</th><th>travelTime</th><th>turbojetDepartureDate</th><th>turbojetReturnDate</th><th>turbojetDepartureTime</th><th>turbojetReturnTime</th><th>turbojetDepartureFrom</th><th>turbojetDepartureTo</th><th>turbojetReturnFrom</th><th>turbojetReturnTo</th><th>turbojetQuantity</th><th>turbojetClass</th><th>turbojetTicketType</th><th>turbojetDepartureFlightNo</th><th>turbojetReturnFlightNo</th>
+                function getStatus(status) {
+                  for (var i = 0; i < statusArray.length; i++) {
+                    if (statusArray[i]['status']==status) {
+                      return statusArray[i]['value'];
+                    }
+                  }
+                }
                 for(var i in list) {
                     var listid = parseInt(i)+1;
                     listTpl += '<tr>';
+                    listTpl2 += '<tr>';
                     listTpl += '<td>' + listid + '</td>';
-                    listTpl += '<td>' + list[i]['openid'] + '</td>';
+                    // listTpl += '<td>' + list[i]['openid'] + '</td>';
                     listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
                     listTpl += '<td>' + list[i]['type'] + '</td>';
                     listTpl += '<td>' + list[i]['productId'] + '</td>';
@@ -62,10 +89,14 @@ $(function() {
                     listTpl += '<td>' + list[i]['outTradeNo'] + '</td>';
                     listTpl += '<td>' + list[i]['transaction_id'] + '</td>';
                     listTpl += '<td>' + list[i]['transaction_info'] + '</td>';
-                    listTpl += '<td>' + status[list[i]['status']] + '</td>';
+                    // listTpl += '<td>' + getStatus(list[i]['status']) + '</td>';
+                    listTpl2 += '<td>' + getStatus(list[i]['status']) + '</td>';
+
                     listTpl += '</tr>';
+                    listTpl2 += '</tr>';
                 }
                 $('.js_table').html(listTpl);
+                $('.js_table2').html(listTpl2);
                 // 处理分页
                 var pageTpl = '',
                     total = parseInt(res.total),

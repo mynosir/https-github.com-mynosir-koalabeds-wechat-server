@@ -8,7 +8,7 @@
 class Order_model extends MY_Model {
 
     private $table = 'ko_hotel_order';
-    private $fields = 'id, openid, propertyID, startDate, endDate, guestFirstName, guestLastName, guestCountry, guestZip, guestEmail, guestPhone, rooms, rooms_roomTypeID, rooms_quantity, adults, adults_roomTypeID, adults_quantity, children, children_roomTypeID, children_quantity, status, total, frontend_total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, reservationID, estimatedArrivalTime, create_time, outTradeNo, transaction_id, transaction_info';
+    private $fields = 'id, openid, propertyID, startDate, endDate, guestFirstName, guestLastName, guestCountry, guestZip, guestEmail, guestPhone, rooms, rooms_roomTypeID, rooms_quantity, adults, adults_roomTypeID, adults_quantity, children, children_roomTypeID, children_quantity, status, total, frontend_total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, reservationID, estimatedArrivalTime, create_time, outTradeNo, transaction_id, transaction_info,coupon_id,source_prize';
     private $table_wx = 'ko_user';
     private $fields_wx = 'openid, wx_nickname';
     public function __construct() {
@@ -49,7 +49,7 @@ class Order_model extends MY_Model {
             return $rtn;
           }
           // var_dump($queryOpenid);
-        }                
+        }
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . $where . 'order by id asc limit ' . $limitStart . ', ' . $size);
         $result = $query->result_array();
 
@@ -57,6 +57,12 @@ class Order_model extends MY_Model {
           // code...
           $queryOpenid = $v['openid'];
           $result[$k]['wx_nickname'] = $this->db->query('select ' . $this->fields_wx . ' from ' . $this->table_wx . ' where openid = "'.$queryOpenid.'"')->row()->wx_nickname;
+          if($result[$k]['create_time']) {
+              $result[$k]['create_time'] = date('Y-m-d H:i:s', $result[$k]['create_time']);
+          } else {
+              $result[$k]['create_time'] = '';
+          }
+
         }
 
 
