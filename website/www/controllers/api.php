@@ -271,7 +271,7 @@ class api extends MY_Controller {
             // 获取酒店订单列表
             case 'getHotelOrders':
                 $openid = $this->get_request('openid');
-                $status = $this->get_request('status', -1);
+                $status = $this->get_request('status', -2);
                 $this->load->model('hotel_order_model');
                 $result = $this->hotel_order_model->getListByOpenid($openid, $status);
                 break;
