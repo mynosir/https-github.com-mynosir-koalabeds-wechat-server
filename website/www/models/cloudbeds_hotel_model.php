@@ -155,6 +155,10 @@ class Cloudbeds_hotel_model extends MY_Model {
             $hotelCn = $this->getHotelCn($v['id']);
             if($hotelCn['status'] == 0) {
                 $result[$k]['cn'] = $hotelCn['data'];
+                $result[$k]['propertyName'] = $hotelCn['data']['propertyName'];
+                $result[$k]['propertyAddress1'] = $hotelCn['data']['propertyAddress'];
+                $result[$k]['propertyAddress2'] = '';
+                $result[$k]['propertyDescription'] = $hotelCn['data']['propertyDescription'];
             }
         }
         return array(
@@ -176,6 +180,10 @@ class Cloudbeds_hotel_model extends MY_Model {
                 $hotelCn = $this->getHotelCn($v['id']);
                 if($hotelCn['status'] == 0) {
                     $result[$k]['cn'] = $hotelCn['data'];
+                    $result[$k]['propertyName'] = $hotelCn['data']['propertyName'];
+                    $result[$k]['propertyAddress1'] = $hotelCn['data']['propertyAddress'];
+                    $result[$k]['propertyAddress2'] = '';
+                    $result[$k]['propertyDescription'] = $hotelCn['data']['propertyDescription'];
                 }
             }
             $rtn = array(
@@ -383,6 +391,10 @@ class Cloudbeds_hotel_model extends MY_Model {
                         $hotelCn = $this->getHotelCn($tmp['data']['id']);
                         if($hotelCn['status'] == 0) {
                             $newHotels[$k]['cn'] = $hotelCn['data'];
+                            $newHotels[$k]['propertyName'] = $hotelCn['data']['propertyName'];
+                            $newHotels[$k]['propertyAddress1'] = $hotelCn['data']['propertyAddress'];
+                            $newHotels[$k]['propertyAddress2'] = '';
+                            $newHotels[$k]['propertyDescription'] = $hotelCn['data']['propertyDescription'];
                         }
                     }
                 } else {
@@ -390,6 +402,10 @@ class Cloudbeds_hotel_model extends MY_Model {
                     $hotelCn = $this->getHotelCn($tmp['data']['id']);
                     if($hotelCn['status'] == 0) {
                         $newHotels[$k]['cn'] = $hotelCn['data'];
+                        $newHotels[$k]['propertyName'] = $hotelCn['data']['propertyName'];
+                        $newHotels[$k]['propertyAddress1'] = $hotelCn['data']['propertyAddress'];
+                        $newHotels[$k]['propertyAddress2'] = '';
+                        $newHotels[$k]['propertyDescription'] = $hotelCn['data']['propertyDescription'];
                     }
                 }
             } else {
@@ -432,6 +448,10 @@ class Cloudbeds_hotel_model extends MY_Model {
             $hotelCn = $this->getHotelCn($result[0]['id']);
             if($hotelCn['status'] == 0) {
                 $result[0]['cn'] = $hotelCn['data'];
+                $result[0]['propertyName'] = $hotelCn['data']['propertyName'];
+                $result[0]['propertyAddress1'] = $hotelCn['data']['propertyAddress'];
+                $result[0]['propertyAddress2'] = '';
+                $result[0]['propertyDescription'] = $hotelCn['data']['propertyDescription'];
             }
             return array(
                 'status'    => 0,
