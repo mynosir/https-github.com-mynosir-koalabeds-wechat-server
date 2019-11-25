@@ -101,7 +101,7 @@
     <label>Check Out Time</label>
     <input type="text" class="form-control" id="propertyCheckOutTime" value="<?php echo $info['propertyCheckOutTime']; ?>">
 </div>
-<div class="form-group">
+<!-- <div class="form-group">
     <label>Late Check Out Allowed</label>
     <input type="text" class="form-control" id="propertyLateCheckOutAllowed" value="<?php echo $info['propertyLateCheckOutAllowed']; ?>">
 </div>
@@ -112,10 +112,10 @@
 <div class="form-group">
     <label>Late Check Out Value</label>
     <input type="text" class="form-control" id="propertyLateCheckOutValue" value="<?php echo $info['propertyLateCheckOutValue']; ?>">
-</div>
+</div> -->
 <div class="form-group">
     <label>Terms And Conditions</label>
-    <input type="text" class="form-control" id="propertyTermsAndConditions" value="<?php echo $info['propertyTermsAndConditions']; ?>">
+    <div id="termsAndConditions"></div>
 </div>
 <div class="form-group">
     <label>Property Amenities</label>
@@ -129,7 +129,7 @@
     <label>Property Description(chinese)</label>
     <div id="descriptCh"></div>
 </div>
-<div class="form-group">
+<!-- <div class="form-group">
     <label>Property Timezone</label>
     <input type="text" class="form-control" id="propertyTimezone" value="<?php echo $info['propertyTimezone']; ?>">
 </div>
@@ -144,7 +144,7 @@
 <div class="form-group">
     <label>Currency Position</label>
     <input type="text" class="form-control" id="propertyCurrencyPosition" value="<?php echo $info['propertyCurrencyPosition']; ?>">
-</div>
+</div> -->
 <div class="form-group">
     <label>Recommend</label>
     <!-- <input type="text" class="form-control" id="propertyStatus" value="<?php echo $info['status']; ?>"> -->
@@ -166,6 +166,7 @@
 
 
 <textarea class="js_descript" style="display: none;"><?php echo $info['propertyDescription']; ?></textarea>
+<textarea class="js_terms_and_conditions" style="display: none;"><?php echo $info['propertyTermsAndConditions']; ?></textarea>
 <?php if(isset($info2)): ?>
   <textarea class="js_descript_ch" style="display: none;"><?php echo $info2['propertyDescription']; ?></textarea>
 <?php else: ?>
@@ -182,6 +183,7 @@
 <script src="<?php echo $resource_url; ?>js/hotel_update.js"></script>
 <script type="text/javascript">
 $(function() {
+    $('#termsAndConditions').summernote('code', $('.js_terms_and_conditions').val());
     $('#descript').summernote('code', $('.js_descript').val());
     $('#descriptCh').summernote('code', $('.js_descript_ch').val());
     var status = <?php echo $info['status']?>;
