@@ -11,6 +11,8 @@ class Order_model extends MY_Model {
     private $fields = 'id, openid, propertyID, startDate, endDate, guestFirstName, guestLastName, guestCountry, guestZip, guestEmail, guestPhone, rooms, rooms_roomTypeID, rooms_quantity, adults, adults_roomTypeID, adults_quantity, children, children_roomTypeID, children_quantity, status, total, frontend_total, balance, balanceDetailed, assigned, unassigned, cardsOnFile, reservationID, estimatedArrivalTime, create_time, outTradeNo, transaction_id, transaction_info,coupon_id,source_prize';
     private $table_wx = 'ko_user';
     private $fields_wx = 'openid, wx_nickname';
+    private $table_hotels = 'ko_cloudbeds_hotels';
+    private $fields_hotels = 'propertyID, propertyName';
     public function __construct() {
         parent::__construct();
     }
@@ -56,7 +58,14 @@ class Order_model extends MY_Model {
         foreach ($result as $k => $v) {
           // code...
           $queryOpenid = $v['openid'];
+          $queryPropertyID = $v['propertyID'];
           $result[$k]['wx_nickname'] = $this->db->query('select ' . $this->fields_wx . ' from ' . $this->table_wx . ' where openid = "'.$queryOpenid.'"')->row()->wx_nickname;
+          $resHotel = $this->db->query('select ' . $this->fields_hotels . ' from ' . $this->table_hotels . ' where propertyID = "'.$queryPropertyID.'"')->row();
+          if($resHotel){
+            $result[$k]['propertyName'] = $resHotel->propertyName;
+          }else{
+            $result[$k]['propertyName'] = '';
+          }
           if($result[$k]['create_time']) {
               $result[$k]['create_time'] = date('Y-m-d H:i:s', $result[$k]['create_time']);
           } else {

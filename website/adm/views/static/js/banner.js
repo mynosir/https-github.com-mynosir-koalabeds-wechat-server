@@ -14,8 +14,8 @@ $(function() {
             var callback = function(res) {
                 // 处理表格数据
                 var list = res['list'],
-                    show = ['show','hide'],
-                    listTpl = '<tr><th>serial no.</th><th>link</th><th>image</th><th>status</th><th>rank(sort desending)</th><th>operation</th></tr>';
+                    show = ['Show','Hide'],
+                    listTpl = '<tr><th>Serial No.</th><th>Link</th><th>Image</th><th>Status</th><th>Rank(Sort Desending)</th><th>Operation</th></tr>';
                 for(var i in list) {
                     var listid = parseInt(i)+1;
                     listTpl += '<tr>';

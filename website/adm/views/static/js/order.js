@@ -20,23 +20,23 @@ $(function() {
                     statusArray = [
                       {
                       'status': 0,
-                      'value': 'to be paid'
+                      'value': 'To Be Paid'
                       },
                       {
                         'status': 1,
-                        'value': 'paid'
+                        'value': 'Paid'
                       },
                       {
                         'status': 2,
-                        'value': 'reserve success'
+                        'value': 'Reserve Success'
                       },
                       {
                         'status': -1,
-                        'value': 'reserve cancelled'
+                        'value': 'Reserve Cancelled'
                       }
                     ],
-                    listTpl = '<tr><th>serial no.</th><th>propertyID</th><th>reservationID</th><th>wx_nickname</th><th>total price</th><th>balance due</th><th>startDate</th><th>endDate</th><th>guestFirstName</th><th>guestLastName</th><th>guestCountry</th><th>guestZip</th><th>guestEmail</th><th>guestPhone</th><th>type</th><th>quantity</th><th>adults_roomTypeID</th><th>adults_quantity</th><th>children_roomTypeID</th><th>children_quantity</th><th>assigned</th><th>unassigned</th><th>credit card</th><th>estimatedArrivalTime</th><th>create_time</th><th>outTradeNo</th><th>transaction_id</th><th></th></tr>';
-                    listTpl2 = '<tr><th>status</th></tr>';
+                    listTpl = '<tr><th>Serial No.</th><th>Trade No.</th><th>Property Name</th><th>Reservation ID</th><th>Wechat Nickname</th><th>Total Price</th><th>Start Date</th><th>End Date</th><th>Guest Firstname</th><th>Guest Lastname</th><th>Guest Country</th><th>Guest Zip</th><th>Guest Email</th><th>Guest Phone</th><th>Room Type</th><th>Quantity</th><th>Adults Quantity</th><th>Children Quantity</th><th>Create Time</th></tr>';
+                    listTpl2 = '<tr><th>Status</th></tr>';
 
                     // console.log(list);
                 function getStatus(status) {
@@ -85,11 +85,13 @@ $(function() {
                     listTpl2 += '<tr>';
                     listTpl += '<td>' + listid + '</td>';
                     // listTpl += '<td>' + list[i]['openid'] + '</td>';
-                    listTpl += '<td>' + list[i]['propertyID'] + '</td>';
+                    listTpl += '<td>' + list[i]['outTradeNo'] + '</td>';
+                    // listTpl += '<td>' + list[i]['propertyID'] + '</td>';
+                    listTpl += '<td>' + list[i]['propertyName'] + '</td>';
                     listTpl += '<td>' + list[i]['reservationID'] + '</td>';
                     listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
                     listTpl += '<td>' + list[i]['total'] + '</td>';
-                    listTpl += '<td>' + list[i]['balance'] + '</td>';
+                    // listTpl += '<td>' + list[i]['balance'] + '</td>';
                     // listTpl += '<td>' + list[i]['source_prize'] + '</td>';
                     // listTpl += '<td>' + list[i]['coupon_id'] + '</td>';
                     listTpl += '<td>' + list[i]['startDate'] + '</td>';
@@ -104,21 +106,20 @@ $(function() {
                     listTpl += '<td>' + list[i]['rooms_roomTypeID'] + '</td>';
                     listTpl += '<td>' + list[i]['rooms_quantity'] + '</td>';
                     // listTpl += '<td>' + list[i]['adults'] + '</td>';
-                    listTpl += '<td>' + list[i]['adults_roomTypeID'] + '</td>';
+                    // listTpl += '<td>' + list[i]['adults_roomTypeID'] + '</td>';
                     listTpl += '<td>' + list[i]['adults_quantity'] + '</td>';
                     // listTpl += '<td>' + list[i]['children'] + '</td>';
-                    listTpl += '<td>' + list[i]['children_roomTypeID'] + '</td>';
+                    // listTpl += '<td>' + list[i]['children_roomTypeID'] + '</td>';
                     listTpl += '<td>' + list[i]['children_quantity'] + '</td>';
                     // listTpl += '<td>' + getStatus(list[i]['status']) + '</td>';
                     // listTpl += '<td>' + list[i]['frontend_total'] + '</td>';
                     // listTpl += '<td>' + list[i]['balanceDetailed'] + '</td>';
-                    listTpl += '<td>' + list[i]['assigned'] + '</td>';
-                    listTpl += '<td>' + list[i]['unassigned'] + '</td>';
-                    listTpl += '<td>' + list[i]['cardsOnFile'] + '</td>';
-                    listTpl += '<td>' + list[i]['estimatedArrivalTime'] + '</td>';
+                    // listTpl += '<td>' + list[i]['assigned'] + '</td>';
+                    // listTpl += '<td>' + list[i]['unassigned'] + '</td>';
+                    // listTpl += '<td>' + list[i]['cardsOnFile'] + '</td>';
+                    // listTpl += '<td>' + list[i]['estimatedArrivalTime'] + '</td>';
                     listTpl += '<td>' + list[i]['create_time'] + '</td>';
-                    listTpl += '<td>' + list[i]['outTradeNo'] + '</td>';
-                    listTpl += '<td>' + list[i]['transaction_id'] + '</td>';
+                    // listTpl += '<td>' + list[i]['transaction_id'] + '</td>';
                     // listTpl += '<td>' + list[i]['transaction_info'] + '</td>';
                     listTpl += '</tr>';
                     listTpl2 += '<td>' + getStatus(list[i]['status']) + '</td>';

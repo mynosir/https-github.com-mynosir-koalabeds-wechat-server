@@ -14,22 +14,22 @@ $(function() {
             var callback = function(res) {
                 // 处理表格数据
                 var list = res['list'],
-                    sex = ['unknown','male','female'],
+                    sex = ['Unknown','Male','Female'],
 
-                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>avartar</th><th>city</th><th>province</th><th>country</th><th>sex</th><th>nickname</th><th>lang</th></tr>';
+                    listTpl = '<tr><th>Serial No.</th><th>Wechat Openid</th><th>Wechat Nickname</th><th>Avartar</th><th>Sex</th><th>Lang</th><th>Country</th><th>Province</th><th>City</th></tr>';
                 for(var i in list) {
                     var listid = parseInt(i)+1;
                     listTpl += '<tr>';
                     listTpl += '<td>' + listid + '</td>';
                     listTpl += '<td>' + list[i]['openid'] + '</td>';
+                    listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
                     listTpl += '<td><img src="' + list[i]['wx_avatarUrl'] + '" style="width: 60px; height: 60px;"></td>';
-                    listTpl += '<td>' + list[i]['wx_city'] + '</td>';
-                    listTpl += '<td>' + list[i]['wx_province'] + '</td>';
-                    listTpl += '<td>' + list[i]['wx_country'] + '</td>';
                     listTpl += '<td>' + sex[list[i]['wx_sex']] + '</td>';
                     // listTpl += '<td>' + list[i]['wx_language'] + '</td>';
-                    listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
                     listTpl += '<td>' + list[i]['lang'] + '</td>';
+                    listTpl += '<td>' + list[i]['wx_country'] + '</td>';
+                    listTpl += '<td>' + list[i]['wx_province'] + '</td>';
+                    listTpl += '<td>' + list[i]['wx_city'] + '</td>';
                     listTpl += '</tr>';
                 }
                 $('.js_table').html(listTpl);

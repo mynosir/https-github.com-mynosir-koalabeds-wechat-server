@@ -35,8 +35,8 @@ class Coupon_record extends MY_Controller {
             case 'getCouponRecord':
                 $page = $this->get_request('page');
                 $size = $this->get_request('size');
-                $classify = $this->get_request('classify');
-                $result = $this->coupon_record_model->getCouponRecord($page, $size, $classify);
+                $nickname = $this->get_request('nickname');
+                $result = $this->coupon_record_model->getCouponRecord($page, $size, $nickname);
                 break;
             case 'getDetail':
                 $id = $this->get_request('id');

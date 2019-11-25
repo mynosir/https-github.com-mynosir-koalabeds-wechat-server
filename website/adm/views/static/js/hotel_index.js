@@ -19,10 +19,10 @@ $(function() {
 
                     var idx = 1,
                         list = res['list'],
-                        listTpl = '<tr><th>serial no.</th><th>propertyID</th><th>name</th><th>name_cn</th><th>phone</th><th>email</th><th>address1</th><th>address2</th><th>city</th><th>state</th><th>zip</th><th>country</th><th>latitude</th><th>longtitude</th><th>checkInTime</th><th>checkOutTime</th></tr>',
-                        listTpl2 = '<tr><th>recommend</th><th>status</th><th>operation</th></tr>',
+                        listTpl = '<tr><th>Serial No.</th><th>Property ID</th><th>Property Name</th><th>Property Name(chinese)</th><th>Phone</th><th>Email</th><th>Country</th><th>City</th><th>Address1</th><th>Address2</th><th>Zip</th><th>Check In Time</th><th>Check Out Time</th></tr>',
+                        listTpl2 = '<tr><th>Recommend</th><th>Status</th><th>Operation</th></tr>',
                         recommend = ['Not','Recommend','Waterfall'],
-                        hotelStatus = ['unchecked','approve','deny'];
+                        hotelStatus = ['Unchecked','Approve','Deny'];
 
                     for(var i in list) {
                         var listid = parseInt(i)+1;
@@ -37,14 +37,11 @@ $(function() {
                         // listTpl += '<td>' + '<img src="'+list[i]['propertyImageThumb']+'">' + '</td>';
                         listTpl += '<td>' + list[i]['propertyPhone'] + '</td>';
                         listTpl += '<td>' + list[i]['propertyEmail'] + '</td>';
+                        listTpl += '<td>' + list[i]['propertyCountry'] + '</td>';
+                        listTpl += '<td>' + list[i]['propertyCity'] + '</td>';
                         listTpl += '<td>' + list[i]['propertyAddress1'] + '</td>';
                         listTpl += '<td>' + list[i]['propertyAddress2'] + '</td>';
-                        listTpl += '<td>' + list[i]['propertyCity'] + '</td>';
-                        listTpl += '<td>' + list[i]['propertyState'] + '</td>';
                         listTpl += '<td>' + list[i]['propertyZip'] + '</td>';
-                        listTpl += '<td>' + list[i]['propertyCountry'] + '</td>';
-                        listTpl += '<td>' + list[i]['propertyLatitude'] + '</td>';
-                        listTpl += '<td>' + list[i]['propertyLongitude'] + '</td>';
                         listTpl += '<td>' + list[i]['propertyCheckInTime'] + '</td>';
                         listTpl += '<td>' + list[i]['propertyCheckOutTime'] + '</td>';
                         listTpl += '</tr>';
