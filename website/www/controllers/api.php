@@ -112,7 +112,8 @@ class api extends MY_Controller {
             case 'getHotel':
                 $this->load->model('cloudbeds_hotel_model');
                 $propertyID = $this->get_request('propertyID', 0);
-                $result = $this->cloudbeds_hotel_model->getHotelDetailsInDB($propertyID);
+                $openid = $this->get_request('openid');
+                $result = $this->cloudbeds_hotel_model->getHotelDetailsInDB($propertyID, $openid);
                 break;
             // 获取房间列表
             case 'getRoomsByHotelId':
@@ -384,7 +385,7 @@ class api extends MY_Controller {
                 } else {
                     // 通过酒店id获取酒店名称
                     $this->load->model('cloudbeds_hotel_model');
-                    $hotelInfo = $this->cloudbeds_hotel_model->getHotelDetailsInDB($propertyID);
+                    $hotelInfo = $this->cloudbeds_hotel_model->getHotelDetailsInDB($propertyID, $params['openid']);
                     if($hotelInfo['status'] != 0) {
                         $result = array(
                             'status'    => -1,
@@ -509,7 +510,7 @@ class api extends MY_Controller {
                         $orderDetail = $orderInfo['data'];
                         // 通过酒店id获取酒店信息
                         $this->load->model('cloudbeds_hotel_model');
-                        $hotelInfo = $this->cloudbeds_hotel_model->getHotelDetailsInDB($orderDetail['propertyID']);
+                        $hotelInfo = $this->cloudbeds_hotel_model->getHotelDetailsInDB($orderDetail['propertyID'], $openid);
                         if($hotelInfo['status'] != 0) {
                             $result = array(
                                 'status'    => -3,

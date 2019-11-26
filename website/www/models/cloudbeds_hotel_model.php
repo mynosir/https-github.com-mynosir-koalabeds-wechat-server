@@ -152,7 +152,7 @@ class Cloudbeds_hotel_model extends MY_Model {
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `recommend` = ' . $type . ' order by id desc limit 0, ' . $num);
         $result = $query->result_array();
         foreach($result as $k=>$v) {
-            $hotelCn = $this->getHotelCn($v['id']);
+            $hotelCn = $this->getHotelCn($v['id'], $openid);
             if($hotelCn['status'] == 0) {
                 $result[$k]['cn'] = $hotelCn['data'];
                 $result[$k]['propertyName'] = $hotelCn['data']['propertyName'];
@@ -177,7 +177,8 @@ class Cloudbeds_hotel_model extends MY_Model {
         $result = $query->result_array();
         if(count($result) > 0) {
             foreach($result as $k=>$v) {
-                $hotelCn = $this->getHotelCn($v['id']);
+                // var_dump($v['id'], $openid);
+                $hotelCn = $this->getHotelCn($v['id'], $openid);
                 if($hotelCn['status'] == 0) {
                     $result[$k]['cn'] = $hotelCn['data'];
                     $result[$k]['propertyName'] = $hotelCn['data']['propertyName'];
@@ -388,7 +389,7 @@ class Cloudbeds_hotel_model extends MY_Model {
                         unset($newHotels[$k]);
                     } else {
                         $newHotels[$k]['details'] = $tmp['data'];
-                        $hotelCn = $this->getHotelCn($tmp['data']['id']);
+                        $hotelCn = $this->getHotelCn($tmp['data']['id'], $params['openid']);
                         if($hotelCn['status'] == 0) {
                             $newHotels[$k]['cn'] = $hotelCn['data'];
                             $newHotels[$k]['propertyName'] = $hotelCn['data']['propertyName'];
@@ -399,7 +400,7 @@ class Cloudbeds_hotel_model extends MY_Model {
                     }
                 } else {
                     $newHotels[$k]['details'] = $tmp['data'];
-                    $hotelCn = $this->getHotelCn($tmp['data']['id']);
+                    $hotelCn = $this->getHotelCn($tmp['data']['id'], $params['openid']);
                     if($hotelCn['status'] == 0) {
                         $newHotels[$k]['cn'] = $hotelCn['data'];
                         $newHotels[$k]['propertyName'] = $hotelCn['data']['propertyName'];
@@ -428,7 +429,7 @@ class Cloudbeds_hotel_model extends MY_Model {
     /**
      * 从数据库中检索酒店信息
      */
-    public function getHotelDetailsInDB($propertyID) {
+    public function getHotelDetailsInDB($propertyID, $openid='') {
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `propertyID` = ' . $propertyID);
         $result = $query->result_array();
         if(count($result) > 0) {
@@ -445,7 +446,7 @@ class Cloudbeds_hotel_model extends MY_Model {
                     'msg'       => '查询酒店评星异常'
                 );
             }
-            $hotelCn = $this->getHotelCn($result[0]['id']);
+            $hotelCn = $this->getHotelCn($result[0]['id'], $openid);
             if($hotelCn['status'] == 0) {
                 $result[0]['cn'] = $hotelCn['data'];
                 $result[0]['propertyName'] = $hotelCn['data']['propertyName'];
@@ -600,19 +601,31 @@ class Cloudbeds_hotel_model extends MY_Model {
     /**
      * 获取酒店对应中文信息
      */
-    public function getHotelCn($id) {
-        $query = $this->db->query('select ' . $this->cn_fields . ' from ' . $this->cn_table . ' where id = ' . $id);
-        $result = $query->result_array();
-        if(count($result) > 0) {
-            return array(
-                'status'    => 0,
-                'msg'       => '查询成功',
-                'data'      => $result[0]
-            );
+    public function getHotelCn($id, $openid = '') {
+        // 判断是否需要翻译中文
+        $CI = &get_instance();
+        $this->load->model('user_model');
+        $userinfo = $CI->user_model->getLangByOpenid($openid);
+        if($userinfo['status'] == 0 && $userinfo['data']['lang'] == 'cn') {
+            $query = $this->db->query('select ' . $this->cn_fields . ' from ' . $this->cn_table . ' where id = ' . $id);
+            $result = $query->result_array();
+            if(count($result) > 0) {
+                return array(
+                    'status'    => 0,
+                    'msg'       => '查询成功',
+                    'data'      => $result[0]
+                );
+            } else {
+                return array(
+                    'status'    => -1,
+                    'msg'       => '未查找到对应中文信息'
+                );
+            }
         } else {
+            // 使用默认语音
             return array(
-                'status'    => -1,
-                'msg'       => '未查找到对应中文信息'
+                'status'    => -2,
+                'msg'       => '无需翻译'
             );
         }
     }
