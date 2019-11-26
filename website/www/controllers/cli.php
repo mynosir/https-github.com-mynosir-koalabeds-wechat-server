@@ -32,4 +32,20 @@ class cli extends MY_Controller {
         return $result;
     }
 
+
+    public function fetch_roomTypes() {
+        // 查询当前表中的酒店
+        $this->load->model('cloudbeds_hotel_model');
+        $hotelsInfo = $this->cloudbeds_hotel_model->getHotelListInDB();
+        if($hotelsInfo['status'] == 0) {
+            $hotels = $hotelsInfo['data'];
+            $result = array();
+            foreach($hotels as $k=>$v) {
+                $result[$k] = $this->cloudbeds_hotel_model->fetch_roomTypes($v['propertyID']);
+            }
+        }
+        var_dump($result);
+        return $result;
+    }
+
 }

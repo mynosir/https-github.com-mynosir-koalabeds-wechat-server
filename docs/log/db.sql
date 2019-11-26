@@ -337,3 +337,41 @@ create table `ko_payment_log` (
 -- linzequan 20191118
 -- 门票订单表添加优惠券id
 alter table `ko_grayline_ticket` add column `coupon_id` int default 0 comment '所使用的优惠券id';
+
+
+-- linzequan 20191126
+-- 添加酒店房型信息表
+create table `ko_cloudbeds_roomtypes` (
+    `id` int not null auto_increment comment '自增id',
+    `propertyID` int not null comment 'cloudbeds酒店id',
+    `roomTypeID` int not null comment 'cloudbeds房型id',
+    `roomTypeName` varchar(512) comment 'cloudbeds房型名称',
+    `roomTypeNameShort` varchar(255) comment 'cloudbeds房型短名称',
+    `roomTypeDescription` text comment 'cloudbeds房型简介',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = '酒店房型信息表';
+
+
+-- linzequan 20191126
+-- 酒店房型信息更新记录表
+create table `ko_cloudbeds_roomtypes_log` (
+    `id` int not null auto_increment comment '自增id',
+    `roomTypeID` int not null comment 'cloudbeds房型id',
+    `status` int default 0 comment '是否已读状态。0未读，1已读',
+    `create_time` int comment '添加时间',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = '酒店房型信息更新记录表';
+
+
+-- linzequan 20191126
+-- 添加酒店房型中文信息表
+create table `ko_cloudbeds_roomtypes_cn` (
+    `id` int not null auto_increment comment '自增id',
+    `rid` int not null comment '房型信息表id',
+    `propertyID` int not null comment 'cloudbeds酒店id',
+    `roomTypeID` int not null comment 'cloudbeds房型id',
+    `roomTypeName` varchar(512) comment 'cloudbeds房型名称',
+    `roomTypeNameShort` varchar(255) comment 'cloudbeds房型短名称',
+    `roomTypeDescription` text comment 'cloudbeds房型简介',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = '酒店房型中文信息表';

@@ -9,8 +9,14 @@ class Cloudbeds_hotel_model extends MY_Model {
 
     private $table = 'ko_cloudbeds_hotels';
     private $cn_table = 'ko_cloudbeds_hotels_cn';
+    private $roomtypes_table = 'ko_cloudbeds_roomtypes';
+    private $roomtypes_cn_table = 'ko_cloudbeds_roomtypes_cn';
+    private $roomtypes_log_table = 'ko_cloudbeds_roomtypes_log';
     private $fields = 'id, propertyID, propertyName, propertyImage, propertyImageThumb, propertyPhone, propertyEmail, propertyAddress1, propertyAddress2, propertyCity, propertyState, propertyZip, propertyCountry, propertyLatitude, propertyLongitude, propertyCheckInTime, propertyCheckOutTime, propertyLateCheckOutAllowed, propertyLateCheckOutType, propertyLateCheckOutValue, propertyTermsAndConditions, propertyAmenities, propertyDescription, propertyTimezone, propertyCurrencyCode, propertyCurrencySymbol, propertyCurrencyPosition';
     private $cn_fields = 'id, hid, propertyID, propertyName, propertyDescription, propertyAddress';
+    private $roomtypes_fields = 'id, propertyID, roomTypeID, roomTypeName, roomTypeNameShort, roomTypeDescription';
+    private $roomtypes_cn_fields = 'id, rid, propertyID, roomTypeID, roomTypeName, roomTypeNameShort, roomTypeDescription';
+    private $roomtypes_log_fields = 'id, roomTypeID, status, create_time';
 
     public function __construct() {
         parent::__construct();
@@ -108,6 +114,67 @@ class Cloudbeds_hotel_model extends MY_Model {
 
 
     /**
+     * 抓取酒店房型信息
+     **/
+    public function fetch_roomTypes($propertyID) {
+        $access_token_result = $this->update_cloudbeds_access_token();
+        if($access_token_result['status']) {
+            return array(
+                'status'    => -1,
+                'msg'       => $access_token_result['msg']
+            );
+        }
+        $logArr = array();
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getRoomTypes?propertyIDs=' . $propertyID;
+        $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
+        if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
+            foreach($apiReturnStr['data'] as $k=>$v) {
+                // 判断当前记录是否已经被记录到数据库中
+                $hasExist = $this->checkRoomtypesExistByRoomtypeID($v['roomTypeID']);
+                if(!$hasExist) {
+                    $params = array(
+                        'propertyID'    => $v['propertyID'],
+                        'roomTypeID'    => $v['roomTypeID'],
+                        'roomTypeName'  => $v['roomTypeName'],
+                        'roomTypeNameShort'     => $v['roomTypeNameShort'],
+                        'roomTypeDescription'   => $v['roomTypeDescription']
+                    );
+                    $this->db->insert($this->roomtypes_table, $params);
+                    @file_put_contents('/pub/logs/fetch_roomTypes/' . date('Y-m-d', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $v['roomTypeID'] . ')==> ' . json_encode($params) . PHP_EOL, FILE_APPEND);
+                    @file_put_contents('/pub/logs/fetch_roomTypes_success/' . date('Y-m', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $v['roomTypeID'] . ')==> ' . json_encode($params) . PHP_EOL, FILE_APPEND);
+                    $logArr[] = '[' . date('Y-m-d H:i:s', time()) . '](' . $v['roomTypeID'] . ')==> ' . json_encode($params);
+                } else {
+                    // 记录存在，比对是否有改动，有的话则写入日志表
+                    $item = $this->getRoomTypesByRoomTypeIDInDB($v['roomTypeID']);
+                    if($v['roomTypeName'] != $item['data']['roomTypeName'] || $v['roomTypeNameShort'] != $item['data']['roomTypeNameShort'] || $v['roomTypeDescription'] != $item['data']['roomTypeDescription']) {
+                        // 发现有改动，记录改动表
+                        $tmp1 = array(
+                            'roomTypeID'    => $v['roomTypeID'],
+                            'create_time'   => time()
+                        );
+                        $this->db->insert($this->roomtypes_log_table, $tmp1);
+                        // 更新房间信息表
+                        $tmp2 = array(
+                            'roomTypeName'      => $v['roomTypeName'],
+                            'roomTypeNameShort' => $v['roomTypeNameShort'],
+                            'roomTypeDescription'=> $v['roomTypeDescription']
+                        );
+                        $this->db->where(array('roomTypeID'=> $v['roomTypeID']))->update($this->roomtypes_table, $tmp2);
+                        @file_put_contents('/pub/logs/fetch_roomTypes/' . date('Y-m-d', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $v['roomTypeID'] . ')==> 记录已经存在，进行更新' . PHP_EOL, FILE_APPEND);
+                        @file_put_contents('/pub/logs/fetch_roomTypes_update_success/' . date('Y-m', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $v['roomTypeID'] . ')==> ' . json_encode($params) . PHP_EOL, FILE_APPEND);
+                        $logArr[] = '[' . date('Y-m-d H:i:s', time()) . '](' . $v['roomTypeID'] . ')==> 记录已经存在，进行更新';
+                    } else {
+                        @file_put_contents('/pub/logs/fetch_roomTypes/' . date('Y-m-d', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $v['roomTypeID'] . ')==> 记录已经存在' . PHP_EOL, FILE_APPEND);
+                        $logArr[] = '[' . date('Y-m-d H:i:s', time()) . '](' . $v['roomTypeID'] . ')==> 记录已经存在，且无需更新';
+                    }
+                }
+            }
+        }
+        return $logArr;
+    }
+
+
+    /**
      * 获取酒店详情
      **/
     public function getHotelDetails($propertyID = 0) {
@@ -130,6 +197,20 @@ class Cloudbeds_hotel_model extends MY_Model {
      **/
     public function checkExistByPropertyID($propertyID) {
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where propertyID = ' . $propertyID);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * 检查房型是否已经记录在数据库中
+     **/
+    public function checkRoomtypesExistByRoomtypeID($roomTypeID) {
+        $query = $this->db->query('select ' . $this->roomtypes_fields . ' from ' . $this->roomtypes_table . ' where roomTypeID = ' . $roomTypeID);
         $result = $query->result_array();
         if(count($result) > 0) {
             return true;
@@ -290,6 +371,27 @@ class Cloudbeds_hotel_model extends MY_Model {
                 'status'    => 0,
                 'msg'       => '查询成功',
                 'data'      => $result
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '没有数据'
+            );
+        }
+    }
+
+
+    /**
+     * 从数据库中查询房型信息
+     **/
+    public function getRoomTypesByRoomTypeIDInDB($roomTypeID) {
+        $query = $this->db->query('select ' . $this->roomtypes_fields . ' from ' . $this->roomtypes_table . ' where `roomTypeID` = ' . $roomTypeID);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result[0]
             );
         } else {
             return array(
