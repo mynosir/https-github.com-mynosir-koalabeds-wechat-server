@@ -235,12 +235,12 @@ class Cloudbeds_hotel_model extends MY_Model {
         foreach($result as $k=>$v) {
             $hotelCn = $this->getHotelCn($v['id'], $openid);
             if($hotelCn['status'] == 0) {
-                $result[$k]['cn'] = $hotelCn['data'];
                 $result[$k]['propertyName'] = $hotelCn['data']['propertyName'];
                 $result[$k]['propertyAddress1'] = $hotelCn['data']['propertyAddress'];
                 $result[$k]['propertyAddress2'] = '';
                 $result[$k]['propertyDescription'] = $hotelCn['data']['propertyDescription'];
             }
+            $result[$k]['cn'] = $hotelCn;
         }
         return array(
             'status'    => 0,
@@ -261,12 +261,12 @@ class Cloudbeds_hotel_model extends MY_Model {
                 // var_dump($v['id'], $openid);
                 $hotelCn = $this->getHotelCn($v['id'], $openid);
                 if($hotelCn['status'] == 0) {
-                    $result[$k]['cn'] = $hotelCn['data'];
                     $result[$k]['propertyName'] = $hotelCn['data']['propertyName'];
                     $result[$k]['propertyAddress1'] = $hotelCn['data']['propertyAddress'];
                     $result[$k]['propertyAddress2'] = '';
                     $result[$k]['propertyDescription'] = $hotelCn['data']['propertyDescription'];
                 }
+                $result[$k]['cn'] = $hotelCn;
             }
             $rtn = array(
                 'status'    => 0,
@@ -301,11 +301,11 @@ class Cloudbeds_hotel_model extends MY_Model {
             foreach($apiReturnStr['data'] as $k=>$v) {
                 $roomtypesCn = $this->getRoomTypesCn($v['roomTypeID'], $openid);
                 if($roomtypesCn['status'] == 0) {
-                    $apiReturnStr['data'][$k] = $roomtypesCn['data'];
                     $apiReturnStr['data'][$k]['roomTypeName'] = $roomtypesCn['data']['roomTypeName'];
                     $apiReturnStr['data'][$k]['roomTypeNameShort'] = $roomtypesCn['data']['roomTypeNameShort'];
                     $apiReturnStr['data'][$k]['roomTypeDescription'] = $roomtypesCn['data']['roomTypeDescription'];
                 }
+                $apiReturnStr['data'][$k] = $roomtypesCn;
             }
             return array(
                 'status'    => 0,
@@ -339,11 +339,11 @@ class Cloudbeds_hotel_model extends MY_Model {
             foreach($apiReturnStr['data'] as $k=>$v) {
                 $roomtypesCn = $this->getRoomTypesCn($v['roomTypeID'], $openid);
                 if($roomtypesCn['status'] == 0) {
-                    $apiReturnStr['data'][$k] = $roomtypesCn['data'];
                     $apiReturnStr['data'][$k]['roomTypeName'] = $roomtypesCn['data']['roomTypeName'];
                     $apiReturnStr['data'][$k]['roomTypeNameShort'] = $roomtypesCn['data']['roomTypeNameShort'];
                     $apiReturnStr['data'][$k]['roomTypeDescription'] = $roomtypesCn['data']['roomTypeDescription'];
                 }
+                $apiReturnStr['data'][$k] = $roomtypesCn;
             }
             return array(
                 'status'    => 0,
@@ -513,23 +513,23 @@ class Cloudbeds_hotel_model extends MY_Model {
                         $newHotels[$k]['details'] = $tmp['data'];
                         $hotelCn = $this->getHotelCn($tmp['data']['id'], $params['openid']);
                         if($hotelCn['status'] == 0) {
-                            $newHotels[$k]['cn'] = $hotelCn['data'];
                             $newHotels[$k]['propertyName'] = $hotelCn['data']['propertyName'];
                             $newHotels[$k]['propertyAddress1'] = $hotelCn['data']['propertyAddress'];
                             $newHotels[$k]['propertyAddress2'] = '';
                             $newHotels[$k]['propertyDescription'] = $hotelCn['data']['propertyDescription'];
                         }
+                        $newHotels[$k]['cn'] = $hotelCn;
                     }
                 } else {
                     $newHotels[$k]['details'] = $tmp['data'];
                     $hotelCn = $this->getHotelCn($tmp['data']['id'], $params['openid']);
                     if($hotelCn['status'] == 0) {
-                        $newHotels[$k]['cn'] = $hotelCn['data'];
                         $newHotels[$k]['propertyName'] = $hotelCn['data']['propertyName'];
                         $newHotels[$k]['propertyAddress1'] = $hotelCn['data']['propertyAddress'];
                         $newHotels[$k]['propertyAddress2'] = '';
                         $newHotels[$k]['propertyDescription'] = $hotelCn['data']['propertyDescription'];
                     }
+                    $newHotels[$k]['cn'] = $hotelCn;
                 }
             } else {
                 // 不存在，从酒店列表中剔除该数据
@@ -570,12 +570,12 @@ class Cloudbeds_hotel_model extends MY_Model {
             }
             $hotelCn = $this->getHotelCn($result[0]['id'], $openid);
             if($hotelCn['status'] == 0) {
-                $result[0]['cn'] = $hotelCn['data'];
                 $result[0]['propertyName'] = $hotelCn['data']['propertyName'];
                 $result[0]['propertyAddress1'] = $hotelCn['data']['propertyAddress'];
                 $result[0]['propertyAddress2'] = '';
                 $result[0]['propertyDescription'] = $hotelCn['data']['propertyDescription'];
             }
+            $result[0]['cn'] = $hotelCn;
             return array(
                 'status'    => 0,
                 'msg'       => '查询成功',
@@ -682,11 +682,11 @@ class Cloudbeds_hotel_model extends MY_Model {
             foreach($apiReturnStr['data'] as $k=>$v) {
                 $roomtypesCn = $this->getRoomTypesCn($v['roomTypeID'], $openid);
                 if($roomtypesCn['status'] == 0) {
-                    $apiReturnStr['data'][$k] = $roomtypesCn['data'];
                     $apiReturnStr['data'][$k]['roomTypeName'] = $roomtypesCn['data']['roomTypeName'];
                     $apiReturnStr['data'][$k]['roomTypeNameShort'] = $roomtypesCn['data']['roomTypeNameShort'];
                     $apiReturnStr['data'][$k]['roomTypeDescription'] = $roomtypesCn['data']['roomTypeDescription'];
                 }
+                $apiReturnStr['data'][$k] = $roomtypesCn;
             }
             return array(
                 'status'    => 0,
@@ -739,7 +739,7 @@ class Cloudbeds_hotel_model extends MY_Model {
         $this->load->model('user_model');
         $userinfo = $CI->user_model->getLangByOpenid($openid);
         if($userinfo['status'] == 0 && $userinfo['data']['lang'] == 'zh-cn') {
-            $query = $this->db->query('select ' . $this->cn_fields . ' from ' . $this->cn_table . ' where id = ' . $id);
+            $query = $this->db->query('select ' . $this->cn_fields . ' from ' . $this->cn_table . ' where hid = ' . $id);
             $result = $query->result_array();
             if(count($result) > 0) {
                 return array(
