@@ -738,7 +738,7 @@ class Cloudbeds_hotel_model extends MY_Model {
         $CI = &get_instance();
         $this->load->model('user_model');
         $userinfo = $CI->user_model->getLangByOpenid($openid);
-        if($userinfo['status'] == 0 && $userinfo['data']['lang'] == 'cn') {
+        if($userinfo['status'] == 0 && $userinfo['data']['lang'] == 'zh-cn') {
             $query = $this->db->query('select ' . $this->cn_fields . ' from ' . $this->cn_table . ' where id = ' . $id);
             $result = $query->result_array();
             if(count($result) > 0) {
@@ -771,7 +771,7 @@ class Cloudbeds_hotel_model extends MY_Model {
         $CI = &get_instance();
         $this->load->model('user_model');
         $userinfo = $CI->user_model->getLangByOpenid($openid);
-        if($userinfo['status'] == 0 && $userinfo['data']['lang'] == 'cn') {
+        if($userinfo['status'] == 0 && $userinfo['data']['lang'] == 'zh-cn') {
             $query = $this->db->query('select ' . $this->roomtypes_cn_fields . ' from ' . $this->roomtypes_cn_table . ' where roomTypeID = ' . $roomTypeID);
             $result = $query->result_array();
             if(count($result) > 0) {
