@@ -8,7 +8,8 @@ $(function() {
                     actionxm: 'getReviews',
                     page: !p ? 1 : p,
                     size: 20,
-                    keyword: $('#search_comment').val()
+                    keyword: $('#search_comment').val(),
+                    propertyName: $('#search_property_name').val()
                 }
             };
             var callback = function(res) {
@@ -16,12 +17,13 @@ $(function() {
                 var list = res['list'],
                     sex = ['male','female'],
                     status = ['show','hide'],
-                    listTpl = '<tr><th>serial no.</th><th>propertyId</th><th>wx_nickname</th><th>rate</th><th>comment</th><th>createTime</th><th>status</th></tr>';
+                    listTpl = '<tr><th>Serial No.</th><th>Property ID</th><th>Property Name</th><th>Wechat Nickname</th><th>Rate</th><th>Comment</th><th>Create Time</th><th>Status</th></tr>';
                 for(var i in list) {
                     var listid = parseInt(i)+1;
                     listTpl += '<tr>';
                     listTpl += '<td>' + listid + '</td>';
                     listTpl += '<td>' + list[i]['propertyID'] + '</td>';
+                    listTpl += '<td>' + list[i]['propertyName'] + '</td>';
                     // listTpl += '<td>' + list[i]['userid'] + '</td>';
                     listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
                     listTpl += '<td>' + list[i]['rate'] + '</td>';

@@ -1,6 +1,6 @@
 $(function() {
     var page = {
-        init: function(p) {
+        init: function(p, nickname) {
             var json = {
                 api: config.apiServer + 'coupon_record/get',
                 type: 'get',
@@ -8,7 +8,7 @@ $(function() {
                     actionxm: 'getCouponRecord',
                     page: !p ? 1 : p,
                     size: 20,
-                    classify: 0
+                    nickname: nickname
                 }
             };
             var callback = function(res) {
@@ -16,14 +16,15 @@ $(function() {
                 var list = res['list'],
                     show = ['show','hide'],
                     used = ['unused','used'],
-                    listTpl = '<tr><th>serial no.</th><th>wx_openid</th><th>wx_nickname</th><th>couponId</th><th>status</th><th>createtime</th></tr>';
+                    listTpl = '<tr><th>Serial No.</th><th>Wechat Nickname</th><th>Coupon Over Amount</th><th>Coupon Discount Amount</th><th>Status</th><th>Create Time</th></tr>';
                 for(var i in list) {
                     var listid = parseInt(i)+1;
                     listTpl += '<tr>';
                     listTpl += '<td>' + listid + '</td>';
-                    listTpl += '<td>' + list[i]['openid'] + '</td>';
+                    // listTpl += '<td>' + list[i]['openid'] + '</td>';
                     listTpl += '<td>' + list[i]['wx_nickname'] + '</td>';
-                    listTpl += '<td>' + list[i]['cid'] + '</td>';
+                    listTpl += '<td>' + list[i]['totalAmount'] + '</td>';
+                    listTpl += '<td>' + list[i]['discountAmount'] + '</td>';
                     listTpl += '<td>' + used[list[i]['status']] + '</td>';
                     listTpl += '<td>' + list[i]['create_time'] + '</td>';
                     listTpl += '</tr>';
@@ -215,4 +216,12 @@ $(function() {
             }
         }
     });
+    $('.js_searchFrom').submit(function(e) {
+        e.preventDefault();
+        // var p = $('.js_page li[class=active] a').data('page');
+        var nickname = $('#search_name').val();
+        console.log(nickname);
+        // console.log(status);
+        page.init(1, nickname);
+    })
 });

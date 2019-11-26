@@ -16,7 +16,7 @@ $(function() {
             var callback = function(res) {
                 if(res.status == 0) {
                     var list = res['data']['list'],
-                        listTpl = '<tr><th>serial no.</th><th>name</th><th>menu authorization</th><th>createUser</th><th>createTime</th><th>updateUser</th><th>updateTime</th><th>operation</th></tr>';
+                        listTpl = '<tr><th>Serial No.</th><th>Name</th><th>Menu Authorization</th><th>Create User</th><th>Create Time</th><th>Update User</th><th>Update Time</th><th>Operation</th></tr>';
                     for(var i in list) {
                         listTpl += '<tr>';
                         listTpl += '<td>' + list[i]['id'] + '</td>';

@@ -11,6 +11,8 @@ class Reviews_model extends MY_Model {
     private $fields = 'id, propertyID, userid, rate, content, create_time, status';
     private $table_wx = 'ko_user';
     private $fields_wx = 'id, wx_nickname';
+    private $table_hotels = 'ko_cloudbeds_hotels';
+    private $fields_hotels = 'propertyID, propertyName';
 
     public function __construct() {
         parent::__construct();
@@ -23,8 +25,27 @@ class Reviews_model extends MY_Model {
      * @param  integer $size [description]
      * @return [type]        [description]
      */
-    public function getReviews($page=1, $size=20, $keyword='') {
-        if($keyword!='') {
+    public function getReviews($page=1, $size=20, $keyword='', $propertyName) {
+        if($propertyName){
+            $resHotel = $this->db->query('select ' . $this->fields_hotels . ' from ' . $this->table_hotels . ' where propertyName = "'.$propertyName.'"')->row();
+            if($resHotel){
+              $queryPropertyId = $resHotel->propertyID;
+              if($keyword==''){
+                $where = ' where propertyID = "'.$queryPropertyId.'"';
+              }else{
+                $where = ' where content like \'%'. $keyword .'%\' and propertyID = "'.$queryPropertyId.'"';
+              }
+            }else{
+              $rtn = array(
+                  'total' => 0,
+                  'size'  => 0,
+                  'page'  => 0,
+                  'list'  => []
+              );
+              return $rtn;
+
+            }
+        }else if($keyword!='') {
             $where = ' where content like \'%'. $keyword .'%\' ';
         } else {
             $where = ' where 1=1 ';
@@ -32,19 +53,25 @@ class Reviews_model extends MY_Model {
         $limitStart = ($page - 1) * $size;
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . $where . 'order by id asc limit ' . $limitStart . ', ' . $size);
         $result = $query->result_array();
-        foreach($result as &$item) {
-            if($item['create_time']) {
-                $item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
-            } else {
-                $item['create_time'] = '';
-            }
-        }
+        // foreach($result as &$item) {
+        // }
 
 
-        foreach ($result as $k => $v) {
+        foreach ($result as $k => &$v) {
           // code...
+          if($v['create_time']) {
+              $v['create_time'] = date('Y-m-d H:i:s', $v['create_time']);
+          } else {
+              $v['create_time'] = '';
+          }
           $queryid = $v['userid'];
           $result[$k]['wx_nickname'] = $this->db->query('select ' . $this->fields_wx . ' from ' . $this->table_wx . ' where id = "'.$queryid.'"')->row()->wx_nickname;
+          $resHotel = $this->db->query('select ' . $this->fields_hotels . ' from ' . $this->table_hotels . ' where propertyID = "'.$v['propertyID'].'"')->row();
+          if($resHotel){
+            $result[$k]['propertyName'] = $resHotel->propertyName;
+          }else{
+            $result[$k]['propertyName'] = '';
+          }
         }
 
         $pageQuery = $this->db->query('select count(1) as num from ' . $this->table);

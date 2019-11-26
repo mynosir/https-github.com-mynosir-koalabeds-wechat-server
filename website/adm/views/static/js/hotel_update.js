@@ -2,6 +2,67 @@
 $(function() {
     var page = {
         init: function() {
+          $('#termsAndConditions').summernote({
+              toolbar: [
+                  <!--字体工具-->
+                  ['fontname', ['fontname']], //字体系列
+                  ['style', ['bold', 'italic', 'underline', 'clear']], // 字体粗体、字体斜体、字体下划线、字体格式清除
+                  ['font', ['strikethrough', 'superscript', 'subscript']], //字体划线、字体上标、字体下标
+                  ['fontsize', ['fontsize']], //字体大小
+                  ['color', ['color']], //字体颜色
+
+                  <!--段落工具-->
+                  ['style', ['style']],//样式
+                  ['para', ['ul', 'ol', 'paragraph']], //无序列表、有序列表、段落对齐方式
+                  ['height', ['height']], //行高
+
+                  <!--插入工具-->
+                  ['table',['table']], //插入表格
+                  ['hr',['hr']],//插入水平线
+                  ['link',['link']], //插入链接
+                  // ['picture',['picture']], //插入图片
+                  // ['video',['video']], //插入视频
+
+                  <!--其它-->
+                  ['fullscreen',['fullscreen']], //全屏
+                  ['codeview',['codeview']], //查看html代码
+                  ['undo',['undo']], //撤销
+                  ['redo',['redo']], //取消撤销
+                  ['help',['help']], //帮助
+              ],
+              minHeight: 200,
+              placeholder: 'Please enter the terms and conditions',
+              dialogsFade: true,
+              dialogsInBody: true,
+              disableDragAndDrop: false,
+              // callbacks: {
+              //     onImageUpload: function(files) {
+              //         var $files = $(files),
+              //             url = config.apiServer + 'pic_content/post?actionxm=upload_contentImg';
+              //         $files.each(function() {
+              //             var file = this;
+              //             var data = new FormData();
+              //             data.append('file', file);
+              //             $.ajax({
+              //                 data: data,
+              //                 type: 'POST',
+              //                 url: url,
+              //                 cache: false,
+              //                 contentType: false,
+              //                 processData: false,
+              //                 success: function(res) {
+              //                     var data = JSON.parse(res);
+              //                     $('#descript_en').summernote('insertImage', data.name, function($image) { });
+              //
+              //                 },
+              //                 error: function() {
+              //                     console.error('error');
+              //                 }
+              //             });
+              //         });
+              //     }
+              // }
+          });
             $('#descript').summernote({
                 toolbar: [
                     <!--字体工具-->
@@ -153,14 +214,14 @@ $(function() {
             propertyLongitude = $('#propertyLongitude').val(),
             propertyCheckInTime = $('#propertyCheckInTime').val(),
             propertyCheckOutTime = $('#propertyCheckOutTime').val(),
-            propertyLateCheckOutType = $('#propertyLateCheckOutType').val(),
-            propertyLateCheckOutValue = $('#propertyLateCheckOutValue').val(),
-            propertyTermsAndConditions = $('#propertyTermsAndConditions').val(),
+            // propertyLateCheckOutType = $('#propertyLateCheckOutType').val(),
+            // propertyLateCheckOutValue = $('#propertyLateCheckOutValue').val(),
+            propertyTermsAndConditions = $('#termsAndConditions').summernote('code'),
             propertyAmenities = $('#propertyAmenities').val(),
             propertyDescription = $('#descript').summernote('code'),
-            propertyCurrencyCode = $('#propertyCurrencyCode').val(),
-            propertyCurrencySymbol = $('#propertyCurrencySymbol').val(),
-            propertyCurrencyPosition = $('#propertyCurrencyPosition').val(),
+            // propertyCurrencyCode = $('#propertyCurrencyCode').val(),
+            // propertyCurrencySymbol = $('#propertyCurrencySymbol').val(),
+            // propertyCurrencyPosition = $('#propertyCurrencyPosition').val(),
             propertyStatus = $('.selectStatus').val(),
             propertyRecommend = $('.selectRecommend').val(),
             propertyNameCh = $('#propertyNameCh').val(),
@@ -225,14 +286,14 @@ $(function() {
                       propertyLongitude: propertyLongitude||'',
                       propertyCheckInTime: propertyCheckInTime||'',
                       propertyCheckOutTime: propertyCheckOutTime||'',
-                      propertyLateCheckOutType: propertyLateCheckOutType||'',
-                      propertyLateCheckOutValue: propertyLateCheckOutValue||'',
+                      // propertyLateCheckOutType: propertyLateCheckOutType||'',
+                      // propertyLateCheckOutValue: propertyLateCheckOutValue||'',
                       propertyTermsAndConditions: propertyTermsAndConditions||'',
                       propertyAmenities: propertyAmenities||'',
                       propertyDescription: propertyDescription||'',
-                      propertyCurrencyCode: propertyCurrencyCode||'',
-                      propertyCurrencySymbol: propertyCurrencySymbol||'',
-                      propertyCurrencyPosition: propertyCurrencyPosition||'',
+                      // propertyCurrencyCode: propertyCurrencyCode||'',
+                      // propertyCurrencySymbol: propertyCurrencySymbol||'',
+                      // propertyCurrencyPosition: propertyCurrencyPosition||'',
                       recommend: propertyRecommend||'',
                       status: propertyStatus||''
                     },

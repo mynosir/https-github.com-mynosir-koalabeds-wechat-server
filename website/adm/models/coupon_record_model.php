@@ -11,6 +11,8 @@ class Coupon_record_model extends MY_Model {
     private $fields = 'id, openid, cid, status, create_time';
     private $table_wx = 'ko_user';
     private $fields_wx = 'openid, wx_nickname';
+    private $table_coupon = 'ko_coupon';
+    private $fields_coupon = 'id, totalAmount, discountAmount';
 
     public function __construct() {
         parent::__construct();
@@ -23,17 +25,44 @@ class Coupon_record_model extends MY_Model {
      * @param  integer $size [description]
      * @return [type]        [description]
      */
-    public function getCouponRecord($page=1, $size=20) {
+    public function getCouponRecord($page=1, $size=20, $nickname) {
         $limitStart = ($page - 1) * $size;
         $where = ' where 1=1 ';
+        if($nickname){
+          $resQueryNickname = $this->db->query('select ' . $this->fields_wx . ' from ' . $this->table_wx . ' where wx_nickname = "'.$nickname.'"')->row();
+          // var_dump($resQueryNickname);
+
+          if($resQueryNickname){
+            $queryOpenid2 = $resQueryNickname->openid;
+            $where = ' where openid = "'.$queryOpenid2.'"';
+
+          }else{
+            $rtn = array(
+                'total' => 0,
+                'size'  => 0,
+                'page'  => 0,
+                'list'  => []
+            );
+            return $rtn;
+
+          }
+
+        }
+        // var_dump($nickname);
         $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . $where . 'order by id asc limit ' . $limitStart . ', ' . $size);
         $result = $query->result_array();
         foreach ($result as $k => $v) {
           // code...
           $queryOpenid = $v['openid'];
+          $queryCouponid = $v['cid'];
           $query2 = $this->db->query('select ' . $this->fields_wx . ' from ' . $this->table_wx . ' where openid = "'.$queryOpenid.'"')->row();
           if($query2){
-              $result[$k]['wx_nickname'] = $query2->wx_nickname;            
+              $result[$k]['wx_nickname'] = $query2->wx_nickname;
+          }
+          $query3 = $this->db->query('select ' . $this->fields_coupon . ' from ' . $this->table_coupon . ' where id = "'.$queryCouponid.'"')->row();
+          if($query3){
+              $result[$k]['totalAmount'] = $query3->totalAmount;
+              $result[$k]['discountAmount'] = $query3->discountAmount;
           }
           if($result[$k]['create_time']) {
               $result[$k]['create_time'] = date('Y-m-d H:i:s', $result[$k]['create_time']);

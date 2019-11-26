@@ -20,10 +20,14 @@
 <div class="well well-sm">
     <form class="form-inline js_searchFrom">
         <div class="form-group">
-            <label for="search_comment">comment</label>
-            <input type="text" class="form-control" id="search_comment" placeholder="comment">
+            <label for="search_property_name">Property Name</label>
+            <input type="text" class="form-control" id="search_property_name" placeholder="Property Name">
         </div>
-        <button type="submit" class="btn btn-sm btn-primary">search</button>
+        <div class="form-group">
+            <label for="search_comment">Comment</label>
+            <input type="text" class="form-control" id="search_comment" placeholder="Comment">
+        </div>
+        <button type="submit" class="btn btn-sm btn-primary">Search</button>
     </form>
 </div>
 
@@ -170,14 +174,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                温馨提示
+                Tips
             </div>
             <div class="modal-body">
-                确定要修改？
+                Do you confirm to change?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary js_sure_update">確定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary js_sure_update">Confirm</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

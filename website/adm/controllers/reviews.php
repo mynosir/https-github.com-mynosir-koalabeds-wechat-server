@@ -35,9 +35,9 @@ class Reviews extends MY_Controller {
             case 'getReviews':
                 $page = $this->get_request('page');
                 $size = $this->get_request('size');
-                // $classify = $this->get_request('classify');
+                $propertyName = $this->get_request('propertyName');
                 $keyword = $this->get_request('keyword');
-                $result = $this->reviews_model->getReviews($page, $size, $keyword);
+                $result = $this->reviews_model->getReviews($page, $size, $keyword, $propertyName);
 
                 break;
             case 'getDetail':
