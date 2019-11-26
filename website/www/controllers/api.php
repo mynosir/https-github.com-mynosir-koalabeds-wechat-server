@@ -44,7 +44,8 @@ class api extends MY_Controller {
             case 'getRoomTypes':
                 $this->load->model('cloudbeds_hotel_model');
                 $propertyIDs = $this->get_request('propertyIDs');
-                $result = $this->cloudbeds_hotel_model->getRoomTypes($propertyIDs);
+                $openid = $this->get_request('openid');
+                $result = $this->cloudbeds_hotel_model->getRoomTypes($propertyIDs, $openid);
                 break;
             // 获取轮播图
             case 'getBanners':

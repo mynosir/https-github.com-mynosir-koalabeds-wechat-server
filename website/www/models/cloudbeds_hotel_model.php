@@ -116,7 +116,7 @@ class Cloudbeds_hotel_model extends MY_Model {
     /**
      * 抓取酒店房型信息
      **/
-    public function fetch_roomTypes($propertyID) {
+    public function fetch_roomTypes($propertyID, $openid = '') {
         $access_token_result = $this->update_cloudbeds_access_token();
         if($access_token_result['status']) {
             return array(
@@ -297,6 +297,16 @@ class Cloudbeds_hotel_model extends MY_Model {
         $url = 'https://hotels.cloudbeds.com/api/v1.1/getRoomTypes?propertyIDs=' . $propertyID . '&roomTypeID=' . $roomTypeID;
         $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
         if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
+            // 判断是否有翻译内容
+            foreach($apiReturnStr['data'] as $k=>$v) {
+                $roomtypesCn = $this->getRoomTypesCn($v['roomTypeID'], $openid);
+                if($roomtypesCn['status'] == 0) {
+                    $apiReturnStr['data'][$k] = $roomtypesCn['data'];
+                    $apiReturnStr['data'][$k]['roomTypeName'] = $roomtypesCn['data']['roomTypeName'];
+                    $apiReturnStr['data'][$k]['roomTypeNameShort'] = $roomtypesCn['data']['roomTypeNameShort'];
+                    $apiReturnStr['data'][$k]['roomTypeDescription'] = $roomtypesCn['data']['roomTypeDescription'];
+                }
+            }
             return array(
                 'status'    => 0,
                 'msg'       => '查询成功',
@@ -314,7 +324,7 @@ class Cloudbeds_hotel_model extends MY_Model {
     /**
      * 获取酒店房型
      **/
-    public function getRoomTypes($propertyIDs) {
+    public function getRoomTypes($propertyIDs, $openid='') {
         $access_token_result = $this->update_cloudbeds_access_token();
         if($access_token_result['status']) {
             return array(
@@ -325,6 +335,16 @@ class Cloudbeds_hotel_model extends MY_Model {
         $url = 'https://hotels.cloudbeds.com/api/v1.1/getRoomTypes?propertyIDs=' . $propertyIDs;
         $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
         if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
+            // 判断是否有翻译内容
+            foreach($apiReturnStr['data'] as $k=>$v) {
+                $roomtypesCn = $this->getRoomTypesCn($v['roomTypeID'], $openid);
+                if($roomtypesCn['status'] == 0) {
+                    $apiReturnStr['data'][$k] = $roomtypesCn['data'];
+                    $apiReturnStr['data'][$k]['roomTypeName'] = $roomtypesCn['data']['roomTypeName'];
+                    $apiReturnStr['data'][$k]['roomTypeNameShort'] = $roomtypesCn['data']['roomTypeNameShort'];
+                    $apiReturnStr['data'][$k]['roomTypeDescription'] = $roomtypesCn['data']['roomTypeDescription'];
+                }
+            }
             return array(
                 'status'    => 0,
                 'msg'       => '查询成功',
@@ -658,6 +678,16 @@ class Cloudbeds_hotel_model extends MY_Model {
         $url = 'https://hotels.cloudbeds.com/api/v1.1/getAvailableRoomTypes' . $filtersStr;
         $apiReturnStr = $this->https_request_cloudbeds($url, $access_token_result['data']['access_token']);
         if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
+            // 判断是否有翻译内容
+            foreach($apiReturnStr['data'] as $k=>$v) {
+                $roomtypesCn = $this->getRoomTypesCn($v['roomTypeID'], $openid);
+                if($roomtypesCn['status'] == 0) {
+                    $apiReturnStr['data'][$k] = $roomtypesCn['data'];
+                    $apiReturnStr['data'][$k]['roomTypeName'] = $roomtypesCn['data']['roomTypeName'];
+                    $apiReturnStr['data'][$k]['roomTypeNameShort'] = $roomtypesCn['data']['roomTypeNameShort'];
+                    $apiReturnStr['data'][$k]['roomTypeDescription'] = $roomtypesCn['data']['roomTypeDescription'];
+                }
+            }
             return array(
                 'status'    => 0,
                 'msg'       => '查询成功',
@@ -724,7 +754,40 @@ class Cloudbeds_hotel_model extends MY_Model {
                 );
             }
         } else {
-            // 使用默认语音
+            // 使用默认语言
+            return array(
+                'status'    => -2,
+                'msg'       => '无需翻译'
+            );
+        }
+    }
+
+
+    /**
+     * 获取酒店房型对应中文信息
+     **/
+    public function getRoomTypesCn($roomTypeID, $openid = '') {
+        // 判断是否需要翻译中文
+        $CI = &get_instance();
+        $this->load->model('user_model');
+        $userinfo = $CI->user_model->getLangByOpenid($openid);
+        if($userinfo['status'] == 0 && $userinfo['data']['lang'] == 'cn') {
+            $query = $this->db->query('select ' . $this->roomtypes_cn_fields . ' from ' . $this->roomtypes_cn_table . ' where roomTypeID = ' . $roomTypeID);
+            $result = $query->result_array();
+            if(count($result) > 0) {
+                return array(
+                    'status'    => 0,
+                    'msg'       => '查询成功',
+                    'data'      => $result[0]
+                );
+            } else {
+                return array(
+                    'status'    => -1,
+                    'msg'       => '未查找到对应中文信息'
+                );
+            }
+        } else {
+            // 使用默认语言
             return array(
                 'status'    => -2,
                 'msg'       => '无需翻译'
