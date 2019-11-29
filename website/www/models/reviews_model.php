@@ -19,8 +19,29 @@ class reviews_model extends MY_Model {
      * 保存记录
      **/
     public function add($params) {
-        $this->load->model('user_model');
         $CI = &get_instance();
+        // 判断该笔订单是否已经完成
+        $this->load->model('hotel_order_model');
+        $orderInfo = $this->hotel_order_model->getDetailById($params['orderId']);
+        if($orderInfo['status'] != 0) {
+            return array(
+                'status'    => -1,
+                'msg'       => '未找到对应订单'
+            );
+        }
+        if($orderInfo['data']['status'] != 2) {
+            return array(
+                'status'    => -2,
+                'msg'       => '订单状态异常'
+            );
+        }
+        if(strtotime($orderInfo['data']['endDate']) + 86400 > time()) {
+            return array(
+                'status'    => -3,
+                'msg'       => '入住完成后才可评论'
+            );
+        }
+        $this->load->model('user_model');
         $userid = $CI->user_model->getUserIdByOpenid($params['openid']);
         $data = array(
             'propertyID'    => $params['propertyID'],
