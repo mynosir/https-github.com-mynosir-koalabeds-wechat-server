@@ -54,7 +54,7 @@ class Grayline_ticket_model extends MY_Model {
                             );
                             $this->db->insert($v['table'], $params);
                             @file_put_contents('/pub/logs/fetch_tickets/' . $v['lang'] . '_' . date('Y-m-d', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $b['productId'] . ')==> ' . json_encode($params) . PHP_EOL, FILE_APPEND);
-                            @file_put_contents('/pub/logs/fetch_tickets/' . $v['lang'] . '_' . date('Y-m', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $b['productId'] . ')==> ' . json_encode($params) . PHP_EOL, FILE_APPEND);
+                            @file_put_contents('/pub/logs/fetch_tickets_success/' . $v['lang'] . '_' . date('Y-m', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $b['productId'] . ')==> ' . json_encode($params) . PHP_EOL, FILE_APPEND);
                             $logArr[] = '[' . date('Y-m-d H:i:s', time()) . '](' . $v['lang'] . $b['productId'] . ')==> ' . json_encode($params);
                         } else {
                             // 记录存在，更新
