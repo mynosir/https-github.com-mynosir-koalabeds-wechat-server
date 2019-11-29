@@ -124,7 +124,7 @@ class api extends MY_Controller {
                 $checkOutDate = $this->get_request('checkOutDate', '');     // 离店日期
                 $adults = $this->get_request('adults', 1);                  // 大人数量
                 $children = $this->get_request('children', 0);              // 小孩数量
-                $openid = $this->get_request('openid')
+                $openid = $this->get_request('openid');
                 $result = $this->cloudbeds_hotel_model->getAvailableRoomTypes($propertyID, $checkInDate, $checkOutDate, $adults, $children, $openid);
                 break;
             // 获取评论列表
@@ -189,9 +189,10 @@ class api extends MY_Controller {
             // 获取grayline产品详情
             case 'getGraylineProductDetails':
                 $this->load->model('grayline_ticket_model');
+                $language = $this->get_request('language', 'en');
                 $type = $this->get_request('type', '');
                 $productId = $this->get_request('productId');
-                $result = $this->grayline_ticket_model->getProductDetails($type, $productId);
+                $result = $this->grayline_ticket_model->getProductDetails($type, $productId, $language);
                 break;
             // 查询grayline产品
             case 'queryGraylineProduct':

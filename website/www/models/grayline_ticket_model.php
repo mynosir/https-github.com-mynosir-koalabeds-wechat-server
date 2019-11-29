@@ -150,7 +150,7 @@ class Grayline_ticket_model extends MY_Model {
     /**
      * 获取产品详情
      */
-    public function getProductDetails($type, $productId) {
+    public function getProductDetails($type, $productId, $language='en') {
         if(!$type || !$productId) {
             return array(
                 'status'    => -1,
@@ -166,6 +166,15 @@ class Grayline_ticket_model extends MY_Model {
         );
         $apiReturnStr = $this->http_request_grayline($url, $data);
         if($apiReturnStr['meta']['code'] == 'RESP_OKAY') {
+            // 查询详情及条款
+            $extInfo = $this->getProductDetailsExt($productId, $language);
+            if($extInfo['status'] == 0) {
+                $apiReturnStr['data']['introduce'] = $extInfo['data']['introduce'];
+                $apiReturnStr['data']['clause'] = $extInfo['data']['clause'];
+            } else {
+                $apiReturnStr['data']['introduce'] = '';
+                $apiReturnStr['data']['clause'] = '';
+            }
             return array(
                 'status'    => 0,
                 'msg'       => '查询成功',
@@ -176,6 +185,31 @@ class Grayline_ticket_model extends MY_Model {
                 'status'    => 1,
                 'msg'       => '系统异常',
                 'ext'       => json_encode($apiReturnStr['meta'])
+            );
+        }
+    }
+
+
+    public function getProductDetailsExt($productId, $language) {
+        if($language == 'zh-cn') {
+            $table = $this->info_cn_table;
+            $fields = $this->info_cn_fields;
+        } else {
+            $table = $this->info_table;
+            $fields = $this->info_fields;
+        }
+        $query = $this->db->query('select ' . $fields . ' from ' . $table . ' where productId = ' . $productId);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $result[0]
+            );
+        } else {
+            return array(
+                'status'    => -1,
+                'msg'       => '不存在记录'
             );
         }
     }
