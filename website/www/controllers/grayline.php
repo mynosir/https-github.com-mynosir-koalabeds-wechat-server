@@ -45,7 +45,7 @@ class grayline extends MY_Controller {
             'email'     => $this->email,
             'password'  => $this->password,
             'language'  => $this->language,
-            'type'      => 'tour'
+            'type'      => 'ticket'
         );
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);

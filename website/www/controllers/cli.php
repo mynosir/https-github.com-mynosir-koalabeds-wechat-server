@@ -48,4 +48,12 @@ class cli extends MY_Controller {
         return $result;
     }
 
+
+    public function fetch_tickets() {
+        $this->load->model('grayline_ticket_model');
+        $result = $this->grayline_ticket_model->fetch_tickets();
+        var_dump($result);
+        return $result;
+    }
+
 }

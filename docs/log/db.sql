@@ -375,3 +375,29 @@ create table `ko_cloudbeds_roomtypes_cn` (
     `roomTypeDescription` text comment 'cloudbeds房型简介',
     primary key (`id`)
 ) engine = myisam character set utf8 collate utf8_general_ci comment = '酒店房型中文信息表';
+
+
+-- linzequan 20191129
+-- 添加门票额外信息表
+create table `ko_grayline_ticket_info` (
+    `id` int not null auto_increment comment '自增id',
+    `productId` int not null comment 'grayline门票id',
+    `title` varchar(1024) comment '门票标题',
+    `type` varchar(128) comment '类型',
+    `introduce` text comment '门票介绍',
+    `clause` text comment '门票条款',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = '门票额外信息表';
+
+
+-- linzequan 20191129
+-- 添加门票额外信息中文表
+create table `ko_grayline_ticket_info_cn` (
+    `id` int not null auto_increment comment '自增id',
+    `productId` int not null comment 'grayline门票id',
+    `title` varchar(1024) comment '门票标题',
+    `type` varchar(128) comment '类型',
+    `introduce` text comment '门票介绍',
+    `clause` text comment '门票条款',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = '门票额外信息中文表';
