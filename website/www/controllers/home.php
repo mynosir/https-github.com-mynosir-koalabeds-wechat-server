@@ -109,8 +109,8 @@ class home extends MY_Controller {
 
     public function getAvailableRoomTypes() {
         $curl = curl_init();
-        $access_token = '2tBHitaksLZbyTseYm2qr1yRRrQRM9rUmjkUBo3Y';
-        $url = 'https://hotels.cloudbeds.com/api/v1.1/getAvailableRoomTypes?propertyIDs=172068&startDate=2019-11-18&endDate=2019-11-19&rooms=1';
+        $access_token = 'U8eWgFwT5rdu7pYDrsOkRcohhYwcP3JBxvmqdJaZ';
+        $url = 'https://hotels.cloudbeds.com/api/v1.1/getAvailableRoomTypes?propertyIDs=172068&startDate=2019-11-29&endDate=2019-11-30&rooms=1';
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);

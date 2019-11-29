@@ -440,7 +440,7 @@ class Cloudbeds_hotel_model extends MY_Model {
             $hotelIdArr[] = $v['propertyID'];
         }
         $hotelIdStr = implode(',', $hotelIdArr);
-        $availableRoomTypes = $this->getAvailableRoomTypes($hotelIdStr, $params['checkInDate'], $params['checkOutDate']);
+        $availableRoomTypes = $this->getAvailableRoomTypes($hotelIdStr, $params['checkInDate'], $params['checkOutDate'], $params['openid']);
         if($availableRoomTypes['status'] != 0) {
             return array(
                 'status'    => -2,
@@ -452,6 +452,7 @@ class Cloudbeds_hotel_model extends MY_Model {
         foreach($availableRoomTypes['data'] as $k=>$v) {
             $tmp = array();
             foreach($v['propertyRooms'] as $x=>$y) {
+                // var_dump($y);
                 // 判断是否价格区间，有的话则需要过滤
                 if($params['priceStart'] > 0 && $params['priceStart'] > $y['roomRate']) {
                     continue;
@@ -646,7 +647,7 @@ class Cloudbeds_hotel_model extends MY_Model {
     /**
      * 筛选可用的房间
      */
-    public function getAvailableRoomTypes($propertyIDs, $checkInDate, $checkOutDate, $adults=-1, $children=-1) {
+    public function getAvailableRoomTypes($propertyIDs, $checkInDate, $checkOutDate, $adults=-1, $children=-1, $openid='') {
         $access_token_result = $this->update_cloudbeds_access_token();
         if($access_token_result['status']) {
             return array(
@@ -680,13 +681,17 @@ class Cloudbeds_hotel_model extends MY_Model {
         if(isset($apiReturnStr['success']) && !!$apiReturnStr['success']) {
             // 判断是否有翻译内容
             foreach($apiReturnStr['data'] as $k=>$v) {
-                $roomtypesCn = $this->getRoomTypesCn($v['roomTypeID'], $openid);
-                if($roomtypesCn['status'] == 0) {
-                    $apiReturnStr['data'][$k]['roomTypeName'] = $roomtypesCn['data']['roomTypeName'];
-                    $apiReturnStr['data'][$k]['roomTypeNameShort'] = $roomtypesCn['data']['roomTypeNameShort'];
-                    $apiReturnStr['data'][$k]['roomTypeDescription'] = $roomtypesCn['data']['roomTypeDescription'];
+                if(isset($v['propertyRooms'])) {
+                    foreach($v['propertyRooms'] as $x=>$y) {
+                        $roomtypesCn = $this->getRoomTypesCn($y['roomTypeID'], $openid);
+                        if($roomtypesCn['status'] == 0) {
+                            $apiReturnStr['data'][$k][$propertyRooms][$x]['roomTypeName'] = $roomtypesCn['data']['roomTypeName'];
+                            $apiReturnStr['data'][$k][$propertyRooms][$x]['roomTypeNameShort'] = $roomtypesCn['data']['roomTypeNameShort'];
+                            $apiReturnStr['data'][$k][$propertyRooms][$x]['roomTypeDescription'] = $roomtypesCn['data']['roomTypeDescription'];
+                        }
+                        // $apiReturnStr['data'][$k]['propertyRooms'][$x] = $roomtypesCn;
+                    }
                 }
-                $apiReturnStr['data'][$k] = $roomtypesCn;
             }
             return array(
                 'status'    => 0,
