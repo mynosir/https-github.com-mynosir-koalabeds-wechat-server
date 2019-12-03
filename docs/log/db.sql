@@ -401,3 +401,8 @@ create table `ko_grayline_ticket_info_cn` (
     `clause` text comment '门票条款',
     primary key (`id`)
 ) engine = myisam character set utf8 collate utf8_general_ci comment = '门票额外信息中文表';
+
+
+-- linzequan 20191203
+-- 修改用户表语言默认为中文
+alter table ko_user modify column lang varchar(32) default 'zh-cn' comment '用户使用小程序的预言。可选择en、zh-cn，默认zh-cn中文';
