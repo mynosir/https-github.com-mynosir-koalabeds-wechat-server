@@ -2,7 +2,7 @@ $(function() {
     var page = {
         init: function(p, nickname, status) {
             var json = {
-                api: config.apiServer + 'ticket/get',
+                api: config.apiServer + 'ticket_order/get',
                 type: 'get',
                 data: {
                     actionxm: 'getTicket',
@@ -35,7 +35,7 @@ $(function() {
                         'value': 'Reserve Cancelled'
                       }
                     ],
-                    listTpl = '<tr><th>Serial No.</th><th>Trade No</th><th>Wechat Nickname</th><th>Type</th><th>Title</th><th>FirstName</th><th>LastName</th><th>Passport</th><th>Guest Email</th><th>Country Code</th><th>Telephone</th><th>Guest Selected Address</th><th>Total Price</th><th>Create Time</th></tr>';
+                    listTpl = '<tr><th>Serial No.</th><th>Trade No</th><th>Wechat Nickname</th><th>Total Price</th><th>Type</th><th>Title</th><th>FirstName</th><th>LastName</th><th>Passport</th><th>Guest Email</th><th>Country Code</th><th>Telephone</th><th>Guest Selected Address</th><th>Create Time</th></tr>';
                     listTpl2 = '<tr><th>Status</th></tr>';
                     // <th>travelDate</th><th>travelTime</th><th>turbojetDepartureDate</th><th>turbojetReturnDate</th><th>turbojetDepartureTime</th><th>turbojetReturnTime</th><th>turbojetDepartureFrom</th><th>turbojetDepartureTo</th><th>turbojetReturnFrom</th><th>turbojetReturnTo</th><th>turbojetQuantity</th><th>turbojetClass</th><th>turbojetTicketType</th><th>turbojetDepartureFlightNo</th><th>turbojetReturnFlightNo</th>
                 function getStatus(status) {
@@ -124,7 +124,7 @@ $(function() {
         },
         getDetail: function(id) {
             var json = {
-                api: config.apiServer + 'ticket/get',
+                api: config.apiServer + 'ticket_order/get',
                 type: 'get',
                 data: {
                     actionxm: 'getDetail',
@@ -140,6 +140,9 @@ $(function() {
             };
             json.callback = callback;
             Utils.requestData(json);
+        },
+        export: function() {
+            window.location.href = config.apiServer+'ticket_order/get?actionxm=export';
         },
         deleteConfirmTip: function(id) {
             $('#confirmModal').find('.js_sure_delete').attr('data-id', id);
@@ -168,6 +171,10 @@ $(function() {
         }
     };
     page.init();
+    $('body').delegate('#export', 'click', function(e){
+        e.preventDefault();
+        page.export();
+    });
     $('body').delegate('.js_pageItem', 'click', function(e) {
         var p = $(e.currentTarget).data('page');
         page.init(p);

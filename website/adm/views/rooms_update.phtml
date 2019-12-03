@@ -1,0 +1,108 @@
+<link rel="stylesheet" href="<?php echo $resource_url; ?>libs/summernote/summernote.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $resource_url; ?>/css/uploadifive.css">
+
+<style type="text/css">
+    .prev-pic {
+        max-width: 400px;
+        max-height: 300px;
+        display: block;
+        margin: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+    .prev-frame {
+        display: inline-block;
+        position: relative;
+    }
+    .prev-frame em {
+        position: absolute;
+        right: 25px;
+        top: 20px;
+        background: red;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        color: #fff;
+        font-weight: 1000;
+        cursor: pointer;
+    }
+</style>
+
+<div class="form-group">
+    <label>Property ID</label>
+    <input type="text" class="form-control" id="propertyID" disabled value="<?php echo $info['en']['propertyID']; ?>">
+</div>
+<div class="form-group">
+    <label>Property Name</label>
+    <input type="text" class="form-control" id="propertyName" disabled value="<?php echo $info['propertyName']; ?>">
+</div>
+<div class="form-group">
+    <label>Room Type ID</label>
+    <input type="text" class="form-control" id="roomTypeID" disabled placeholder="Room Type ID" value="<?php echo $info['en']['roomTypeID']; ?>">
+</div>
+<div class="form-group">
+    <label>Room Type Name</label>
+    <input type="text" class="form-control" id="roomTypeName" disabled placeholder="Room Type Name" value="<?php echo $info['en']['roomTypeName']; ?>">
+</div>
+<div class="form-group">
+    <label>Room Type Name(Chinese)</label>
+    <input type="text" class="form-control" id="roomTypeName_cn" placeholder="Room Type Name(Chinese)" value="<?php echo $info['cn']['roomTypeName']; ?>">
+</div>
+<div class="form-group">
+    <label>Room Type Name Short</label>
+    <input type="text" class="form-control" id="roomTypeNameShort" disabled placeholder="Room Type Name Short" value="<?php echo $info['en']['roomTypeNameShort']; ?>">
+</div>
+<div class="form-group">
+    <label>Room Type Name Short(Chinese)</label>
+    <input type="text" class="form-control" id="roomTypeNameShort_cn" placeholder="Room Type Name Short(Chinese)" value="<?php echo $info['cn']['roomTypeNameShort']; ?>">
+</div>
+<div class="form-group">
+    <label>Room Type Description</label>
+    <textarea style='width:100%' disabled class="js_roomTypeDescription"><?php echo $info['en']['roomTypeDescription']; ?></textarea>
+</div>
+<div class="form-group">
+    <label>Room Type Description(Chinese)</label>
+    <div id="roomTypeDescription_cn"></div>
+</div>
+
+
+<div class="modal fade" id="uploadModal" tabindex="1" role="dialog" aria-labelledby="uploadModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Image Upload</h4>
+            </div>
+            <div class="modal-body">
+                <input id="photo" type="file" multiple="false" value="" />
+                <div>
+                    <img src="" id="prevArea" style="max-width: 200px; max-height: 120px; ">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary js_addPhoto">Confirm</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<textarea class="js_roomTypeDescription" style="display: none;"><?php echo $info['en']['roomTypeDescription']; ?></textarea>
+<textarea class="js_roomTypeDescription_cn" style="display: none;"><?php echo $info['cn']['roomTypeDescription']; ?></textarea>
+
+<input type="hidden" name="id" value="<?php echo $id; ?>" class="js_id">
+
+<button type="submit" class="btn btn-primary js_submit">Save</button>
+
+<script src="<?php echo $resource_url; ?>js/jquery.uploadifive.js"></script>
+<script src="<?php echo $resource_url; ?>libs/summernote/summernote.js"></script>
+<script src="<?php echo $resource_url; ?>libs/summernote/lang/summernote-zh-CN.js"></script>
+<script src="<?php echo $resource_url; ?>libs/summernote/lang/summernote-zh-TW.js"></script>
+<script src="<?php echo $resource_url; ?>js/rooms_update.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('#roomTypeDescription').summernote('code', $('.js_roomTypeDescription').val());
+    $('#roomTypeDescription_cn').summernote('code', $('.js_roomTypeDescription_cn').val());
+})
+</script>

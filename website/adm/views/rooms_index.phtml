@@ -6,8 +6,15 @@
 <div class="well well-sm">
     <form class="form-inline js_searchFrom">
         <div class="form-group">
-            <label for="search_name">Ticket Title(Only English)</label>
-            <input type="text" class="form-control" id="search_title" placeholder="Ticket Title">
+            <label for="search_name">Property Name</label>
+            <!-- <input type="text" class="form-control" id="search_name" placeholder="Property Name"> -->
+            <select class="propertyName" name="" id="properyName">
+              <option value="">All</option>
+              <?php foreach ($propertyList as $k => $v): ?>
+                <option value="<?=$v["propertyID"]?>"><?=$v["propertyName"]?></option>
+              <?php endforeach; ?>
+
+            </select>
 
         </div>
 
@@ -36,4 +43,4 @@
 
 
 
-<script src="<?php echo $resource_url; ?>js/ticket_index.js"></script>
+<script src="<?php echo $resource_url; ?>js/rooms_index.js"></script>

@@ -25,33 +25,23 @@ class Reviews_model extends MY_Model {
      * @param  integer $size [description]
      * @return [type]        [description]
      */
-    public function getReviews($page=1, $size=20, $keyword='', $propertyName) {
-        if($propertyName){
-            $resHotel = $this->db->query('select ' . $this->fields_hotels . ' from ' . $this->table_hotels . ' where propertyName = "'.$propertyName.'"')->row();
-            if($resHotel){
-              $queryPropertyId = $resHotel->propertyID;
-              if($keyword==''){
-                $where = ' where propertyID = "'.$queryPropertyId.'"';
-              }else{
-                $where = ' where content like \'%'. $keyword .'%\' and propertyID = "'.$queryPropertyId.'"';
-              }
+    public function getReviews($page=1, $size=20, $keyword='', $propertyId) {
+        if($propertyId!=''){
+            if($keyword==''){
+              $where = ' where propertyID = "'.$propertyId.'"';
             }else{
-              $rtn = array(
-                  'total' => 0,
-                  'size'  => 0,
-                  'page'  => 0,
-                  'list'  => []
-              );
-              return $rtn;
-
+              $where = ' where content like \'%'. $keyword .'%\' and propertyID = "'.$propertyId.'"';
             }
-        }else if($keyword!='') {
-            $where = ' where content like \'%'. $keyword .'%\' ';
-        } else {
-            $where = ' where 1=1 ';
+        }else{
+            if($keyword!=''){
+              $where = ' where content like \'%'. $keyword .'%\' ';
+            }else{
+              $where = ' where 1=1 ';
+            }
         }
+        // var_dump($where);
         $limitStart = ($page - 1) * $size;
-        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . $where . 'order by id asc limit ' . $limitStart . ', ' . $size);
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . $where . 'order by create_time desc limit ' . $limitStart . ', ' . $size);
         $result = $query->result_array();
         // foreach($result as &$item) {
         // }

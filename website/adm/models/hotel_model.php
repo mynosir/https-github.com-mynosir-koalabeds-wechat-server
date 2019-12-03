@@ -11,6 +11,7 @@ class Hotel_model extends MY_Model {
     private $cn_table = 'ko_cloudbeds_hotels_cn';
     private $fields = 'id, propertyID, propertyName, propertyImageThumb, propertyPhone, propertyEmail, propertyCity, propertyState,status';
     private $hotel_fields = 'id,propertyID,propertyName,propertyImage,propertyImageThumb,propertyPhone,propertyEmail,propertyAddress1,propertyAddress2,propertyCity,propertyState,propertyZip,propertyCountry,propertyLatitude,propertyLongitude,propertyCheckInTime,propertyCheckOutTime,propertyLateCheckOutAllowed,propertyLateCheckOutType,propertyLateCheckOutValue,propertyTermsAndConditions,propertyAmenities,propertyDescription,propertyTimezone,propertyCurrencyCode,propertyCurrencySymbol,propertyCurrencyPosition,status,recommend';
+    private $property_fields = 'propertyID,propertyName';
     private $cn_hotel_fields = 'id, hid, propertyID, propertyName, propertyDescription, propertyAddress';
     private $school_fields = 'id, name, type, area';
 
@@ -21,9 +22,19 @@ class Hotel_model extends MY_Model {
     /**
      * 获取酒店列表
      **/
+    public function getPropertyList() {
+      $sql = 'select '.$this->property_fields.' from '.$this->table;
+      $res = $this->db->query($sql)->result_array();
+      // var_dump($res);
+      return $res;
+    }
+
+    /**
+     * 获取酒店列表
+     **/
     public function getHotelList($page=1, $size=6, $keyword='') {
       if($keyword!='') {
-          $where = ' where propertyName like \'%'. $keyword .'%\' ';
+          $where = ' where propertyId='.$keyword;
       } else {
           $where = ' where 1=1 ';
       }

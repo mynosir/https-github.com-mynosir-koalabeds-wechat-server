@@ -11,7 +11,7 @@ $(function() {
                         actionxm: 'search',
                         page: !p ? 1 : p,
                         size: 10,
-                        keyword: $('#search_name').val()
+                        keyword: $('.propertyName').val()
                     }
                 };
             var callback = function(res) {
@@ -21,7 +21,7 @@ $(function() {
                         list = res['list'],
                         listTpl = '<tr><th>Serial No.</th><th>Property ID</th><th>Property Name</th><th>Property Name(chinese)</th><th>Phone</th><th>Email</th><th>Country</th><th>City</th><th>Address1</th><th>Address2</th><th>Zip</th><th>Check In Time</th><th>Check Out Time</th></tr>',
                         listTpl2 = '<tr><th>Recommend</th><th>Status</th><th>Operation</th></tr>',
-                        recommend = ['Not','Recommend','Waterfall'],
+                        recommend = ['Not','Waterfall','Recommend'],
                         hotelStatus = ['Unchecked','Approve','Deny'];
 
                     for(var i in list) {

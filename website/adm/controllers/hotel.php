@@ -15,7 +15,7 @@ class Hotel extends MY_Controller {
         $data['admin_info'] = isset($_SESSION['loginInfo']) ? $_SESSION['loginInfo'] : '';
         // $data['admin_info'] = $this->session->userdata('loginInfo');
         $data['base_url'] = $this->config->item('base_url');
-        $data['current_menu'] = 'property';
+        $data['current_menu'] = 'property_config';
         $data['current_menu_text'] = 'Property';
         $data['sub_menu'] = array();
         $data['menu_list'] = $this->getMenuList();
@@ -31,6 +31,7 @@ class Hotel extends MY_Controller {
 
 
     public function index() {
+        $this->data['propertyList'] = $this->hotel_model->getPropertyList();
 
         $this->showPage('hotel_index', $this->data);
     }
@@ -95,6 +96,30 @@ class Hotel extends MY_Controller {
               $id = $this->get_request('id');
               $result = $this->menu_model->delete($id);
               break;
+          case 'upload_photo':
+              if(!empty($_FILES)) {
+                  $fileParts = pathinfo($_FILES['uploadfile']['name']);
+                  $tempFile = $_FILES['uploadfile']['tmp_name'];
+                  $targetFolder = '/public/hotel/image/';
+                  $targetPath = $_SERVER['DOCUMENT_ROOT'] . $targetFolder;
+                  if(!is_dir($targetPath)) mkdir($targetPath, 0777, true);
+                  $now = time();
+                  $fileName = $now . '_org.' . $fileParts['extension'];
+                  $compressFileName = $now . '.' . $fileParts['extension'];
+                  $targetFile = rtrim($targetPath, '/') . '/' . $fileName;
+                  $compressTargetFile = rtrim($targetPath, '/') . '/' . $compressFileName;
+                  $fileTypes = array('jpg', 'jpeg', 'gif', 'png');
+                  if(in_array(strtolower($fileParts['extension']), $fileTypes)) {
+                      move_uploaded_file($tempFile, $targetFile);
+                      // 开始压缩图片
+                      $this->compressImage($targetFile, $compressTargetFile, 1920);
+                      $result = array('status'=> 0, 'thumbName'=> 'http://' . $_SERVER['HTTP_HOST'] . $targetFolder . $compressFileName, 'name'=> 'http://' . $_SERVER['HTTP_HOST'] . $targetFolder . $fileName);
+                  } else {
+                      $result = array('status'=> -1, 'msg'=> '文件格式不正确');
+                  }
+              }
+              break;
+
         }
         echo json_encode($result);
     }

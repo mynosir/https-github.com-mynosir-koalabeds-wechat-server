@@ -19,12 +19,14 @@ class Reviews extends MY_Controller {
         $data['sub_menu'] = array();
         $data['current_menu_text'] = 'Reviews';
         $data['menu_list'] = $this->getMenuList();
+        $this->load->model('hotel_model');
         $this->load->model('reviews_model');
         $this->data = $data;
     }
 
 
     public function index() {
+        $this->data['propertyList'] = $this->hotel_model->getPropertyList();
         $this->showPage('reviews_index', $this->data);
     }
 
@@ -35,9 +37,9 @@ class Reviews extends MY_Controller {
             case 'getReviews':
                 $page = $this->get_request('page');
                 $size = $this->get_request('size');
-                $propertyName = $this->get_request('propertyName');
+                $propertyId = $this->get_request('propertyId');
                 $keyword = $this->get_request('keyword');
-                $result = $this->reviews_model->getReviews($page, $size, $keyword, $propertyName);
+                $result = $this->reviews_model->getReviews($page, $size, $keyword, $propertyId);
 
                 break;
             case 'getDetail':

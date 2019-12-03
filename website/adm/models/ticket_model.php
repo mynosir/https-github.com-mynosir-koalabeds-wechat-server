@@ -1,143 +1,123 @@
 <?php
 /**
- * 门票订单模型
+ * grayline票模型
  *
- * @author jiang <qoohj@qq.com>
+ * @author huang <qoohj@qq.com>
  *
  */
 class Ticket_model extends MY_Model {
 
-    private $table = 'ko_grayline_ticket';
-    private $fields = 'id, openid, type, productId, travelDate, travelTime, turbojetDepartureDate, turbojetReturnDate, turbojetDepartureTime, turbojetReturnTime, turbojetDepartureFrom, turbojetDepartureTo, turbojetReturnFrom, turbojetReturnTo, turbojetQuantity, turbojetClass, turbojetTicketType, turbojetDepartureFlightNo, turbojetReturnFlightNo, hotel, title, firstName, lastName, passport, guestEmail, countryCode, telephone, promocode, agentReference, remark, subQtyProductPriceId, subQtyValue, totalPrice, info, orderParamsDetail, create_time, outTradeNo, transaction_id, transaction_info, status';
-    private $table_wx = 'ko_user';
-    private $fields_wx = 'openid, wx_nickname';
+    private $ticket_table = 'ko_grayline_ticket_info';
+    private $cn_ticket_table = 'ko_grayline_ticket_info_cn';
+    private $hotels_table = 'ko_cloudbeds_hotels';
+    private $ticket_fields = 'id, productId, title, type, introduce, clause';
+    private $cn_ticket_fields = 'id, productId, title, type, introduce, clause';
+    private $hotels_fields = 'propertyID, propertyName';
+
     public function __construct() {
         parent::__construct();
     }
 
-
     /**
-     * 获取广告
-     * @param  integer $page [description]
-     * @param  integer $size [description]
-     * @return [type]        [description]
-     */
-    public function getTicket($page=1, $size=20, $nickname, $status) {
-        $limitStart = ($page - 1) * $size;
-        $where = ' where 1=1 ';
-        if($status == -1 || $status === '0' || $status > 0){
-          $where = ' where status='.$status.' ';
-        }
-        if($nickname){
-          $where2 = ' where wx_nickname like \'%'. $nickname .'%\' ';
-          $res = $this->db->query('select ' . $this->fields_wx . ' from ' . $this->table_wx .$where2)->result_array();
-          // var_dump($res);
-          if($res){
-            $queryOpenid = $res[0]['openid'];
-            if($status){
-              $where = ' where openid = "'.$queryOpenid.'" and status='.$status.' ';
-            }else{
-              $where = ' where openid = "'.$queryOpenid.'"';
-            }
-          }else{
-            $rtn = array(
-              'total' => 0,
-              'size'  => 0,
-              'page'  => 0,
-              'list'  => []
-            );
-            return $rtn;
-          }
-          // var_dump($queryOpenid);
-        }
-        // var_dump($where);
-        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . $where . 'order by id asc limit ' . $limitStart . ', ' . $size);
-        // var_dump('select ' . $this->fields . ' from ' . $this->table . $where . 'order by id asc limit ' . $limitStart . ', ' . $size);
-        $result = $query->result_array();
-        foreach ($result as $k => $v) {
+     * 获取票列表
+     **/
+    public function getTicketsList($page=1, $size=6, $keyword='') {
+      // var_dump($on);
+
+      if($keyword!='') {
+          $where = ' where title like "%'.$keyword.'%"';
+      } else {
+          $where = ' where 1=1 ';
+      }
+
+      $limitStart = ($page - 1) * $size;
+
+      $sql = 'select '.$this->ticket_fields.' from '.$this->ticket_table.$where;
+      $res = $this->db->query($sql)->result_array();
+
+      $sql2 = 'select '.$this->cn_ticket_fields.' from '.$this->cn_ticket_table;
+      $res2 = $this->db->query($sql2)->result_array();
+
+      for ($i=0; $i < count($res); $i++) {
+        // code...
+        for ($j=0; $j < count($res2); $j++) {
           // code...
-          $queryOpenid = $v['openid'];
-          $result[$k]['wx_nickname'] = $this->db->query('select ' . $this->fields_wx . ' from ' . $this->table_wx . ' where openid = "'.$queryOpenid.'"')->row()->wx_nickname;
-          if($result[$k]['create_time']) {
-              $result[$k]['create_time'] = date('Y-m-d H:i:s', $result[$k]['create_time']);
-          } else {
-              $result[$k]['create_time'] = '';
+          if ($res[$i]['productId']==$res2[$j]['productId']) {
+            // code...
+            $res[$i]['title_cn'] = $res2[$j]['title'];
+            $res[$i]['introduce_cn'] = $res2[$j]['introduce'];
+            $res[$i]['clause_cn'] = $res2[$j]['clause'];
           }
-
         }
-        $pageQuery = $this->db->query('select count(1) as num from ' . $this->table);
-        $pageResult = $pageQuery->result_array();
-        $num = $pageResult[0]['num'];
-        $rtn = array(
-            'total' => $num,
-            'size'  => $size,
-            'page'  => $page,
-            'list'  => $result
+      }
+
+      $pageQuery = $this->db->query('select count(1) as num from ' . $this->ticket_table . $where);
+      $pageResult = $pageQuery->result_array();
+      $num = $pageResult[0]['num'];
+      $rtn = array(
+          'total' => $num,
+          'size'  => $size,
+          'page'  => $page,
+          'list'  => $res
+      );
+      return $rtn;
+    }
+
+    /**
+     * 获取票详情
+     **/
+    public function getTicketDetail($id) {
+          if($id <= 0) {
+              return false;
+          }
+          $sql = 'select '.$this->ticket_fields.' from '.$this->ticket_table.' where id='.$id;
+          $res = $this->db->query($sql)->result_array()[0];
+          // var_dump($res);
+          $sql2 = 'select '.$this->cn_ticket_fields.' from '.$this->cn_ticket_table.' where id='.$id;
+          // var_dump($sql2);
+          $res2 = $this->db->query($sql2)->result_array()[0];
+          // var_dump($res2);
+          $res['title_cn'] = $res2['title'];
+          $res['introduce_cn'] = $res2['introduce'];
+          $res['clause_cn'] = $res2['clause'];
+          return $res;
+    }
+
+    /**
+     * 保存房间详情
+     **/
+    public function save($id,$params) {
+        $data1 = array(
+          'title'=>$params['title'],
+          'introduce'=>$params['introduce'],
+          'clause'=>$params['clause']
         );
-        return $rtn;
-    }
+        $data2 = array(
+          'title'=>$params['title_cn'],
+          'introduce'=>$params['introduce_cn'],
+          'clause'=>$params['clause_cn']
+        );
 
-
-    /**
-     * 更新广告
-     * @param  [type] $id   [description]
-     * @param  [type] $data [description]
-     * @return [type]       [description]
-     */
-    public function updateTicket($id, $data) {
-        $this->db->where('id', $id)->update($this->table, $data);
-        $result['status'] = 0;
-        $result['msg'] = '更新数据成功';
-        return $result;
-    }
-
-
-    /**
-     * 删除
-     * @param  [type] $id   [description]
-     * @return [type]       [description]
-     */
-    public function deleteItem($id) {
-        $this->db->where('id', $id)->delete($this->table);
-        $result['status'] = 0;
-        $result['msg'] = '删除成功';
-        return $result;
-    }
-
-
-    /**
-     * 新增广告
-     * @param  [type] $data [description]
-     * @return [type]       [description]
-     */
-    public function addTicket($data) {
-        $msg = '';
-        if($data['link']=='') $msg = '链接不可为空！';
-        if($data['img']=='') $msg = '图片不可为空！';
-
-        if($msg != '') {
-            return array(
-                'status'    => -1,
-                'msg'       => $msg
+        $res = $this->db->where('productId', $id)->update($this->ticket_table, $data1);
+        $res2 = $this->db->where('productId', $id)->update($this->cn_ticket_table, $data2);
+        if($res&&$res2){
+            $result = array(
+                'status'    => 0,
+                'msg'       => 'Update Success!'
             );
+            return $result;
+
+        }else{
+            $result = array(
+                'status'    => 1,
+                'msg'       => 'Update Error!'
+            );
+            return $result;
+
         }
 
-        $data['zorder'] = (int)$data['zorder'];
-        $this->db->insert($this->table, $data);
-        $result['status'] = 0;
-        $result['msg'] = '新增数据成功';
-        return $result;
     }
 
 
-    /**
-     * 获取广告详情
-     * @param  [type] $id [description]
-     * @return [type]     [description]
-     */
-    public function getDetail($id) {
-        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where id="' . $id . '"');
-        $result = $query->result_array();
-        return $result[0];
-    }
+
 }

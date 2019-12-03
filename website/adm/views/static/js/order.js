@@ -80,6 +80,9 @@ $(function() {
                     if(list[i]['outTradeNo']==null){
                       list[i]['outTradeNo']='';
                     }
+                    if(list[i]['roomTypeName']==null){
+                      list[i]['roomTypeName']='';
+                    }
                     var listid = parseInt(i)+1;
                     listTpl += '<tr>';
                     listTpl2 += '<tr>';
@@ -103,7 +106,7 @@ $(function() {
                     listTpl += '<td>' + list[i]['guestEmail'] + '</td>';
                     listTpl += '<td>' + list[i]['guestPhone'] + '</td>';
                     // listTpl += '<td>' + list[i]['rooms'] + '</td>';
-                    listTpl += '<td>' + list[i]['rooms_roomTypeID'] + '</td>';
+                    listTpl += '<td>' + list[i]['roomTypeName'] + '</td>';
                     listTpl += '<td>' + list[i]['rooms_quantity'] + '</td>';
                     // listTpl += '<td>' + list[i]['adults'] + '</td>';
                     // listTpl += '<td>' + list[i]['adults_roomTypeID'] + '</td>';
@@ -155,6 +158,21 @@ $(function() {
             json.callback = callback;
             Utils.requestData(json);
         },
+        export: function(id) {
+            var json = {
+                api: config.apiServer + 'order/get',
+                type: 'get',
+                data: {
+                    actionxm: 'export'
+                }
+            };
+            var callback = function(res) {
+              // console.log(res);
+            };
+            json.callback = callback;
+            Utils.requestData(json);
+            window.location.href = config.apiServer+'order/get?actionxm=export';
+        },
         getDetail: function(id) {
             var json = {
                 api: config.apiServer + 'order/get',
@@ -201,6 +219,10 @@ $(function() {
         }
     };
     page.init();
+    $('body').delegate('#export', 'click', function(e){
+        e.preventDefault();
+        page.export();
+    });
     $('body').delegate('.js_pageItem', 'click', function(e) {
         var p = $(e.currentTarget).data('page');
         page.init(p);

@@ -49,7 +49,7 @@ class Coupon_record_model extends MY_Model {
 
         }
         // var_dump($nickname);
-        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . $where . 'order by id asc limit ' . $limitStart . ', ' . $size);
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . $where . 'order by create_time desc limit ' . $limitStart . ', ' . $size);
         $result = $query->result_array();
         foreach ($result as $k => $v) {
           // code...

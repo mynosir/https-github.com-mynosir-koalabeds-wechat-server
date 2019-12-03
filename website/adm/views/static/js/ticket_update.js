@@ -2,7 +2,7 @@
 $(function() {
     var page = {
         init: function() {
-          $('#termsAndConditions').summernote({
+          $('#introduce').summernote({
               toolbar: [
                   <!--字体工具-->
                   ['fontname', ['fontname']], //字体系列
@@ -63,7 +63,7 @@ $(function() {
               //     }
               // }
           });
-            $('#descript').summernote({
+            $('#introduce_cn').summernote({
                 toolbar: [
                     <!--字体工具-->
                     ['fontname', ['fontname']], //字体系列
@@ -124,8 +124,7 @@ $(function() {
                 //     }
                 // }
             });
-
-            $('#descriptCh').summernote({
+            $('#clause').summernote({
                 toolbar: [
                     <!--字体工具-->
                     ['fontname', ['fontname']], //字体系列
@@ -154,7 +153,7 @@ $(function() {
                     ['help',['help']], //帮助
                 ],
                 minHeight: 200,
-                placeholder: 'Please enter the descriptionCh',
+                placeholder: 'Please enter the terms and conditions',
                 dialogsFade: true,
                 dialogsInBody: true,
                 disableDragAndDrop: false,
@@ -186,6 +185,67 @@ $(function() {
                 //     }
                 // }
             });
+              $('#clause_cn').summernote({
+                  toolbar: [
+                      <!--字体工具-->
+                      ['fontname', ['fontname']], //字体系列
+                      ['style', ['bold', 'italic', 'underline', 'clear']], // 字体粗体、字体斜体、字体下划线、字体格式清除
+                      ['font', ['strikethrough', 'superscript', 'subscript']], //字体划线、字体上标、字体下标
+                      ['fontsize', ['fontsize']], //字体大小
+                      ['color', ['color']], //字体颜色
+
+                      <!--段落工具-->
+                      ['style', ['style']],//样式
+                      ['para', ['ul', 'ol', 'paragraph']], //无序列表、有序列表、段落对齐方式
+                      ['height', ['height']], //行高
+
+                      <!--插入工具-->
+                      ['table',['table']], //插入表格
+                      ['hr',['hr']],//插入水平线
+                      ['link',['link']], //插入链接
+                      // ['picture',['picture']], //插入图片
+                      // ['video',['video']], //插入视频
+
+                      <!--其它-->
+                      ['fullscreen',['fullscreen']], //全屏
+                      ['codeview',['codeview']], //查看html代码
+                      ['undo',['undo']], //撤销
+                      ['redo',['redo']], //取消撤销
+                      ['help',['help']], //帮助
+                  ],
+                  minHeight: 200,
+                  placeholder: 'Please enter the description',
+                  dialogsFade: true,
+                  dialogsInBody: true,
+                  disableDragAndDrop: false,
+                  // callbacks: {
+                  //     onImageUpload: function(files) {
+                  //         var $files = $(files),
+                  //             url = config.apiServer + 'pic_content/post?actionxm=upload_contentImg';
+                  //         $files.each(function() {
+                  //             var file = this;
+                  //             var data = new FormData();
+                  //             data.append('file', file);
+                  //             $.ajax({
+                  //                 data: data,
+                  //                 type: 'POST',
+                  //                 url: url,
+                  //                 cache: false,
+                  //                 contentType: false,
+                  //                 processData: false,
+                  //                 success: function(res) {
+                  //                     var data = JSON.parse(res);
+                  //                     $('#descript_en').summernote('insertImage', data.name, function($image) { });
+                  //
+                  //                 },
+                  //                 error: function() {
+                  //                     console.error('error');
+                  //                 }
+                  //             });
+                  //         });
+                  //     }
+                  // }
+              });
 
         },
 
@@ -200,121 +260,34 @@ $(function() {
 
     $('body').delegate('.js_submit', 'click', function() {
 
-        var propertyID = $('#propertyID').val(),
-            propertyName = $('#propertyName').val(),
-            propertyPhone = $('#propertyPhone').val(),
-            propertyEmail = $('#propertyEmail').val(),
-            propertyAddress1 = $('#propertyAddress1').val(),
-            propertyAddress2 = $('#propertyAddress2').val(),
-            propertyCity = $('#propertyCity').val(),
-            propertyState = $('#propertyState').val(),
-            propertyZip = $('#propertyZip').val(),
-            propertyCountry = $('#propertyCountry').val(),
-            propertyLatitude = $('#propertyLatitude').val(),
-            propertyLongitude = $('#propertyLongitude').val(),
-            propertyCheckInTime = $('#propertyCheckInTime').val(),
-            propertyCheckOutTime = $('#propertyCheckOutTime').val(),
-            // propertyLateCheckOutType = $('#propertyLateCheckOutType').val(),
-            // propertyLateCheckOutValue = $('#propertyLateCheckOutValue').val(),
-            propertyTermsAndConditions = $('#termsAndConditions').summernote('code'),
-            propertyAmenities = $('#propertyAmenities').val(),
-            propertyDescription = $('#descript').summernote('code'),
-            // propertyCurrencyCode = $('#propertyCurrencyCode').val(),
-            // propertyCurrencySymbol = $('#propertyCurrencySymbol').val(),
-            // propertyCurrencyPosition = $('#propertyCurrencyPosition').val(),
-            propertyStatus = $('.selectStatus').val(),
-            propertyRecommend = $('.selectRecommend').val(),
-            propertyNameCh = $('#propertyNameCh').val(),
-            propertyAddressCh = $('#propertyAddressCh').val(),
-            propertyImage = $('.js_photo').val()=='' ? $('.js_photo_prev').attr('src') : $('.js_photo').val(),
-            propertyImageThumb = $('.js_img_thumb').val(),
-            propertyDescriptionCh = $('#descriptCh').summernote('code');
-
-
-        // // 获取图片json
-        // var prevPicDom = $('.prev-pic'),
-        //     picArr = new Array();
-        // for(var i=0; i<prevPicDom.length; i++) {
-        //     picArr.push($(prevPicDom[i]).attr('src'));
-        // }
-        // pic =  picArr.toString();
-        // if(title_en == '') {
-        //     alert('请输入标题（en）！');
-        //     return;
-        // }
-        // if(title_tc == '') {
-        //     alert('请输入标题（tc）！');
-        //     return;
-        // }
-        // if(clazz_id == '') {
-        //     alert('请选择分类！');
-        //     return;
-        // }
-        // if(pic == '') {
-        //     alert('请上传图片！');
-        //     return;
-        // }
-        // if(num == '') {
-        //     alert('请输入标号！');
-        //     return;
-        // }
-        // if(descript_tc == '') {
-        //     alert('请输入描述（tc）!');
-        //     return;
-        // }
-        // if(sort == '') {
-        //     alert('请输入排序!');
-        //     return;
-        // }
+        var productId = $('#productId').val(),
+            title = $('#title').val(),
+            title_cn = $('#title_cn').val(),
+            introduce = $('#introduce').summernote('code');
+            introduce_cn = $('#introduce_cn').summernote('code');
+            clause = $('#clause').summernote('code');
+            clause_cn = $('#clause_cn').summernote('code');
         var id = $('.js_id').val();
         var json = {
-            api: config.apiServer + 'hotel/post',
+            api: config.apiServer + 'ticket/post',
             type: 'post',
             data: {
-                actionxm: 'update',
-                id: id,
+                actionxm: 'save',
+                id: productId,
                 params: {
-                    en: {
-                      propertyName: propertyName||'',
-                      propertyPhone: propertyPhone||'',
-                      propertyEmail: propertyEmail||'',
-                      propertyAddress1: propertyAddress1||'',
-                      propertyAddress2: propertyAddress2||'',
-                      propertyCity: propertyCity||'',
-                      propertyState: propertyState||'',
-                      propertyZip: propertyZip||'',
-                      propertyCountry: propertyCountry||'',
-                      propertyLatitude: propertyLatitude||'',
-                      propertyLongitude: propertyLongitude||'',
-                      propertyCheckInTime: propertyCheckInTime||'',
-                      propertyCheckOutTime: propertyCheckOutTime||'',
-                      // propertyLateCheckOutType: propertyLateCheckOutType||'',
-                      // propertyLateCheckOutValue: propertyLateCheckOutValue||'',
-                      propertyTermsAndConditions: propertyTermsAndConditions||'',
-                      propertyAmenities: propertyAmenities||'',
-                      propertyDescription: propertyDescription||'',
-                      // propertyCurrencyCode: propertyCurrencyCode||'',
-                      // propertyCurrencySymbol: propertyCurrencySymbol||'',
-                      // propertyCurrencyPosition: propertyCurrencyPosition||'',
-                      recommend: propertyRecommend||'',
-                      status: propertyStatus||'',
-                      propertyImage: propertyImage,
-                      propertyImageThumb: propertyImageThumb
-                    },
-                    ch: {
-                      propertyID: propertyID,
-                      propertyName: propertyNameCh,
-                      propertyAddress: propertyAddressCh,
-                      propertyDescription: propertyDescriptionCh
-                    }
-
+                    title: title||'',
+                    title_cn: title_cn||'',
+                    introduce: introduce||'',
+                    introduce_cn: introduce_cn||'',
+                    clause: clause||'',
+                    clause_cn: clause_cn||''
                 }
             }
         };
         var callback = function(res) {
             if(res.status == 0) {
                 alert('Save success!');
-                window.location.href = "/adm/hotel";
+                window.location.href = "/adm/ticket";
             } else {
                 alert(res.msg);
             }

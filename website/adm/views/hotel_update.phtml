@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="<?php echo $resource_url; ?>libs/summernote/summernote.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $resource_url; ?>/css/uploadifive.css">
 
 <style type="text/css">
     .prev-pic {
@@ -164,6 +165,39 @@
     </select>
 </div>
 
+<div class="form-group">
+    <label for="photo" class="control-label">Property Image
+        <button type="button" class="btn btn-primary js_upload" data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-plus"></span></button>
+    </label>
+    <div>
+        <img class="img-responsive js_photo_prev img-thumbnail" style="width:500px; height: 300px;" src="<?php echo $info['propertyImage']; ?>">
+        <input type="hidden" class="form-control js_photo" placeholder="将要修改的图片url粘贴到这里，留空表示不需要修改图片">
+        <input type="hidden" name="img_thumb" value="<?php echo $info['propertyImageThumb']; ?>" class="js_img_thumb">
+        
+    </div>
+</div>
+
+
+<div class="modal fade" id="uploadModal" tabindex="1" role="dialog" aria-labelledby="uploadModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Image Upload</h4>
+            </div>
+            <div class="modal-body">
+                <input id="photo" type="file" multiple="false" value="" />
+                <div>
+                    <img src="" id="prevArea" style="max-width: 200px; max-height: 120px; ">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary js_addPhoto">Confirm</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <textarea class="js_descript" style="display: none;"><?php echo $info['propertyDescription']; ?></textarea>
 <textarea class="js_terms_and_conditions" style="display: none;"><?php echo $info['propertyTermsAndConditions']; ?></textarea>
@@ -177,6 +211,7 @@
 
 <button type="submit" class="btn btn-primary js_submit">Save</button>
 
+<script src="<?php echo $resource_url; ?>js/jquery.uploadifive.js"></script>
 <script src="<?php echo $resource_url; ?>libs/summernote/summernote.js"></script>
 <script src="<?php echo $resource_url; ?>libs/summernote/lang/summernote-zh-CN.js"></script>
 <script src="<?php echo $resource_url; ?>libs/summernote/lang/summernote-zh-TW.js"></script>

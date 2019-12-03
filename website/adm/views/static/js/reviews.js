@@ -9,7 +9,7 @@ $(function() {
                     page: !p ? 1 : p,
                     size: 20,
                     keyword: $('#search_comment').val(),
-                    propertyName: $('#search_property_name').val()
+                    propertyId: $('.propertyName').val()
                 }
             };
             var callback = function(res) {

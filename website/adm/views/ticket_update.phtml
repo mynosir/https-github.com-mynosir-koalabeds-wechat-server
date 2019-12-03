@@ -1,0 +1,87 @@
+<link rel="stylesheet" href="<?php echo $resource_url; ?>libs/summernote/summernote.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $resource_url; ?>/css/uploadifive.css">
+
+<style type="text/css">
+    .prev-pic {
+        max-width: 400px;
+        max-height: 300px;
+        display: block;
+        margin: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+    .prev-frame {
+        display: inline-block;
+        position: relative;
+    }
+    .prev-frame em {
+        position: absolute;
+        right: 25px;
+        top: 20px;
+        background: red;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        color: #fff;
+        font-weight: 1000;
+        cursor: pointer;
+    }
+</style>
+
+<div class="form-group">
+    <label>Product ID</label>
+    <input type="text" class="form-control" id="productId" disabled value="<?php echo $info['productId']; ?>">
+</div>
+<div class="form-group">
+    <label>Type</label>
+    <input type="text" class="form-control" id="type" disabled value="<?php echo $info['type']; ?>">
+</div>
+<div class="form-group">
+    <label>Title</label>
+    <input type="text" class="form-control" id="title" placeholder="Title" value="<?php echo $info['title']; ?>">
+</div>
+<div class="form-group">
+    <label>Title(Chinese)</label>
+    <input type="text" class="form-control" id="title_cn" placeholder="Title(Chinese)" value="<?php echo $info['title_cn']; ?>">
+</div>
+<div class="form-group">
+    <label>Introduce</label>
+    <div id="introduce"></div>
+</div>
+<div class="form-group">
+    <label>Introduce(Chinese)</label>
+    <div id="introduce_cn"></div>
+</div>
+<div class="form-group">
+    <label>Clause</label>
+    <div id="clause"></div>
+</div>
+<div class="form-group">
+    <label>Clause(Chinese)</label>
+    <div id="clause_cn"></div>
+</div>
+
+
+<textarea class="js_introduce" style="display: none;"><?php echo $info['introduce']; ?></textarea>
+<textarea class="js_introduce_cn" style="display: none;"><?php echo $info['introduce_cn']; ?></textarea>
+<textarea class="js_clause" style="display: none;"><?php echo $info['clause']; ?></textarea>
+<textarea class="js_clause_cn" style="display: none;"><?php echo $info['clause_cn']; ?></textarea>
+
+<input type="hidden" name="id" value="<?php echo $id; ?>" class="js_id">
+
+<button type="submit" class="btn btn-primary js_submit">Save</button>
+
+<script src="<?php echo $resource_url; ?>js/jquery.uploadifive.js"></script>
+<script src="<?php echo $resource_url; ?>libs/summernote/summernote.js"></script>
+<script src="<?php echo $resource_url; ?>libs/summernote/lang/summernote-zh-CN.js"></script>
+<script src="<?php echo $resource_url; ?>libs/summernote/lang/summernote-zh-TW.js"></script>
+<script src="<?php echo $resource_url; ?>js/ticket_update.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('#introduce').summernote('code', $('.js_introduce').val());
+  $('#introduce_cn').summernote('code', $('.js_introduce_cn').val());
+  $('#clause').summernote('code', $('.js_clause').val());
+  $('#clause_cn').summernote('code', $('.js_clause_cn').val());
+})
+</script>

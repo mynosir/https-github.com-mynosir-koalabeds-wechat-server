@@ -40,10 +40,22 @@ class User extends MY_Controller {
                 $result = $this->user_model->getUser($page, $size, $keyword);
 
                 break;
-            case 'getDetail':
-                $id = $this->get_request('id');
-                $result = $this->user_model->getDetail($id);
+            case 'getPropertyList':
+                $openid = $this->get_request('openid');
+                $result = $this->user_model->getPropertyList($openid);
                 break;
+            case 'getTicketList':
+                $openid = $this->get_request('openid');
+                $result = $this->user_model->getTicketList($openid);
+                break;
+            case 'getCouponList':
+                $openid = $this->get_request('openid');
+                $result = $this->user_model->getCouponList($openid);
+                break;
+            case 'export':
+                $result = $this->user_model->export();
+                break;
+
         }
         echo json_encode($result);
     }
