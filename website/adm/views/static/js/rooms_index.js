@@ -10,21 +10,21 @@ $(function() {
                     data: {
                         actionxm: 'search',
                         page: !p ? 1 : p,
-                        size: 10,
+                        size: 6,
                         keyword: $('.propertyName').val()
                     }
                 };
             var callback = function(res) {
                 // if(res.status == 0) {
                     console.log(res.list);
-                    function compare(property){
-                        return function(a,b){
-                            var value1 = a[property];
-                            var value2 = b[property];
-                            return value1 - value2;
-                        }
-                    }
-                    res.list = res.list.sort(compare('status'));
+                    // function compare(property){
+                    //     return function(a,b){
+                    //         var value1 = a[property];
+                    //         var value2 = b[property];
+                    //         return value1 - value2;
+                    //     }
+                    // }
+                    // res.list = res.list.sort(compare('status'));
 
                     var idx = 1,
                         list = res['list'],
@@ -32,9 +32,12 @@ $(function() {
                         listTpl = '<tr><th>Serial No.</th><th>Property ID</th><th>Property Name</th><th>Room Type ID</th><th>Room Type Name</th><th>Room Type Name(chinese)</th><th>Status</th><th>Operation</th></tr>';
                     for(var i in list) {
                         var listid = parseInt(i)+1;
-                        // if(list[i]['name_cn'] ==undefined){
-                        //   list[i]['name_cn'] = ''
-                        // }
+                        if(list[i]['status'] ==null){
+                          list[i]['status'] = '0'
+                        }
+                        if(list[i]['propertyName'] ==undefined){
+                          list[i]['propertyName'] = ''
+                        }
                         listTpl += '<tr>';
                         listTpl += '<td>' + listid + '</td>';
                         listTpl += '<td>' + list[i]['propertyID'] + '</td>';
@@ -42,12 +45,17 @@ $(function() {
                         listTpl += '<td>' + list[i]['roomTypeID'] + '</td>';
                         listTpl += '<td>' + list[i]['roomTypeName'] + '</td>';
                         listTpl += '<td>' + list[i]['roomTypeName_cn'] + '</td>';
-                        if(list[i]['status']==0){
+                        console.log(list[i]['status']);
+                        console.log(status[list[i]['status']]);
+                        if(list[i]['status']==='0'){
                           var color = 'red';
+                          listTpl += '<td style=color:'+color+'>' + status[list[i]['status']] + '</td>';
                         }else if(list[i]['status']==1){
                           var color = 'green';
+                          listTpl += '<td style=color:'+color+'>' + status[list[i]['status']] + '</td>';
+                        }else if(status[list[i]['status']]==undefined){
+                          listTpl += '<td>'+list[i]['status']+'</td>';
                         }
-                        listTpl += '<td style=color:'+color+'>' + status[list[i]['status']] + '</td>';
                         // listTpl += '<td>' + list[i]['roomTypeNameShort'] + '</td>';
                         listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['id'] + '">Edit</button></td>';
                         listTpl += '</tr>';

@@ -32,7 +32,7 @@ class Ticket_model extends MY_Model {
 
       $limitStart = ($page - 1) * $size;
 
-      $sql = 'select '.$this->ticket_fields.' from '.$this->ticket_table.$where;
+      $sql = 'select '.$this->ticket_fields.' from '.$this->ticket_table.$where.' limit ' . $limitStart . ', ' . $size;
       $res = $this->db->query($sql)->result_array();
 
       $sql2 = 'select '.$this->cn_ticket_fields.' from '.$this->cn_ticket_table;
@@ -47,9 +47,14 @@ class Ticket_model extends MY_Model {
             $res[$i]['title_cn'] = $res2[$j]['title'];
             $res[$i]['introduce_cn'] = $res2[$j]['introduce'];
             $res[$i]['clause_cn'] = $res2[$j]['clause'];
+            break;
           }
         }
       }
+
+      // $sql = 'select ko_grayline_ticket_info.id,ko_grayline_ticket_info.productId,ko_grayline_ticket_info.title,ko_grayline_ticket_info.type,ko_grayline_ticket_info.id,ko_grayline_ticket_info.introduce,ko_grayline_ticket_info.clause and'.
+
+
 
       $pageQuery = $this->db->query('select count(1) as num from ' . $this->ticket_table . $where);
       $pageResult = $pageQuery->result_array();
@@ -70,10 +75,10 @@ class Ticket_model extends MY_Model {
           if($id <= 0) {
               return false;
           }
-          $sql = 'select '.$this->ticket_fields.' from '.$this->ticket_table.' where id='.$id;
+          $sql = 'select '.$this->ticket_fields.' from '.$this->ticket_table.' where productId='.$id;
           $res = $this->db->query($sql)->result_array()[0];
           // var_dump($res);
-          $sql2 = 'select '.$this->cn_ticket_fields.' from '.$this->cn_ticket_table.' where id='.$id;
+          $sql2 = 'select '.$this->cn_ticket_fields.' from '.$this->cn_ticket_table.' where productId='.$id;
           // var_dump($sql2);
           $res2 = $this->db->query($sql2)->result_array()[0];
           // var_dump($res2);

@@ -42,7 +42,7 @@ $(function() {
                         listTpl += '<td>' + list[i]['title'] + '</td>';
                         listTpl += '<td>' + list[i]['title_cn'] + '</td>';
                         // listTpl += '<td>' + list[i]['roomTypeNameShort'] + '</td>';
-                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['id'] + '">Edit</button></td>';
+                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['productId'] + '">Edit</button></td>';
                         listTpl += '</tr>';
                     }
                     $('.js_table').html(listTpl);

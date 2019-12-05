@@ -271,8 +271,8 @@ $(function() {
 
     $('.js_searchFrom').submit(function(e) {
         e.preventDefault();
-        var p = $('.js_page li[class=active] a').data('page');
-        page.init(p);
+        // var p = $('.js_page li[class=active] a').data('page');
+        page.init();
     });
 
 });

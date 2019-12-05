@@ -37,9 +37,10 @@ class Rooms_model extends MY_Model {
       // $sql = 'select * from ko_cloudbeds_roomtypes,ko_cloudbeds_roomtypes_cn';
       // $sql = 'select ko_cloudbeds_roomtypes.id,ko_cloudbeds_roomtypes.propertyID,ko_cloudbeds_roomtypes.roomTypeID,ko_cloudbeds_roomtypes.roomTypeName,ko_cloudbeds_roomtypes.roomTypeNameShort,ko_cloudbeds_roomtypes.roomTypeDescription,ko_cloudbeds_roomtypes_cn.roomTypeName as roomTypeName_cn,ko_cloudbeds_roomtypes_cn.roomTypeNameShort as roomTypeNameShort_cn,ko_cloudbeds_roomtypes_cn.roomTypeDescription as roomTypeDescription_cn from ko_cloudbeds_roomtypes inner join ko_cloudbeds_roomtypes_cn on ko_cloudbeds_roomtypes.id=ko_cloudbeds_roomtypes_cn.rid';
 
+      $sql = 'select ko_cloudbeds_roomtypes.id,ko_cloudbeds_roomtypes.propertyID,ko_cloudbeds_roomtypes.roomTypeID,ko_cloudbeds_roomtypes.roomTypeName,ko_cloudbeds_roomtypes.roomTypeNameShort,ko_cloudbeds_roomtypes.roomTypeDescription,ko_cloudbeds_roomtypes_log.status from '.$this->rooms_table.' left join '.$this->rooms_log_table.' on ko_cloudbeds_roomtypes.roomTypeID=ko_cloudbeds_roomtypes_log.roomTypeID order by IF(ISNULL(ko_cloudbeds_roomtypes_log.status), 0, ko_cloudbeds_roomtypes_log.status) limit ' . $limitStart . ', ' . $size;
+      // var_dump($sql);
 
-
-      $sql = 'select '.$this->rooms_fields.' from '.$this->rooms_table.$where.' order by propertyID';
+      // $sql = 'select '.$this->rooms_fields.' from '.$this->rooms_table.$where.' order by propertyID';
       $query = $this->db->query($sql);
       $result = $query->result_array();
       // 中文信息表
@@ -70,19 +71,19 @@ class Rooms_model extends MY_Model {
             }
           }
       }
-      // 房间状态
-      $sql4 = 'select '.$this->rooms_log_fields.' from '.$this->rooms_log_table;
-      $query4 = $this->db->query($sql4);
-      $result4 = $query4->result_array();
-      for ($i=0; $i < count($result); $i++) {
-        // code...
-          for ($j=0; $j < count($result4); $j++) {
-            // code...
-            if($result[$i]['roomTypeID']==$result4[$j]['roomTypeID']){
-              $result[$i]['status']=$result4[$j]['status'];
-            }
-          }
-      }
+      // // 房间状态
+      // $sql4 = 'select '.$this->rooms_log_fields.' from '.$this->rooms_log_table;
+      // $query4 = $this->db->query($sql4);
+      // $result4 = $query4->result_array();
+      // for ($i=0; $i < count($result); $i++) {
+      //   // code...
+      //     for ($j=0; $j < count($result4); $j++) {
+      //       // code...
+      //       if($result[$i]['roomTypeID']==$result4[$j]['roomTypeID']){
+      //         $result[$i]['status']=$result4[$j]['status'];
+      //       }
+      //     }
+      // }
       // var_dump($result);
       // var_dump($result);
       // var_dump($result);

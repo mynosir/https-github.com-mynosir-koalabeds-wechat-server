@@ -16,7 +16,7 @@ $(function() {
                 var list = res['list'],
                     sex = ['Unknown','Male','Female'],
 
-                    listTpl = '<tr><th>Serial No.</th><th>Wechat Nickname</th><th>Avartar</th><th>Sex</th><th>Lang</th><th>Country</th><th>Province</th><th>City</th><th>Record</th></tr>';
+                    listTpl = '<tr><th>Serial No.</th><th>Wechat Nickname</th><th>Avartar</th><th>Sex</th><th style="width:80px">Lang</th><th>Country</th><th>Province</th><th>City</th><th style="width:220px">Record</th></tr>';
                 for(var i in list) {
                     var listid = parseInt(i)+1;
                     listTpl += '<tr>';
@@ -394,7 +394,7 @@ $(function() {
         e.preventDefault();
         page.export();
     });
-    
+
     $('body').delegate('.js_pageItem', 'click', function(e) {
         var p = $(e.currentTarget).data('page');
         page.init(p);
@@ -520,8 +520,8 @@ $(function() {
 
     $('.js_searchFrom').submit(function(e) {
         e.preventDefault();
-        var p = $('.js_page li[class=active] a').data('page');
-        page.init(p);
+        // var p = $('.js_page li[class=active] a').data('page');
+        page.init();
     });
 
 });
