@@ -31,7 +31,6 @@ class Index extends MY_Controller {
         $this->data['adminDetail'] = $this->admin_model->getAdminDetailInfo($adminId);
         // 查询系统信息
         $this->data['systemInfo'] = getSystemInfo();
-        $this->data['systemInfo']['access_token'] = $this->getAccessToken();
         $this->load->view('index', $this->data);
         $this->load->view('include/_footer', $this->data);
     }

@@ -562,8 +562,8 @@ function getSystemInfo() {
     // php运行方式
     $info['php_sapi_name'] = php_sapi_name();
     // mysql版本
-    // $info['mysql_version'] = mysql_get_server_info();
-    $info['mysql_version'] = '';
+    $info['mysql_version'] = mysql_get_server_info();
+    // $info['mysql_version'] = '';
     // 服务器IP地址
     $info['server_name'] = GetHostByName($_SERVER['SERVER_NAME']);
     // 服务器端口号
