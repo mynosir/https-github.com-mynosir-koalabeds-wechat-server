@@ -91,8 +91,9 @@ class api extends MY_Controller {
                 break;
             // 获取城市列表
             case 'getCitys':
+                $openid = $this->get_request('openid');
                 $this->load->model('cloudbeds_hotel_model');
-                $result = $this->cloudbeds_hotel_model->getCitys();
+                $result = $this->cloudbeds_hotel_model->getCitys($openid);
                 break;
             // 酒店搜索
             case 'searchHotels':

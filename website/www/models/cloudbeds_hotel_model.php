@@ -12,11 +12,15 @@ class Cloudbeds_hotel_model extends MY_Model {
     private $roomtypes_table = 'ko_cloudbeds_roomtypes';
     private $roomtypes_cn_table = 'ko_cloudbeds_roomtypes_cn';
     private $roomtypes_log_table = 'ko_cloudbeds_roomtypes_log';
+    private $citys_table = 'ko_cloudbeds_city';
+    private $citys_cn_table = 'ko_cloudbeds_city_cn';
     private $fields = 'id, propertyID, propertyName, propertyImage, propertyImageThumb, propertyPhone, propertyEmail, propertyAddress1, propertyAddress2, propertyCity, propertyState, propertyZip, propertyCountry, propertyLatitude, propertyLongitude, propertyCheckInTime, propertyCheckOutTime, propertyLateCheckOutAllowed, propertyLateCheckOutType, propertyLateCheckOutValue, propertyTermsAndConditions, propertyAmenities, propertyDescription, propertyTimezone, propertyCurrencyCode, propertyCurrencySymbol, propertyCurrencyPosition';
     private $cn_fields = 'id, hid, propertyID, propertyName, propertyDescription, propertyAddress';
     private $roomtypes_fields = 'id, propertyID, roomTypeID, roomTypeName, roomTypeNameShort, roomTypeDescription';
     private $roomtypes_cn_fields = 'id, rid, propertyID, roomTypeID, roomTypeName, roomTypeNameShort, roomTypeDescription';
     private $roomtypes_log_fields = 'id, roomTypeID, status, create_time';
+    private $city_fields = 'id, propertyCity, status';
+    private $city_cn_fields = 'id, cid, propertyCity';
 
     public function __construct() {
         parent::__construct();
@@ -360,21 +364,96 @@ class Cloudbeds_hotel_model extends MY_Model {
 
 
     /**
-     * 查询城市列表数据
+     * 抓取城市列表数据
      */
-    public function getCitys() {
+    public function fetch_citys() {
         $query = $this->db->query('select distinct `propertyCity` from ' . $this->table);
         $result = $query->result_array();
+        $logArr = array();
+        foreach($result as $k=>$v) {
+            // 判断当前城市是否已经存在城市列表中
+            if(!$this->checkExistCity($v['propertyCity'])) {
+                // 不存在，则写入表中
+                $params = array(
+                    'propertyCity'  => $v['propertyCity']
+                );
+                $this->db->insert($this->citys_table, $params);
+                @file_put_contents('/pub/logs/fetch_citys/' . date('Y-m-d', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $v['propertyCity'] . ')==> ' . json_encode($params) . PHP_EOL, FILE_APPEND);
+                @file_put_contents('/pub/logs/fetch_citys_success/' . date('Y-m', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $v['propertyCity'] . ')==> ' . json_encode($params) . PHP_EOL, FILE_APPEND);
+                $logArr[] = '[' . date('Y-m-d H:i:s', time()) . '](' . $v['propertyCity'] . ')==> ' . json_encode($params);
+            } else {
+                @file_put_contents('/pub/logs/fetch_citys/' . date('Y-m-d', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $v['propertyCity'] . ')==> 记录已经存在' . PHP_EOL, FILE_APPEND);
+                $logArr[] = '[' . date('Y-m-d H:i:s', time()) . '](' . $v['propertyCity'] . ')==> 记录已经存在，无需更新';
+            }
+        }
+        return $logArr;
+    }
+
+
+    /**
+     * 检查城市是否已经存在数据表中
+     */
+    public function checkExistCity($city = '') {
+        $query = $this->db->query('select ' . $this->city_fields . ' from ' . $this->citys_table . ' where propertyCity = "' . $city . '"');
+        $result = $query->result_array();
         if(count($result) > 0) {
-            return array(
-                'status'    => 0,
-                'msg'       => '查询成功',
-                'data'      => $result
-            );
+            return true;
         } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * 查询城市列表数据
+     */
+    public function getCitys($openid) {
+        // $query = $this->db->query('select distinct `propertyCity` from ' . $this->table);
+        // $result = $query->result_array();
+        $query = $this->db->query('select ' . $this->city_fields . ' from ' . $this->citys_table . ' where status = 1');
+        $result = $query->result_array();
+        foreach($result as $k=>$v) {
+            $cityCn = $this->getCityCn($v['id'], $openid);
+            if($cityCn['status'] == 0) {
+                $result[$k]['propertyCity'] = $cityCn['data']['propertyCity'];
+            }
+        }
+        return array(
+            'status'    => 0,
+            'msg'       => '查询成功',
+            'data'      => $result
+        );
+    }
+
+
+    /**
+     * 获取城市对应的中文信息
+     */
+    public function getCityCn($id, $openid = '') {
+        // 判断是否需要翻译中文
+        $CI = &get_instance();
+        $this->load->model('user_model');
+        $userinfo = $CI->user_model->getLangByOpenid($openid);
+        if($userinfo['status'] == 0 && $userinfo['data']['lang'] == 'zh-cn') {
+            $query = $this->db->query('select ' . $this->city_cn_fields . ' from ' . $this->citys_cn_table . ' where cid = ' . $id);
+            $result = $query->result_array();
+            if(count($result) > 0) {
+                return array(
+                    'status'    => 0,
+                    'msg'       => '查询成功',
+                    'data'      => $result[0]
+                );
+            } else {
+                return array(
+                    'status'    => -1,
+                    'msg'       => '未查找到对应中文信息'
+                );
+            }
+        } else {
+            // 使用默认语言
             return array(
-                'status'    => -1,
-                'msg'       => '没有数据'
+                'status'    => -2,
+                'msg'       => '无需翻译'
             );
         }
     }

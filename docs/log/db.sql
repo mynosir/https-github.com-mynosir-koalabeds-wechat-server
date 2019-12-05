@@ -406,3 +406,23 @@ create table `ko_grayline_ticket_info_cn` (
 -- linzequan 20191203
 -- 修改用户表语言默认为中文
 alter table ko_user modify column lang varchar(32) default 'zh-cn' comment '用户使用小程序的预言。可选择en、zh-cn，默认zh-cn中文';
+
+
+-- linzequan 20191205
+-- 添加cloudbeds地区表
+create table `ko_cloudbeds_city` (
+    `id` int not null auto_increment comment '自增id',
+    `propertyCity` varchar(255) comment '城市英文名称',
+    `status` int default 0 comment '状态。0隐藏，1显示。默认0隐藏',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = 'cloudbeds地区英文表';
+
+
+-- linzequan 20191205
+-- 添加cloudbeds地区中文表
+create table `ko_cloudbeds_city_cn` (
+    `id` int not null auto_increment comment '自增id',
+    `cid` int comment '对应英文表id',
+    `propertyCity` varchar(255) comment '城市中文名称',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = 'cloudbeds地区中文表';
