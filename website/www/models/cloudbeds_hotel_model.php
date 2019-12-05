@@ -230,7 +230,7 @@ class Cloudbeds_hotel_model extends MY_Model {
                 'msg'       => '推荐位置不可为空'
             );
         }
-        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `recommend` = ' . $type . ' order by id desc limit 0, ' . $num);
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `recommend` = ' . $type . ' and `status` = 1 order by id desc limit 0, ' . $num);
         $result = $query->result_array();
         foreach($result as $k=>$v) {
             $hotelCn = $this->getHotelCn($v['id'], $openid);
@@ -254,7 +254,7 @@ class Cloudbeds_hotel_model extends MY_Model {
      * 获取首页推荐列表瀑布流
      **/
     public function getRecommendFlow($page = 1, $num = 10, $openid) {
-        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `recommend` = 1 order by id desc limit ' . ($page - 1) * $num . ' , ' . $num);
+        $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . ' where `recommend` = 1 and `status` = 1 order by id desc limit ' . ($page - 1) * $num . ' , ' . $num);
         $result = $query->result_array();
         if(count($result) > 0) {
             foreach($result as $k=>$v) {

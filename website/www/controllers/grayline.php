@@ -14,7 +14,7 @@ class grayline extends MY_Controller {
         $this->data = $data;
         $this->email = 'wesley@koalabeds.com.hk';
         $this->password = 'clcwesley1';
-        $this->language = 'zh-cn';
+        $this->language = 'en';
     }
 
     public function getNationalityList() {
