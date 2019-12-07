@@ -32,6 +32,7 @@ class home extends MY_Controller {
 
 
     public function getAccessToken() {
+        return;
         $this->load->model('cloudbeds_hotel_model');
         $result = $this->cloudbeds_hotel_model->update_cloudbeds_access_token();
         echo json_encode($result);

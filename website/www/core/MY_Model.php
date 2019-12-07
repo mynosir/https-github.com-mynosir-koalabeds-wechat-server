@@ -146,6 +146,7 @@ class MY_Model extends CI_Model {
                 );
                 $apiReturnStr = $this->https_request($url, $params);
                 @file_put_contents('/pub/logs/update_cloudbeds_access_token', '[' . date('Y-m-d H:i:s', time()) . ']==> ' . $apiReturnStr . PHP_EOL, FILE_APPEND);
+                @file_put_contents('/pub/logs/update_cloudbeds_access_token_ip', '[' . date('Y-m-d H:i:s', time()) . ']==> ' . $this->getIP() . PHP_EOL, FILE_APPEND);
                 $apiReturn = json_decode($apiReturnStr, true);
                 // {
                 //     "access_token": "I1xDWLawVoUwZq7kjDDsbCpaTrIjwqZ4LSZM80Nh",
