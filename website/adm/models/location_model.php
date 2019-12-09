@@ -29,7 +29,7 @@ class Location_model extends MY_Model {
         $select = 'ko_cloudbeds_city.id,ko_cloudbeds_city.propertyCity,ko_cloudbeds_city.status,ko_cloudbeds_city_cn.propertyCity as propertyCity_cn';
         $this->db->select($select);
         $this->db->from($this->table);
-        $this->db->join($this->cn_table, 'ko_cloudbeds_city.id = ko_cloudbeds_city_cn.cid');
+        $this->db->join($this->cn_table, 'ko_cloudbeds_city.id = ko_cloudbeds_city_cn.cid','left');
         $result = $this->db->get()->result_array();
         // var_dump($res);
         // // $query = $this->db->query('select ' . $this->fields . ' from ' . $this->table . $where . 'order by zorder desc, id asc limit ' . $limitStart . ', ' . $size);
@@ -60,11 +60,18 @@ class Location_model extends MY_Model {
           'status'=>$data['status']
         );
         $data2 = array(
+          'cid'=>$id,
           'propertyCity'=>$data['propertyCity_cn']
         );
-
+        $sql = 'select '.$this->cn_fields.' from '.$this->cn_table.' where cid='.$id;
+        $res = $this->db->query($sql)->result_array();
+        if (count($res)==0) {
+          // code...
+          $res2 = $this->db->insert($this->cn_table, $data2);
+        }else{
+          $res2 = $this->db->where('cid', $id)->update($this->cn_table, $data2);
+        }
         $res1 = $this->db->where('id', $id)->update($this->table, $data1);
-        $res2 = $this->db->where('cid', $id)->update($this->cn_table, $data2);
         if($res1&&$res2){
             $result = array(
                 'status'    => 0,
