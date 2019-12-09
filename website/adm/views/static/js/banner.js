@@ -404,6 +404,8 @@ $(function() {
                   $('input[type=radio][name=update_link]')[0].checked = true
                   $('.property_update').show();
                   $('.ticket_update').hide();
+                  // $('#update_property_id').val()
+                  $("#update_property_id option[value='"+id+"']").prop("selected","selected");
                 }
                 if (res.link.indexOf('ticket')!=-1) {
                   $('input[type=radio][name=update_link]')[1].checked = true
@@ -470,6 +472,8 @@ $(function() {
         page.init(p);
     });
     $('body').delegate('.js_edit', 'click', function(e) {
+
+      $('#update_property_id').val('');
       $('#update_ticket_id').val('');
         var id = $(e.currentTarget).data('id');
         page.getDetail(id);
