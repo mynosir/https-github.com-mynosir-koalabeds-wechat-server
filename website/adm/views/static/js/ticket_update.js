@@ -261,6 +261,7 @@ $(function() {
     $('body').delegate('.js_submit', 'click', function() {
 
         var productId = $('#productId').val(),
+            type = $('#type').val(),
             title = $('#title').val(),
             title_cn = $('#title_cn').val(),
             introduce = $('#introduce').summernote('code');
@@ -273,14 +274,15 @@ $(function() {
             type: 'post',
             data: {
                 actionxm: 'save',
-                id: productId,
+                productId: productId,
+                type: type,
                 params: {
-                    title: title||'',
-                    title_cn: title_cn||'',
-                    introduce: introduce||'',
-                    introduce_cn: introduce_cn||'',
-                    clause: clause||'',
-                    clause_cn: clause_cn||''
+                  title: title,
+                  introduce: introduce,
+                  clause: clause,
+                  title_cn: title_cn,
+                  introduce_cn: introduce_cn,
+                  clause_cn: clause_cn
                 }
             }
         };

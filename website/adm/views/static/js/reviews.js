@@ -19,7 +19,8 @@ $(function() {
                     status = ['show','hide'],
                     listTpl = '<tr><th>Serial No.</th><th>Property ID</th><th>Property Name</th><th>Wechat Nickname</th><th>Rate</th><th>Comment</th><th>Create Time</th><th>Status</th></tr>';
                 for(var i in list) {
-                    var listid = parseInt(i)+1;
+                  // console.log(p);
+                    var listid = (res.page-1)*res.size+parseInt(i)+1;
                     listTpl += '<tr>';
                     listTpl += '<td>' + listid + '</td>';
                     listTpl += '<td>' + list[i]['propertyID'] + '</td>';

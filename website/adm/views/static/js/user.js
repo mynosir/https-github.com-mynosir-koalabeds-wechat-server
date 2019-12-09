@@ -18,7 +18,7 @@ $(function() {
 
                     listTpl = '<tr><th>Serial No.</th><th>Wechat Nickname</th><th>Avartar</th><th>Sex</th><th style="width:80px">Lang</th><th>Country</th><th>Province</th><th>City</th><th style="width:220px">Record</th></tr>';
                 for(var i in list) {
-                    var listid = parseInt(i)+1;
+                    var listid = (res.page-1)*res.size+parseInt(i)+1;
                     listTpl += '<tr>';
                     listTpl += '<td>' + listid + '</td>';
                     // listTpl += '<td>' + list[i]['openid'] + '</td>';

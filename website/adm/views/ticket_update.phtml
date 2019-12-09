@@ -31,19 +31,19 @@
 
 <div class="form-group">
     <label>Product ID</label>
-    <input type="text" class="form-control" id="productId" disabled value="<?php echo $info['productId']; ?>">
+    <input type="text" class="form-control" id="productId" disabled value="<?php echo $productId; ?>">
 </div>
 <div class="form-group">
     <label>Type</label>
-    <input type="text" class="form-control" id="type" disabled value="<?php echo $info['type']; ?>">
+    <input type="text" class="form-control" id="type" disabled value="<?php echo $type; ?>">
 </div>
 <div class="form-group">
     <label>Title</label>
-    <input type="text" class="form-control" id="title" placeholder="Title" value="<?php echo $info['title']; ?>">
+    <input type="text" class="form-control" id="title" placeholder="Title" value="<?php echo $info['res_en']['title']; ?>">
 </div>
 <div class="form-group">
     <label>Title(Chinese)</label>
-    <input type="text" class="form-control" id="title_cn" placeholder="Title(Chinese)" value="<?php echo $info['title_cn']; ?>">
+    <input type="text" class="form-control" id="title_cn" placeholder="Title(Chinese)" value="<?php echo $info['res_cn']['title']; ?>">
 </div>
 <div class="form-group">
     <label>Introduce</label>
@@ -63,12 +63,12 @@
 </div>
 
 
-<textarea class="js_introduce" style="display: none;"><?php echo $info['introduce']; ?></textarea>
-<textarea class="js_introduce_cn" style="display: none;"><?php echo $info['introduce_cn']; ?></textarea>
-<textarea class="js_clause" style="display: none;"><?php echo $info['clause']; ?></textarea>
-<textarea class="js_clause_cn" style="display: none;"><?php echo $info['clause_cn']; ?></textarea>
+<textarea class="js_introduce" style="display: none;"><?php echo $info['res_en']['introduce']; ?></textarea>
+<textarea class="js_introduce_cn" style="display: none;"><?php echo $info['res_cn']['introduce']; ?></textarea>
+<textarea class="js_clause" style="display: none;"><?php echo $info['res_en']['clause']; ?></textarea>
+<textarea class="js_clause_cn" style="display: none;"><?php echo $info['res_cn']['clause']; ?></textarea>
 
-<input type="hidden" name="id" value="<?php echo $id; ?>" class="js_id">
+<!-- <input type="hidden" name="id" value="<?php echo $id; ?>" class="js_id"> -->
 
 <button type="submit" class="btn btn-primary js_submit">Save</button>
 

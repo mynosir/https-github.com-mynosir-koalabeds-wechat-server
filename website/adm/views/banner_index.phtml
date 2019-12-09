@@ -5,6 +5,19 @@
 .table{
   width: 100%;
 }
+.property_add{
+  /* display: none */
+}
+.ticket_add{
+  display: none
+}
+.property_update{
+  display: none
+}
+.ticket_update{
+  display: none
+}
+
 </style>
 <link rel="stylesheet" type="text/css" href="<?php echo $resource_url; ?>/css/uploadifive.css">
 <button type="button" class="btn btn-sm btn-primary js_addbanner" data-toggle="modal" data-target="#addModal" style="margin-bottom:10px;">Add</button>
@@ -32,11 +45,35 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="url" class="col-sm-4 control-label">Link</label>
+                        <label style="padding-top:0" for="url" class="col-sm-4 control-label">Link</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control js_update_link" placeholder="链接">
+                          <!-- <input type="text" class="form-control js_update_link" placeholder="链接"> -->
+                          <label><input type="radio" name="update_link" value="1">Property</label>
+                          <label><input type="radio" name="update_link" value="2">Ticket</label>
+                        </div>
+                        <label style="padding-top:0" for="url" class="col-sm-4 control-label"></label>
+                        <div class="col-sm-8">
+                          <button type="button" class="btn btn-primary js_select_update_ticket ticket_update" data-toggle="modal" data-target="#selectUpdateTicketModal"><span class="">Select Update Ticket</span></button>
                         </div>
                     </div>
+                    <div class="form-group property_update">
+                        <label style="padding-top:0" class="col-sm-4 control-label">Property Name</label>
+                        <div class="col-sm-8">
+                          <select class="propertyName" name="" id="update_property_id">
+                            <option value="">Select</option>
+                            <?php foreach ($propertyList as $k => $v): ?>
+                              <option value="<?=$v["propertyID"]?>"><?=$v["propertyName"]?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        </div>
+                    </div>
+                    <div class="form-group ticket_update">
+                        <label class="col-sm-4 control-label">Ticket ID</label>
+                        <div class="col-sm-8">
+                            <input disabled type="text" class="form-control" id="update_ticket_id">
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="photo" class="col-sm-4 control-label">Image
                             <button type="button" class="btn btn-primary js_upload" data-toggle="modal" data-target="#uploadModal"><span class="glyphicon glyphicon-plus"></span></button></label>
@@ -84,9 +121,32 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="url" class="col-sm-4 control-label">Link</label>
+                        <label style="padding-top:0" for="url" class="col-sm-4 control-label">Link</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control js_add_link" placeholder="Link">
+
+                          <label><input type="radio" name="link" value="1" checked>Property</label>
+                          <label><input type="radio" name="link" value="2">Ticket</label>
+                        </div>
+                        <label style="padding-top:0" for="url" class="col-sm-4 control-label"></label>
+                        <div class="col-sm-8">
+                          <button type="button" class="btn btn-primary js_select_ticket ticket_add" data-toggle="modal" data-target="#selectTicketModal"><span class="">Select Ticket</span></button>
+                        </div>
+                    </div>
+                    <div class="form-group property_add">
+                        <label style="padding-top:0" class="col-sm-4 control-label">Property Name</label>
+                        <div class="col-sm-8">
+                          <select class="propertyName" name="" id="property_id">
+                            <option value="">Select</option>
+                            <?php foreach ($propertyList as $k => $v): ?>
+                              <option value="<?=$v["propertyID"]?>"><?=$v["propertyName"]?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        </div>
+                    </div>
+                    <div class="form-group ticket_add">
+                        <label class="col-sm-4 control-label">Ticket ID</label>
+                        <div class="col-sm-8">
+                            <input disabled type="text" class="form-control" id="ticket_id">
                         </div>
                     </div>
                     <div class="form-group">
@@ -98,7 +158,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="url" class="col-sm-4 control-label">Status</label>
+                        <label style="padding-top:0" for="url" class="col-sm-4 control-label">Status</label>
                         <div class="col-sm-8">
                             <select class="js_add_select" name="">
                               <option value="0">Show</option>
@@ -125,6 +185,78 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="selectTicketModal" tabindex="1" role="dialog" aria-labelledby="selectTicketModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Select Ticket</h4>
+            </div>
+            <div class="modal-body">
+              <div class="well well-sm">
+                  <form class="form-inline js_searchFrom">
+                      <div class="form-group">
+                          <label for="search_name">Ticket Title</label>
+                          <input type="text" class="form-control" id="search_title" placeholder="Ticket Title">
+
+                      </div>
+
+                      <button type="submit" class="btn btn-sm btn-primary">Search</button>
+                  </form>
+              </div>
+              <div class="table-responsive">
+                    <table class="table js_table2">
+                    </table>
+              </div>
+              <div class="table_page">
+                <nav style="float:right;">
+                    <ul class="pagination js_page2"></ul>
+                </nav>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="selectUpdateTicketModal" tabindex="1" role="dialog" aria-labelledby="selectUpdateTicketModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Select Update Ticket</h4>
+            </div>
+            <div class="modal-body">
+              <div class="well well-sm">
+                  <form class="form-inline js_searchFrom2">
+                      <div class="form-group">
+                          <label for="search_name">Ticket Title</label>
+                          <input type="text" class="form-control" id="search_title2" placeholder="Ticket Title">
+
+                      </div>
+
+                      <button type="submit" class="btn btn-sm btn-primary">Search</button>
+                  </form>
+              </div>
+              <div class="table-responsive">
+                    <table class="table js_table3">
+                    </table>
+              </div>
+              <div class="table_page">
+                <nav style="float:right;">
+                    <ul class="pagination js_page3"></ul>
+                </nav>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <div class="modal fade" id="uploadModal" tabindex="1" role="dialog" aria-labelledby="uploadModal">
     <div class="modal-dialog">

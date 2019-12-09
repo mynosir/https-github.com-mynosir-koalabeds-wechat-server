@@ -399,4 +399,28 @@ class Admin_model extends MY_Model {
         return $info;
 
     }
+
+    // 查询是否有未处理的城市
+    public function checkUpdatedCity(){
+      $sql = 'select * from ko_cloudbeds_city where status=0';
+      $res = $this->db->query($sql)->result_array();
+      if(count($res)>0){
+        $result = true;
+      }else{
+        $result = false;
+      }
+      return $result;
+    }
+
+    // 查询是否有未读的酒店房间翻译
+    public function checkUnreadRoom(){
+      $sql = 'select * from ko_cloudbeds_roomtypes_log where status=0';
+      $res = $this->db->query($sql)->result_array();
+      if(count($res)>0){
+        $result = true;
+      }else{
+        $result = false;
+      }
+      return $result;
+    }
 }

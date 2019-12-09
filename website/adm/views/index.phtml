@@ -55,6 +55,29 @@
     </div>
 </div>
 
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Application Information</h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Location:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><?php if(!$cityUpdated) { echo '<span style="color: green;">Updated</span>'; } else { echo '<span style="color: red;">Not Updated</span>'; } ?></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Property Room:</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><?php if(!$roomUnread) { echo '<span style="color: green;">Read</span>'; } else { echo '<span style="color: red;">Unread</span>'; } ?></p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <?php if($adminDetail['is_admin']=='1') { ?>
 <div class="panel panel-default">
     <div class="panel-heading">

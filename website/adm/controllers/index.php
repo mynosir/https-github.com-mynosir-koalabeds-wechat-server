@@ -29,6 +29,11 @@ class Index extends MY_Controller {
         $adminId = $this->data['admin_info']['id'];
         $this->load->model('admin_model');
         $this->data['adminDetail'] = $this->admin_model->getAdminDetailInfo($adminId);
+
+        // 查看全部城市是否未处理
+        $this->data['cityUpdated'] = $this->admin_model->checkUpdatedCity();
+        // 查看全部酒店房间是否未处理
+        $this->data['roomUnread'] = $this->admin_model->checkUnreadRoom();
         // 查询系统信息
         $this->data['systemInfo'] = getSystemInfo();
         $this->load->view('index', $this->data);

@@ -10,28 +10,17 @@ $(function() {
                     data: {
                         actionxm: 'search',
                         page: !p ? 1 : p,
-                        size: 10,
+                        size: 20,
                         keyword: $('#search_title').val()
                     }
                 };
             var callback = function(res) {
-                // if(res.status == 0) {
-                    console.log(res.list);
-                    // function compare(property){
-                    //     return function(a,b){
-                    //         var value1 = a[property];
-                    //         var value2 = b[property];
-                    //         return value1 - value2;
-                    //     }
-                    // }
-                    // res.list = res.list.sort(compare('status'));
-
                     var idx = 1,
                         list = res['list'],
                         status = ['Unread','Read'],
                         listTpl = '<tr><th>Serial No.</th><th>Product ID</th><th>Type</th><th>Title</th><th>Title(Chinese)</th><th>Operation</th></tr>';
                     for(var i in list) {
-                        var listid = parseInt(i)+1;
+                        var listid = (res.page-1)*res.size+parseInt(i)+1;
                         // if(list[i]['name_cn'] ==undefined){
                         //   list[i]['name_cn'] = ''
                         // }
@@ -42,7 +31,7 @@ $(function() {
                         listTpl += '<td>' + list[i]['title'] + '</td>';
                         listTpl += '<td>' + list[i]['title_cn'] + '</td>';
                         // listTpl += '<td>' + list[i]['roomTypeNameShort'] + '</td>';
-                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['productId'] + '">Edit</button></td>';
+                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['productId'] + '" data-type="' + list[i]['type'] + '">Edit</button></td>';
                         listTpl += '</tr>';
                     }
                     $('.js_table').html(listTpl);
@@ -94,7 +83,8 @@ $(function() {
 
     $('body').delegate('.js_edit', 'click', function(e) {
         var id = $(e.currentTarget).data('id');
-        window.location.href = '/adm/ticket/edit/' + id;
+        var type = $(e.currentTarget).data('type');
+        window.location.href = '/adm/ticket/edit?id='+id+'&type='+type;
     });
 
     $('body').delegate('.selectSection', 'change', function(e) {

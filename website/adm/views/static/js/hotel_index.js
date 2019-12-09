@@ -25,7 +25,7 @@ $(function() {
                         hotelStatus = ['Unchecked','Approve','Deny'];
 
                     for(var i in list) {
-                        var listid = parseInt(i)+1;
+                        var listid = (res.page-1)*res.size+parseInt(i)+1;
                         if(list[i]['name_cn'] ==undefined){
                           list[i]['name_cn'] = ''
                         }

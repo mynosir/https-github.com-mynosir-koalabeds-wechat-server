@@ -2,10 +2,10 @@ $(function() {
     var page = {
         init: function(p) {
             var json = {
-                api: config.apiServer + 'coupon_config/get',
+                api: config.apiServer + 'location/get',
                 type: 'get',
                 data: {
-                    actionxm: 'getCoupon',
+                    actionxm: 'getLocationList',
                     page: !p ? 1 : p,
                     size: 20,
                     classify: 0
@@ -14,16 +14,14 @@ $(function() {
             var callback = function(res) {
                 // 处理表格数据
                 var list = res['list'],
-                    show = ['Show','Hide'],
-                    listTpl = '<tr><th>Serial No.</th><th>Over Amount</th><th>Discount Amount</th><th>Validate Date</th><th>Rank(Sort desending)</th><th>Status</th><th>Operation</th></tr>';
+                    show = ['Hide','Show','Off'],
+                    listTpl = '<tr><th>Serial No.</th><th>Property City</th><th>Property City(Chinese)</th><th>Status</th><th>Operation</th></tr>';
                 for(var i in list) {
                     var listid = (res.page-1)*res.size+parseInt(i)+1;
                     listTpl += '<tr>';
                     listTpl += '<td>' + listid + '</td>';
-                    listTpl += '<td>' + list[i]['totalAmount'] + '</td>';
-                    listTpl += '<td>' + list[i]['discountAmount'] + '</td>';
-                    listTpl += '<td>' + list[i]['validateDate'] + '</td>';
-                    listTpl += '<td>' + list[i]['zorder'] + '</td>';
+                    listTpl += '<td>' + list[i]['propertyCity'] + '</td>';
+                    listTpl += '<td>' + list[i]['propertyCity_cn'] + '</td>';
                     listTpl += '<td>' + show[list[i]['status']] + '</td>';
                     listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['id'] + '">Edit</button></td>';
                     listTpl += '</tr>';
@@ -58,7 +56,7 @@ $(function() {
         },
         getDetail: function(id) {
             var json = {
-                api: config.apiServer + 'coupon_config/get',
+                api: config.apiServer + 'location/get',
                 type: 'get',
                 data: {
                     actionxm: 'getDetail',
@@ -66,37 +64,11 @@ $(function() {
                 }
             };
             var callback = function(res) {
-                $('.js_id').text(res.id);
-                $('.js_update_totalAmount').val(res.totalAmount);
-                $('.js_update_discountAmount').val(res.discountAmount);
-                $('.js_update_validateDate').val(res.validateDate);
-                $('.js_select').val(res.status);
-                $('.js_update_sort').val(res.zorder);
-            };
-            json.callback = callback;
-            Utils.requestData(json);
-        },
-        deleteConfirmTip: function(id) {
-            $('#confirmModal').find('.js_sure_delete').attr('data-id', id);
-            $('#confirmModal').modal('show');
-        },
-        deletItem: function(id) {
-            var json = {
-                api: config.apiServer + 'coupon_config/post',
-                type: 'post',
-                data: {
-                    actionxm: 'delete',
-                    id: id
-                }
-            };
-            var callback = function(res) {
-                if(res.status==0) {
-                    $('#confirmModal').modal('hide');
-                    alert(res.msg);
-                    window.location.reload();
-                } else {
-                    alert(res.msg);
-                }
+              console.log(res);
+                $('.js_id').text(res.res_en.id);
+                $('.js_update_propertyCity').val(res.res_en.propertyCity);
+                $('.js_update_propertyCity_cn').val(res.res_cn.propertyCity);
+                $('.js_select').val(res.res_en.status);
             };
             json.callback = callback;
             Utils.requestData(json);
@@ -162,22 +134,18 @@ $(function() {
     });
     $('body').delegate('.js_saveBtn', 'click', function() {
         var id = $('.js_id').text(),
-            totalAmount = $('.js_update_totalAmount').val(),
-            discountAmount = $('.js_update_discountAmount').val(),
-            validateDate = $('.js_update_validateDate').val(),
-            sort = $('.js_update_sort').val(),
+            propertyCity = $('.js_update_propertyCity').val(),
+            propertyCity_cn = $('.js_update_propertyCity_cn').val(),
             status = $('.js_select').val();
         var json = {
-                api: config.apiServer + 'coupon_config/post',
+                api: config.apiServer + 'location/post',
                 type: 'post',
                 data: {
-                    actionxm: 'updateCoupon',
+                    actionxm: 'updateLocation',
                     id: id,
                     params: {
-                        totalAmount: totalAmount,
-                        discountAmount: discountAmount,
-                        validateDate: validateDate,
-                        zorder: sort,
+                        propertyCity: propertyCity,
+                        propertyCity_cn: propertyCity_cn,
                         status: status
                     }
                 }

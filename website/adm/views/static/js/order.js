@@ -83,7 +83,7 @@ $(function() {
                     if(list[i]['roomTypeName']==null){
                       list[i]['roomTypeName']='';
                     }
-                    var listid = parseInt(i)+1;
+                    var listid = (res.page-1)*res.size+parseInt(i)+1;
                     listTpl += '<tr>';
                     listTpl2 += '<tr>';
                     listTpl += '<td>' + listid + '</td>';

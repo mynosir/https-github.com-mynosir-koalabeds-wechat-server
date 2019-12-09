@@ -18,7 +18,7 @@ $(function() {
                     used = ['unused','used'],
                     listTpl = '<tr><th>Serial No.</th><th>Wechat Nickname</th><th>Coupon Over Amount</th><th>Coupon Discount Amount</th><th>Status</th><th>Create Time</th></tr>';
                 for(var i in list) {
-                    var listid = parseInt(i)+1;
+                    var listid = (res.page-1)*res.size+parseInt(i)+1;
                     listTpl += '<tr>';
                     listTpl += '<td>' + listid + '</td>';
                     // listTpl += '<td>' + list[i]['openid'] + '</td>';

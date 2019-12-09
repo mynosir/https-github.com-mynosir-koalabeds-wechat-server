@@ -20,11 +20,13 @@ class Banner extends MY_Controller {
         $data['current_menu_text'] = 'Banner Manage';
         $data['menu_list'] = $this->getMenuList();
         $this->load->model('banner_model');
+        $this->load->model('hotel_model');
         $this->data = $data;
     }
 
 
     public function index() {
+        $this->data['propertyList'] = $this->hotel_model->getPropertyList();
         $this->showPage('banner_index', $this->data);
     }
 

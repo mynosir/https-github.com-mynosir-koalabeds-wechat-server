@@ -36,10 +36,14 @@ class Ticket extends MY_Controller {
         $this->showPage('ticket_index', $this->data);
     }
 
-    public function edit($id) {
-        $this->data['id'] = $id;
+    public function edit() {
+        $id = $this->get_request('id');
+        $type = $this->get_request('type');
+
+        $this->data['productId'] = $id;
+        $this->data['type'] = $type;
         // 更新
-        $this->data['info'] = $this->ticket_model->getTicketDetail($id);
+        $this->data['info'] = $this->ticket_model->getTicketDetail($id, $type);
         // $info2 = $this->rooms_model->getHotelDetailCn($id);
         // if($info2){
         //     $this->data['info2'] = $info2;
@@ -69,11 +73,15 @@ class Ticket extends MY_Controller {
         $result = array();
         switch($actionxm) {
           case 'save':
-              $id = $this->get_request('id');
+              $productId = $this->get_request('productId');
+              $type = $this->get_request('type');
               $params = $this->get_request('params');
-              $result = $this->ticket_model->save($id,$params);
+              $result = $this->ticket_model->save($productId,$type,$params);
               break;
-
+          case 'getTicketId':
+              $params = $this->get_request('params');
+              $result = $this->ticket_model->getTicketId($params);
+              break;
         }
         echo json_encode($result);
     }

@@ -10,7 +10,7 @@ $(function() {
                     data: {
                         actionxm: 'search',
                         page: !p ? 1 : p,
-                        size: 6,
+                        size: 20,
                         keyword: $('.propertyName').val()
                     }
                 };
@@ -31,7 +31,7 @@ $(function() {
                         status = ['Unread','Read'],
                         listTpl = '<tr><th>Serial No.</th><th>Property ID</th><th>Property Name</th><th>Room Type ID</th><th>Room Type Name</th><th>Room Type Name(chinese)</th><th>Status</th><th>Operation</th></tr>';
                     for(var i in list) {
-                        var listid = parseInt(i)+1;
+                        var listid = (res.page-1)*res.size+parseInt(i)+1;
                         if(list[i]['status'] ==null){
                           list[i]['status'] = '0'
                         }
