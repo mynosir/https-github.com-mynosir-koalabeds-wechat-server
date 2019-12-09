@@ -108,7 +108,7 @@ $(function() {
                       itemMax = 1,
                       fisrtItemCls = page==1 ? ' class="disabled"' : '',
                       lastItemCls = page==itemNum ? ' class="disabled"' : '';
-                  pageTpl += '<li ' + fisrtItemCls + '><a href="javascript:void(0)" aria-label="Previous" data-page="1" class="js_pageItem"><span aria-hidden="true">&laquo;</span></a></li>';
+                  pageTpl += '<li ' + fisrtItemCls + '><a href="javascript:void(0)" aria-label="Previous" data-page="1" class="js_pageItem3"><span aria-hidden="true">&laquo;</span></a></li>';
                   if(page>4) {
                       itemStart = (page + 2) > itemNum ? itemNum - 4 : page - 2;//2
                       itemMax = (page + 2) > itemNum ? itemNum : page + 2;//4
@@ -117,9 +117,9 @@ $(function() {
                   }
                   for(itemStart; itemStart<=itemMax; itemStart++) {
                       var pageItemCls = itemStart==page ? ' class="active"' : '';
-                      pageTpl += '<li ' + pageItemCls + '><a href="javascript:void(0)" data-page="' + itemStart + '" class="js_pageItem">' + itemStart + '</a></li>';
+                      pageTpl += '<li ' + pageItemCls + '><a href="javascript:void(0)" data-page="' + itemStart + '" class="js_pageItem3">' + itemStart + '</a></li>';
                   }
-                  pageTpl += '<li ' + lastItemCls + '><a href="javascript:void(0)" aria-label="Next" data-page="' + itemNum + '" class="js_pageItem"><span aria-hidden="true">&raquo;</span></a></li>';
+                  pageTpl += '<li ' + lastItemCls + '><a href="javascript:void(0)" aria-label="Next" data-page="' + itemNum + '" class="js_pageItem3"><span aria-hidden="true">&raquo;</span></a></li>';
                   $('.js_page3').html(pageTpl);
 
           };
@@ -180,7 +180,7 @@ $(function() {
                       itemMax = 1,
                       fisrtItemCls = page==1 ? ' class="disabled"' : '',
                       lastItemCls = page==itemNum ? ' class="disabled"' : '';
-                  pageTpl += '<li ' + fisrtItemCls + '><a href="javascript:void(0)" aria-label="Previous" data-page="1" class="js_pageItem"><span aria-hidden="true">&laquo;</span></a></li>';
+                  pageTpl += '<li ' + fisrtItemCls + '><a href="javascript:void(0)" aria-label="Previous" data-page="1" class="js_pageItem2"><span aria-hidden="true">&laquo;</span></a></li>';
                   if(page>4) {
                       itemStart = (page + 2) > itemNum ? itemNum - 4 : page - 2;//2
                       itemMax = (page + 2) > itemNum ? itemNum : page + 2;//4
@@ -189,9 +189,9 @@ $(function() {
                   }
                   for(itemStart; itemStart<=itemMax; itemStart++) {
                       var pageItemCls = itemStart==page ? ' class="active"' : '';
-                      pageTpl += '<li ' + pageItemCls + '><a href="javascript:void(0)" data-page="' + itemStart + '" class="js_pageItem">' + itemStart + '</a></li>';
+                      pageTpl += '<li ' + pageItemCls + '><a href="javascript:void(0)" data-page="' + itemStart + '" class="js_pageItem2">' + itemStart + '</a></li>';
                   }
-                  pageTpl += '<li ' + lastItemCls + '><a href="javascript:void(0)" aria-label="Next" data-page="' + itemNum + '" class="js_pageItem"><span aria-hidden="true">&raquo;</span></a></li>';
+                  pageTpl += '<li ' + lastItemCls + '><a href="javascript:void(0)" aria-label="Next" data-page="' + itemNum + '" class="js_pageItem2"><span aria-hidden="true">&raquo;</span></a></li>';
                   $('.js_page2').html(pageTpl);
 
           };
@@ -466,6 +466,14 @@ $(function() {
     $('body').delegate('.js_select_ticket', 'click', function(e) {
         $('#search_title').val('');
         page.getTicketList();
+    });
+    $('body').delegate('.js_pageItem3', 'click', function(e) {
+        var p = $(e.currentTarget).data('page');
+        page.getTicketList(p);
+    });
+    $('body').delegate('.js_pageItem2', 'click', function(e) {
+        var p = $(e.currentTarget).data('page');
+        page.getTicketList(p);
     });
     $('body').delegate('.js_pageItem', 'click', function(e) {
         var p = $(e.currentTarget).data('page');
