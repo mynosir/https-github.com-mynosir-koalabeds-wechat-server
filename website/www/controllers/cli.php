@@ -18,7 +18,6 @@ class cli extends MY_Controller {
 
 
     public function update_cloudbeds_access_token() {
-        return;
         $this->load->model('cloudbeds_access_token_model');
         $result = $this->cloudbeds_access_token_model->update_cloudbeds_access_token();
         var_dump($result);
@@ -27,7 +26,6 @@ class cli extends MY_Controller {
 
 
     public function fetch_hotels() {
-        return;
         $this->load->model('cloudbeds_hotel_model');
         $result = $this->cloudbeds_hotel_model->fetch_hotels();
         var_dump($result);
@@ -36,7 +34,6 @@ class cli extends MY_Controller {
 
 
     public function fetch_roomTypes() {
-        return;
         // 查询当前表中的酒店
         $this->load->model('cloudbeds_hotel_model');
         $hotelsInfo = $this->cloudbeds_hotel_model->getHotelListInDB();
@@ -61,7 +58,6 @@ class cli extends MY_Controller {
 
 
     public function fetch_citys() {
-        return;
         $this->load->model('cloudbeds_hotel_model');
         $result = $this->cloudbeds_hotel_model->fetch_citys();
         var_dump($result);
