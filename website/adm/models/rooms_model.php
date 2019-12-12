@@ -47,15 +47,34 @@ class Rooms_model extends MY_Model {
       $sql2 = 'select '.$this->cn_rooms_fields.' from '.$this->cn_rooms_table;
       $query2 = $this->db->query($sql2);
       $result2 = $query2->result_array();
+      // for ($i=0; $i < count($result2); $i++) {
+      //   // code...
+      //   var_dump($result2[$i]['roomTypeName']);
+      //
+      //   // if($result2[$i]['roomTypeName']==)
+      //   // $result2[$i][]
+      // }
       for ($i=0; $i < count($result2); $i++) {
         // code...
         for ($j=0; $j < count($result); $j++) {
           // code...
+          // var_dump($result2[$i]['roomTypeName']);
+          // $result[$j]['roomTypeName_cn']='';
           if($result2[$i]['rid']==$result[$j]['id']){
             $result[$j]['roomTypeName_cn']=$result2[$i]['roomTypeName'];
             $result[$j]['roomTypeNameShort_cn']=$result2[$i]['roomTypeNameShort'];
             $result[$j]['roomTypeDescription_cn']=$result2[$i]['roomTypeDescription'];
+            // continue;
           }
+        }
+      }
+      for ($i=0; $i < count($result); $i++) {
+        // code...
+        if (array_key_exists('roomTypeName_cn',$result[$i])) {
+        //   // code...
+        }else{
+          $result[$i]['roomTypeName_cn'] = '';
+
         }
       }
       // 房间中文名
@@ -66,8 +85,13 @@ class Rooms_model extends MY_Model {
         // code...
           for ($j=0; $j < count($result3); $j++) {
             // code...
+            // var_dump($result3[$j]['propertyName']);
             if($result[$i]['propertyID']==$result3[$j]['propertyID']){
+              // if($result3[$j]['propertyName']==undefined){
+              //   $result3[$j]['propertyName'] = '';
+              // }
               $result[$i]['propertyName']=$result3[$j]['propertyName'];
+
             }
           }
       }
