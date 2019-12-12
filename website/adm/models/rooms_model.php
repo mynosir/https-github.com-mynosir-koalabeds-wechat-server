@@ -132,15 +132,18 @@ class Rooms_model extends MY_Model {
           if(count($result)>0){
             $searchPropertyID = $result[0]['propertyID'];
           }else{
-            $searchPropertyID = '';
+            // $searchPropertyID = '';
             $result[0]['roomTypeName'] = '';
             $result[0]['roomTypeNameShort'] = '';
             $result[0]['roomTypeDescription'] = '';
+            $searchPropertyID = $result2[0]['propertyID'];
+
           }
           $query3 = $this->db->query('select ' . $this->hotels_fields . ' from ' . $this->hotels_table . ' where propertyID="' . $searchPropertyID . '"');
           $result3 = $query3->row();
           if(count($result3)>0){
-            $propertyName = $result['propertyName'];
+            // var_dump($result3);
+            $propertyName = $result3->propertyName;
           }else{
             $propertyName = '';
           }
