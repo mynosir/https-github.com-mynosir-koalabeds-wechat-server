@@ -426,3 +426,32 @@ create table `ko_cloudbeds_city_cn` (
     `propertyCity` varchar(255) comment '城市中文名称',
     primary key (`id`)
 ) engine = myisam character set utf8 collate utf8_general_ci comment = 'cloudbeds地区中文表';
+
+
+-- linzequan 20191222
+-- 添加门票信息表
+create table `ko_grayline_ticket_info_v2` (
+    `id` int not null auto_increment comment '自增id',
+    `productId` int not null comment 'grayline门票id',
+    `title` varchar(1024) comment '标题',
+    `code` varchar(128) comment '产品编码',
+    `image` varchar(512) comment '产品图片',
+    `type` varchar(32) comment '类型',
+    `introduce` text comment '门票介绍',
+    `clause` text comment '门票条款',
+    `status` int default 0 comment '状态。0下架，1上架，-1删除。默认0',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = '门票信息表v2';
+
+
+-- linzequan 20191222
+-- 添加门票中文信息表
+create table `ko_grayline_ticket_info_cn_v2` (
+    `id` int not null auto_increment comment '自增id',
+    `tiid` int not null comment '门票英文信息表id',
+    `productId` int not null comment 'grayline门票id',
+    `title` varchar(1024) comment '标题',
+    `introduce` text comment '门票介绍',
+    `clause` text comment '门票条款',
+    primary key (`id`)
+) engine = myisam character set utf8 collate utf8_general_ci comment = '门票中文信息表v2';
