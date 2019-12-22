@@ -10,14 +10,79 @@ class Grayline_ticket_model extends MY_Model {
     private $table = 'ko_grayline_ticket';
     private $info_table = 'ko_grayline_ticket_info';
     private $info_cn_table = 'ko_grayline_ticket_info_cn';
+    private $info_v2_table = 'ko_grayline_ticket_info_v2';
+    private $info_cn_v2_table = 'ko_grayline_ticket_info_cn_v2';
     private $fields = 'id, openid, type, productId, travelDate, travelTime, turbojetDepartureDate, turbojetReturnDate, turbojetDepartureTime, turbojetReturnTime, turbojetDepartureFrom, turbojetDepartureTo, turbojetReturnFrom, turbojetReturnTo, turbojetQuantity, turbojetClass, turbojetTicketType, turbojetDepartureFlightNo, turbojetReturnFlightNo, hotel, title, firstName, lastName, passport, guestEmail, countryCode, telephone, promocode, agentReference, remark, subQty, subQtyProductPriceId, subQtyValue, totalPrice, info, orderParamsDetail, outTradeNo, transaction_id, transaction_info, status, create_time, sourcePrice, extinfo, coupon_id';
     private $info_fields = 'id, productId, title, type, introduce, clause';
     private $info_cn_fields = 'id, productId, title, type, introduce, clause';
+    private $info_v2_fields = 'id, productId, title, code, image, type, introduce, clause, status';
+    private $info_cn_v2_fields = 'id, tiid, productId, title, introduce, clause';
     private $email = 'wesley@koalabeds.com.hk';
     private $password = 'clcwesley1';
 
+
     public function __construct() {
         parent::__construct();
+    }
+
+
+    public function fetch_tickets_v2() {
+        $typeArr = array('tour', 'ticket');
+        $url = 'http://grayline.com.hk/b2b/api/getProductList';
+        $logArr = array();
+        $data = array(
+            'email'     => $this->email,
+            'password'  => $this->password,
+            'language'  => 'en'
+        );
+        foreach($typeArr as $x=>$y) {
+            $data['type'] = $y;
+            $apiReturnStr = $this->http_request_grayline($url, $data);
+            if($apiReturnStr['meta']['code'] == 'RESP_OKAY') {
+                foreach($apiReturnStr['data'] as $a=>$b) {
+                    // 判断当前记录是否已经记录到数据库
+                    $hasExist = $this->checkExistByProductIdV2($b['productId']);
+                    if(!$hasExist) {
+                        // 记录不存在，入库
+                        $code = '';
+                        if($y == 'tour') $code = $b['tourCode'];
+                        if($y == 'ticket') $code = $b['ticketCode'];
+                        $params = array(
+                            'productId' => $b['productId'],
+                            'title'     => $b['title'],
+                            'code'      => $code,
+                            'image'     => $b['image'],
+                            'type'      => $y,
+                            'introduce' => '',
+                            'clause'    => ''
+                        );
+                        $this->db->insert($this->info_v2_table, $params);
+                        @file_put_contents('/pub/logs/fetch_tickets_v2/' . date('Y-m-d', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $b['productId'] . ')==> ' . json_encode($params) . PHP_EOL, FILE_APPEND);
+                        @file_put_contents('/pub/logs/fetch_tickets_success_v2/' . date('Y-m', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $b['productId'] . ')==> ' . json_encode($params) . PHP_EOL, FILE_APPEND);
+                        $logArr[] = '[' . date('Y-m-d H:i:s', time()) . '](' . $b['productId'] . ')==> ' . json_encode($params);
+                    } else {
+                        // 记录存在，更新
+                        $code = '';
+                        if($y == 'tour') $code = $b['tourCode'];
+                        if($y == 'ticket') $code = $b['ticketCode'];
+                        $params = array(
+                            'title' => $b['title'],
+                            'type'  => $b['type'],
+                            'code'  => $code,
+                            'image' => $b['image']
+                        );
+                        $where = array(
+                            'productId' => $b['productId']
+                        );
+                        $this->db->where($where)->update($this->info_v2_table, $params);
+                        // 写入日志
+                        @file_put_contents('/pub/logs/fetch_tickets_v2/' . date('Y-m-d', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $b['productId'] . ')==> 记录已经存在' . PHP_EOL, FILE_APPEND);
+                            $logArr[] = '[' . date('Y-m-d H:i:s', time()) . '](' . $b['productId'] . ')==> 记录已经存在';
+                    }
+                }
+            }
+        }
+        return $logArr;
     }
 
 
@@ -67,7 +132,7 @@ class Grayline_ticket_model extends MY_Model {
                             );
                             $this->db->where($where)->update($v['table'], $params);
                             // 写入日志文件
-                            @file_put_contents('/pub/logs/fetch_hotels/' . $v['lang'] . '_' . date('Y-m-d', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $b['productId'] . ')==> 记录已经存在' . PHP_EOL, FILE_APPEND);
+                            @file_put_contents('/pub/logs/fetch_tickets/' . $v['lang'] . '_' . date('Y-m-d', time()), '[' . date('Y-m-d H:i:s', time()) . '](' . $b['productId'] . ')==> 记录已经存在' . PHP_EOL, FILE_APPEND);
                             $logArr[] = '[' . date('Y-m-d H:i:s', time()) . '](' . $v['lang'] . $b['productId'] . ')==> 记录已经存在';
                         }
                     }
@@ -83,6 +148,20 @@ class Grayline_ticket_model extends MY_Model {
      **/
     public function checkExistByProductId($productId, $table) {
         $query = $this->db->query('select count(1) as num from ' . $table . ' where productId = ' . $productId);
+        $result = $query->result_array();
+        if($result[0]['num'] > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * 检查记录是否已经记录在数据库中
+     **/
+    public function checkExistByProductIdV2($productId) {
+        $query = $this->db->query('select count(1) as num from ' . $this->info_v2_table . ' where productId = ' . $productId);
         $result = $query->result_array();
         if($result[0]['num'] > 0) {
             return true;

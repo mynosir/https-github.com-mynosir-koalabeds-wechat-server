@@ -57,6 +57,14 @@ class cli extends MY_Controller {
     }
 
 
+    public function fetch_tickets_v2() {
+        $this->load->model('grayline_ticket_model');
+        $result = $this->grayline_ticket_model->fetch_tickets_v2();
+        var_dump($result);
+        return $result;
+    }
+
+
     public function fetch_citys() {
         $this->load->model('cloudbeds_hotel_model');
         $result = $this->cloudbeds_hotel_model->fetch_citys();
