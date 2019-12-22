@@ -199,6 +199,56 @@ class Grayline_ticket_model extends MY_Model {
 
 
     /**
+     * 获取产品列表v2
+     */
+    public function getProductListV2($language, $type = '') {
+        $where = '';
+        if($type != '') {
+            $where = ' where type = "' . $type . '" ';
+        }
+        $query = $this->db->query('select ' . $this->info_v2_fields . ' from ' . $this->info_v2_table . $where);
+        $result = $query->result_array();
+        if($language == 'zh-cn') {
+            foreach($result as $k=>$v) {
+                $cnInfo = $this->getProductCn($v['id']);
+                if(!!$cnInfo) {
+                    $result[$k]['title'] = $cnInfo['title'];
+                    $result[$k]['introduce'] = $cnInfo['introduce'];
+                    $result[$k]['clause'] = $cnInfo['clause'];
+                }
+            }
+        }
+        return array(
+            'status'    => 0,
+            'msg'       => '查询成功',
+            'data'      => $result
+        );
+    }
+
+
+    public function getProductCn($tiid) {
+        $query = $this->db->query('select ' . $this->info_cn_v2_fields . ' from ' . $this->info_cn_v2_table . ' where tiid = ' . $tiid);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return $result[0];
+        } else {
+            return false;
+        }
+    }
+
+
+    public function getProductCnByProductId($productId) {
+        $query = $this->db->query('select ' . $this->info_cn_v2_fields . ' from ' . $this->info_cn_v2_table . ' where productId = ' . $productId);
+        $result = $query->result_array();
+        if(count($result) > 0) {
+            return $result[0];
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
      * 获取产品列表
      */
     public function getProductList($language, $type) {
@@ -211,6 +261,48 @@ class Grayline_ticket_model extends MY_Model {
         if($type != '') $data['type'] = $type;
         $apiReturnStr = $this->http_request_grayline($url, $data);
         if($apiReturnStr['meta']['code'] == 'RESP_OKAY') {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $apiReturnStr['data']
+            );
+        } else {
+            return array(
+                'status'    => 1,
+                'msg'       => '系统异常',
+                'ext'       => json_encode($apiReturnStr['meta'])
+            );
+        }
+    }
+
+
+    /**
+     * 获取产品详情v2
+     */
+    public function getProductDetailsV2($type, $productId, $language = 'en') {
+        if(!$type || !$productId) {
+            return array(
+                'status'    => -1,
+                'msg'       => '参数异常'
+            );
+        }
+        $url = 'http://grayline.com.hk/b2b/api/getProductDetails';
+        $data = array(
+            'email'     => $this->email,
+            'password'  => $this->password,
+            'type'      => $type,
+            'productId' => $productId
+        );
+        $apiReturnStr = $this->http_request_grayline($url, $data);
+        if($apiReturnStr['meta']['code'] == 'RESP_OKAY') {
+            if($language == 'zh-cn') {
+                $cnInfo = $this->getProductCnByProductId($productId);
+                if(!!$cnInfo) {
+                    $apiReturnStr['data']['title'] = $cnInfo['title'];
+                    $apiReturnStr['data']['introduce'] = $cnInfo['introduce'];
+                    $apiReturnStr['data']['clause'] = $cnInfo['clause'];
+                }
+            }
             return array(
                 'status'    => 0,
                 'msg'       => '查询成功',
@@ -298,6 +390,56 @@ class Grayline_ticket_model extends MY_Model {
      * 查询产品
      */
     public function queryProduct($type, $productId, $travelDate, $travelTime, $turbojetDepartureDate, $turbojetReturnDate, $turbojetDepartureTime, $turbojetReturnTime, $turbojetDepartureFrom, $turbojetDepartureTo, $turbojetReturnFrom, $turbojetReturnTo, $turbojetQuantity, $turbojetClass, $subQtyProductPriceId) {
+        if(!$type || !$productId) {
+            return array(
+                'status'    => -1,
+                'msg'       => '参数异常'
+            );
+        }
+        $url = 'http://grayline.com.hk/b2b/api/queryProduct';
+        $data = array(
+            'email'     => $this->email,
+            'password'  => $this->password,
+            'type'      => $type,
+            'productId' => $productId
+        );
+        if(!!$travelDate) $data['date'] = $travelDate;
+        if(!!$travelTime) $data['travelTime'] = $travelTime;
+        if(!!$turbojetDepartureDate) $data['turbojetDepartureDate'] = $turbojetDepartureDate;
+        if(!!$turbojetReturnDate) $data['turbojetReturnDate'] = $turbojetReturnDate;
+        if(!!$turbojetDepartureTime) $data['turbojetDepartureTime'] = $turbojetDepartureTime;
+        if(!!$turbojetReturnTime) $data['turbojetReturnTime'] = $turbojetReturnTime;
+        if(!!$turbojetDepartureFrom) $data['turbojetDepartureFrom'] = $turbojetDepartureFrom;
+        if(!!$turbojetDepartureTo) $data['turbojetDepartureTo'] = $turbojetDepartureTo;
+        if(!!$turbojetReturnFrom) $data['turbojetReturnFrom'] = $turbojetReturnFrom;
+        if(!!$turbojetReturnTo) $data['turbojetReturnTo'] = $turbojetReturnTo;
+        if(!!$turbojetQuantity) $data['turbojetQuantity'] = $turbojetQuantity;
+        if(!!$turbojetClass) $data['turbojetClass'] = $turbojetClass;
+        if(!!$subQtyProductPriceId) $data['subQtyProductPriceId'] = $subQtyProductPriceId;
+        $apiReturnStr = $this->http_request_grayline($url, $data);
+        if($apiReturnStr['meta']['code'] == 'RESP_OKAY') {
+            return array(
+                'status'    => 0,
+                'msg'       => '查询成功',
+                'data'      => $apiReturnStr['data']
+            );
+        } else {
+            return array(
+                'status'    => 1,
+                'msg'       => '系统异常',
+                'ext'       => json_encode($apiReturnStr['meta'])
+            );
+        }
+    }
+
+
+
+
+
+    /**
+     * 查询产品v2
+     */
+    public function queryProductV2($type, $productId, $travelDate, $travelTime, $turbojetDepartureDate, $turbojetReturnDate, $turbojetDepartureTime, $turbojetReturnTime, $turbojetDepartureFrom, $turbojetDepartureTo, $turbojetReturnFrom, $turbojetReturnTo, $turbojetQuantity, $turbojetClass, $subQtyProductPriceId) {
         if(!$type || !$productId) {
             return array(
                 'status'    => -1,

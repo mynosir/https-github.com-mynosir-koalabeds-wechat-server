@@ -185,7 +185,8 @@ class api extends MY_Controller {
                 $this->load->model('grayline_ticket_model');
                 $language = $this->get_request('language', 'en');
                 $type = $this->get_request('type', '');
-                $result = $this->grayline_ticket_model->getProductList($language, $type);
+                $result = $this->grayline_ticket_model->getProductListV2($language, $type);
+                // $result = $this->grayline_ticket_model->getProductList($language, $type);
                 break;
             // 获取grayline产品详情
             case 'getGraylineProductDetails':
@@ -193,7 +194,8 @@ class api extends MY_Controller {
                 $language = $this->get_request('language', 'en');
                 $type = $this->get_request('type', '');
                 $productId = $this->get_request('productId');
-                $result = $this->grayline_ticket_model->getProductDetails($type, $productId, $language);
+                $result = $this->grayline_ticket_model->getProductDetailsV2($type, $productId, $language);
+                // $result = $this->grayline_ticket_model->getProductDetails($type, $productId, $language);
                 break;
             // 查询grayline产品
             case 'queryGraylineProduct':
@@ -213,7 +215,8 @@ class api extends MY_Controller {
                 $turbojetQuantity = $this->get_request('turbojetQuantity');
                 $turbojetClass = $this->get_request('turbojetClass');
                 $subQtyProductPriceId = $this->get_request('subQtyProductPriceId');
-                $result = $this->grayline_ticket_model->queryProduct($type, $productId, $date, $travelTime, $turbojetDepartureDate, $turbojetReturnDate, $turbojetDepartureTime, $turbojetReturnTime, $turbojetDepartureFrom, $turbojetDepartureTo, $turbojetReturnFrom, $turbojetReturnTo, $turbojetQuantity, $turbojetClass, $subQtyProductPriceId);
+                $result = $this->grayline_ticket_model->queryProductV2($type, $productId, $date, $travelTime, $turbojetDepartureDate, $turbojetReturnDate, $turbojetDepartureTime, $turbojetReturnTime, $turbojetDepartureFrom, $turbojetDepartureTo, $turbojetReturnFrom, $turbojetReturnTo, $turbojetQuantity, $turbojetClass, $subQtyProductPriceId);
+                // $result = $this->grayline_ticket_model->queryProduct($type, $productId, $date, $travelTime, $turbojetDepartureDate, $turbojetReturnDate, $turbojetDepartureTime, $turbojetReturnTime, $turbojetDepartureFrom, $turbojetDepartureTo, $turbojetReturnFrom, $turbojetReturnTo, $turbojetQuantity, $turbojetClass, $subQtyProductPriceId);
                 break;
             // 获取短信验证码
             case 'sendSmscode':
