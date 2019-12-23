@@ -764,9 +764,9 @@ class Cloudbeds_hotel_model extends MY_Model {
                     foreach($v['propertyRooms'] as $x=>$y) {
                         $roomtypesCn = $this->getRoomTypesCn($y['roomTypeID'], $openid);
                         if($roomtypesCn['status'] == 0) {
-                            $apiReturnStr['data'][$k][$propertyRooms][$x]['roomTypeName'] = $roomtypesCn['data']['roomTypeName'];
-                            $apiReturnStr['data'][$k][$propertyRooms][$x]['roomTypeNameShort'] = $roomtypesCn['data']['roomTypeNameShort'];
-                            $apiReturnStr['data'][$k][$propertyRooms][$x]['roomTypeDescription'] = $roomtypesCn['data']['roomTypeDescription'];
+                            $apiReturnStr['data'][$k]['propertyRooms'][$x]['roomTypeName'] = $roomtypesCn['data']['roomTypeName'];
+                            $apiReturnStr['data'][$k]['propertyRooms'][$x]['roomTypeNameShort'] = $roomtypesCn['data']['roomTypeNameShort'];
+                            $apiReturnStr['data'][$k]['propertyRooms'][$x]['roomTypeDescription'] = $roomtypesCn['data']['roomTypeDescription'];
                         }
                         // $apiReturnStr['data'][$k]['propertyRooms'][$x] = $roomtypesCn;
                     }
