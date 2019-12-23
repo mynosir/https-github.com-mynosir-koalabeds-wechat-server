@@ -261,7 +261,7 @@ $(function() {
     $('body').delegate('.js_submit', 'click', function() {
 
         var id = $('#id').val(),
-            // productId = $('#productId').val(),
+            productId = $('#productId').val(),
             // type = $('#type').val(),
             title = $('#title').val(),
             title_cn = $('#title_cn').val(),
@@ -281,6 +281,7 @@ $(function() {
                   title: title,
                   introduce: introduce,
                   clause: clause,
+                  productId: productId,
                   title_cn: title_cn,
                   introduce_cn: introduce_cn,
                   clause_cn: clause_cn

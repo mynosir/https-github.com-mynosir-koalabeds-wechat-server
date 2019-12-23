@@ -209,6 +209,7 @@ class Ticket_model extends MY_Model {
         $res2 = $this->db->query($sql2)->result_array();
         if(count($res2)==0){
           $data2['tiid'] = $id;
+          $data2['productId'] = $params['productId'];
           $res2 = $this->db->insert($this->cn_ticket_table, $data2);
         }else{
           $res2 = $this->db->where($where2)->update($this->cn_ticket_table, $data2);
