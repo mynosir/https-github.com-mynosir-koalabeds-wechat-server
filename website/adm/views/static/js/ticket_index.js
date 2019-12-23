@@ -17,8 +17,22 @@ $(function() {
             var callback = function(res) {
                     var idx = 1,
                         list = res['list'],
-                        status = ['Unread','Read'],
-                        listTpl = '<tr><th>Serial No.</th><th>Product ID</th><th>Type</th><th>Title</th><th>Title(Chinese)</th><th>Operation</th></tr>';
+                        // status = ['Unread','Read'],
+                        statusArray = [
+                          {
+                          'status': 0,
+                          'value': 'Off'
+                          },
+                          {
+                            'status': 1,
+                            'value': 'On'
+                          },
+                          {
+                            'status': -1,
+                            'value': 'Delete'
+                          }
+                        ],
+                        listTpl = '<tr><th>Serial No.</th><th>Product ID</th><th>Type</th><th>image</th><th>Title</th><th>Title(Chinese)</th><th>Status</th><th>Operation</th></tr>';
                     for(var i in list) {
                         var listid = (res.page-1)*res.size+parseInt(i)+1;
                         // if(list[i]['name_cn'] ==undefined){
@@ -28,13 +42,30 @@ $(function() {
                         listTpl += '<td>' + listid + '</td>';
                         listTpl += '<td>' + list[i]['productId'] + '</td>';
                         listTpl += '<td>' + list[i]['type'] + '</td>';
+                        listTpl += '<td><img src="' + list[i]['image'] + '" style="width: 100px; height: 60px;"></td>';
                         listTpl += '<td>' + list[i]['title'] + '</td>';
                         listTpl += '<td>' + list[i]['title_cn'] + '</td>';
                         // listTpl += '<td>' + list[i]['roomTypeNameShort'] + '</td>';
-                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['productId'] + '" data-type="' + list[i]['type'] + '">Edit</button></td>';
+                        listTpl += '<td style="width:100px"><select data-id='+list[i]['id']+' class="form-control selectSection"><option value="0">'+'Off'+'</option><option value="1">'+'On'+'</option><option value="-1">'+'Delete'+'</option></select></td>';
+                        listTpl += '<td><button type="button" class="btn btn-sm btn-primary js_edit" data-toggle="modal" data-target="#editModal" data-id="' + list[i]['id'] + '">Edit</button></td>';
                         listTpl += '</tr>';
                     }
                     $('.js_table').html(listTpl);
+                    function getStatus(status) {
+                      for (var i = 0; i < statusArray.length; i++) {
+                        if (statusArray[i]['status']==status) {
+                          return statusArray[i]['status'];
+                        }
+                      }
+                    }
+
+
+                    for(var i in list){
+                      // var status = getStatus(list[i]['status']);
+                      $('.selectSection').eq(i).val(list[i]['status']);
+                      $('.selectSection').eq(i).attr('data-status',list[i]['status'])
+                    }
+
                 // } else {
                 //     alert(res.msg);
                 // }
@@ -72,6 +103,32 @@ $(function() {
             json.callback = callback;
             Utils.requestData(json);
         },
+        updateConfirmTip: function(id,status) {
+          $('#confirmModal').find('.js_sure_update').attr('data-id', id);
+            $('#confirmModal').find('.js_sure_update').attr('data-status', status);
+            $('#confirmModal').modal('show');
+        },
+        updateItem: function(id,status) {
+          var json = {
+              api: config.apiServer + 'ticket/post',
+              type: 'post',
+              data: {
+                  actionxm: 'updateStatus',
+                  id: id,
+                  params: {
+                    status: status
+                  }
+              }
+          };
+          var callback = function(res) {
+              $('#confirmModal').modal('hide');
+              alert(res.msg);
+              window.location.reload();
+          };
+          json.callback = callback;
+          Utils.requestData(json);
+
+        },
 
 
     };
@@ -83,15 +140,16 @@ $(function() {
 
     $('body').delegate('.js_edit', 'click', function(e) {
         var id = $(e.currentTarget).data('id');
-        var type = $(e.currentTarget).data('type');
-        window.location.href = '/adm/ticket/edit?id='+id+'&type='+type;
+        // var type = $(e.currentTarget).data('type');
+        window.location.href = '/adm/ticket/edit?id='+id;
     });
 
     $('body').delegate('.selectSection', 'change', function(e) {
 
       var id = $(e.currentTarget).data('id');
-      var selectedStatus = e.currentTarget.options.selectedIndex;
-      page.updateConfirmTip(id,selectedStatus)
+      var index = e.currentTarget.options.selectedIndex;
+      var value = e.currentTarget.options[index].value;
+      page.updateConfirmTip(id,value)
     });
 
     $('body').delegate('.selectRecommend', 'change', function(e) {

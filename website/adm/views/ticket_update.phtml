@@ -30,13 +30,28 @@
 </style>
 
 <div class="form-group">
+    <label>ID</label>
+    <input type="text" class="form-control" id="id" disabled value="<?php echo $id; ?>">
+</div>
+<div class="form-group">
     <label>Product ID</label>
-    <input type="text" class="form-control" id="productId" disabled value="<?php echo $productId; ?>">
+    <input type="text" class="form-control" id="productId" disabled value="<?php echo $info['res_en']['productId']; ?>">
 </div>
 <div class="form-group">
     <label>Type</label>
-    <input type="text" class="form-control" id="type" disabled value="<?php echo $type; ?>">
+    <input type="text" class="form-control" id="type" disabled value="<?php echo $info['res_en']['type']; ?>">
 </div>
+<div class="form-group">
+    <label>Code</label>
+    <input type="text" class="form-control" id="code" disabled value="<?php echo $info['res_en']['code']; ?>">
+</div>
+<div class="form-group">
+    <label for="photo" class="control-label">Image</label>
+    <div>
+        <img class="" style="width:400px; height: 240px;" src="<?php echo $info['res_en']['image']; ?>">
+    </div>
+</div>
+
 <div class="form-group">
     <label>Title</label>
     <input type="text" class="form-control" id="title" placeholder="Title" value="<?php echo $info['res_en']['title']; ?>">

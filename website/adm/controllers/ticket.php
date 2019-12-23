@@ -38,12 +38,12 @@ class Ticket extends MY_Controller {
 
     public function edit() {
         $id = $this->get_request('id');
-        $type = $this->get_request('type');
+        // $type = $this->get_request('type');
 
-        $this->data['productId'] = $id;
-        $this->data['type'] = $type;
+        $this->data['id'] = $id;
+        // $this->data['type'] = $type;
         // 更新
-        $this->data['info'] = $this->ticket_model->getTicketDetail($id, $type);
+        $this->data['info'] = $this->ticket_model->getTicketDetail($id);
         // $info2 = $this->rooms_model->getHotelDetailCn($id);
         // if($info2){
         //     $this->data['info2'] = $info2;
@@ -73,15 +73,24 @@ class Ticket extends MY_Controller {
         $result = array();
         switch($actionxm) {
           case 'save':
-              $productId = $this->get_request('productId');
-              $type = $this->get_request('type');
+              $id = $this->get_request('id');
               $params = $this->get_request('params');
-              $result = $this->ticket_model->save($productId,$type,$params);
+              $result = $this->ticket_model->save($id,$params);
               break;
           case 'getTicketId':
               $params = $this->get_request('params');
               $result = $this->ticket_model->getTicketId($params);
               break;
+          case 'updateStatus':
+              $id = $this->get_request('id');
+              $params = $this->get_request('params');
+              $result = $this->ticket_model->updateStatus($id,$params);
+              // $classify = $this->get_request('classify');
+              // $keyword = $this->get_request('keyword');
+              // $result = $this->reviews_model->updateReviews($page, $size);
+
+              break;
+
         }
         echo json_encode($result);
     }

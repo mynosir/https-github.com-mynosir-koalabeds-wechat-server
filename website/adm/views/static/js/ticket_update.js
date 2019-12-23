@@ -260,22 +260,23 @@ $(function() {
 
     $('body').delegate('.js_submit', 'click', function() {
 
-        var productId = $('#productId').val(),
-            type = $('#type').val(),
+        var id = $('#id').val(),
+            // productId = $('#productId').val(),
+            // type = $('#type').val(),
             title = $('#title').val(),
             title_cn = $('#title_cn').val(),
             introduce = $('#introduce').summernote('code');
             introduce_cn = $('#introduce_cn').summernote('code');
             clause = $('#clause').summernote('code');
             clause_cn = $('#clause_cn').summernote('code');
-        var id = $('.js_id').val();
+        // var id = $('.js_id').val();
         var json = {
             api: config.apiServer + 'ticket/post',
             type: 'post',
             data: {
                 actionxm: 'save',
-                productId: productId,
-                type: type,
+                id: id,
+                // type: type,
                 params: {
                   title: title,
                   introduce: introduce,
