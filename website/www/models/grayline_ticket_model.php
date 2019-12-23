@@ -202,9 +202,10 @@ class Grayline_ticket_model extends MY_Model {
      * 获取产品列表v2
      */
     public function getProductListV2($language, $type = '') {
-        $where = '';
+        $where = ' where status = 1 ';
         if($type != '') {
-            $where = ' where type = "' . $type . '" ';
+            $where .= ' and type = "' . $type . '" ';
+            // $where = ' where type = "' . $type . '" ';
         }
         $query = $this->db->query('select ' . $this->info_v2_fields . ' from ' . $this->info_v2_table . $where);
         $result = $query->result_array();
