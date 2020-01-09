@@ -129,6 +129,19 @@ class MY_Model extends CI_Model {
      * 更新cloudbeds access token
      **/
     public function update_cloudbeds_access_token() {
+        // 判断是否在更新请求中
+        $lockFile = '/pub/koalabeds-server.kakaday.com/update_cloudbeds_access_token.lock';
+        if(file_exists($lockFile)) {
+            $lockStatus = file_get_contents($lockFile);
+            if($lockStatus == 1) {
+                $rtn = array(
+                    'status'    => -2,
+                    'msg'       => '上一个更新请求未返回'
+                );
+                return $rtn;
+            }
+        }
+        file_put_contents($lockFile, 1, LOCK_EX);
         $table = 'ko_cloudbeds_access_token';
         $fields = 'id, access_token, token_type, expires_in, refresh_token, update_time';
         $query = $this->db->query('select ' . $fields . ' from ' . $table);
@@ -168,6 +181,15 @@ class MY_Model extends CI_Model {
                         'msg'       => '有效期小于10分钟，已更新access token',
                         'data'      => $data
                     );
+                    file_put_contents($lockFile, 0, LOCK_EX);
+                    return $rtn;
+                } else {
+                    // 接口异常
+                    $rtn = array(
+                        'status'    => -3,
+                        'msg'       => 'cloudbeds api接口异常'
+                    );
+                    file_put_contents($lockFile, 0, LOCK_EX);
                     return $rtn;
                 }
             } else {
@@ -177,6 +199,7 @@ class MY_Model extends CI_Model {
                     'msg'       => '有效期较长，无需更新',
                     'data'      => $result[0]
                 );
+                file_put_contents($lockFile, 0, LOCK_EX);
                 return $rtn;
             }
         } else {
@@ -185,6 +208,7 @@ class MY_Model extends CI_Model {
                 'status'    => -1,
                 'msg'       => '未查找到access_token记录'
             );
+            file_put_contents($lockFile, 0, LOCK_EX);
             return $rtn;
         }
     }
