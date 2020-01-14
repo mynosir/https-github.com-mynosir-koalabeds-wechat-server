@@ -40,6 +40,7 @@ class home extends MY_Controller {
 
 
     public function fetchServerAccessToken() {
+        return;
         $result = json_decode($this->https_request('https://koalabeds-server.kakaday.com/home/getAccessToken'), true);
         if($result['status'] == 0) {
             $this->load->model('cloudbeds_access_token_model');
@@ -53,7 +54,7 @@ class home extends MY_Controller {
 
     public function getHotels() {
         $curl = curl_init();
-        $access_token = '2tBHitaksLZbyTseYm2qr1yRRrQRM9rUmjkUBo3Y';
+        $access_token = 'qciYx4Quogmz890bq2QK80knzeUwDcA0rQWOr3Jf';
         $url = 'https://hotels.cloudbeds.com/api/v1.1/getHotels';
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
