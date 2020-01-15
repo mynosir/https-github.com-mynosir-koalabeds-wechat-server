@@ -290,7 +290,7 @@ class Cloudbeds_hotel_model extends MY_Model {
     /**
      * 根据房间类型id获取信息
      */
-    public function getRoomTypesByRoomTypeIDs($propertyID, $roomTypeID) {
+    public function getRoomTypesByRoomTypeIDs($propertyID, $roomTypeID, $openid = '') {
         $access_token_result = $this->update_cloudbeds_access_token();
         if($access_token_result['status']) {
             return array(

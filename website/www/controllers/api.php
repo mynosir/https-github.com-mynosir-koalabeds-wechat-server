@@ -273,8 +273,9 @@ class api extends MY_Controller {
             case 'getRoomTypeById':
                 $propertyID = $this->get_request('propertyID');
                 $roomTypeID = $this->get_request('roomTypeID');
+                $openid = $this->get_request('openid');
                 $this->load->model('cloudbeds_hotel_model');
-                $result = $this->cloudbeds_hotel_model->getRoomTypesByRoomTypeIDs($propertyID, $roomTypeID);
+                $result = $this->cloudbeds_hotel_model->getRoomTypesByRoomTypeIDs($propertyID, $roomTypeID, $openid);
                 break;
             // 获取酒店订单列表
             case 'getHotelOrders':
