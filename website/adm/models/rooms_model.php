@@ -43,6 +43,14 @@ class Rooms_model extends MY_Model {
       // $sql = 'select '.$this->rooms_fields.' from '.$this->rooms_table.$where.' order by propertyID';
       $query = $this->db->query($sql);
       $result = $query->result_array();
+      // var_dump($result);
+      // var_dump(count($result));
+      for ($i=0; $i < count($result); $i++) {
+        // code...
+        if($result[$i]['status']==null){
+          $result[$i]['status'] = 1;
+        }
+      }
       // 中文信息表
       $sql2 = 'select '.$this->cn_rooms_fields.' from '.$this->cn_rooms_table;
       $query2 = $this->db->query($sql2);
