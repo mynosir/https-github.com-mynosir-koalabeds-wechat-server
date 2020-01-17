@@ -70,7 +70,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Property Room:</label>
                 <div class="col-sm-10">
-                    <p class="form-control-static"><?php if(!$roomUnread) { echo '<span style="color: green;">Read</span>'; } else { echo '<span style="color: red;">Unread</span>'; } ?></p>
+                    <p class="form-control-static"><?php if($roomUnread) { echo '<span style="color: green;">Read</span>'; } else { echo '<span style="color: red;">Unread</span>'; } ?></p>
                 </div>
             </div>
         </form>
