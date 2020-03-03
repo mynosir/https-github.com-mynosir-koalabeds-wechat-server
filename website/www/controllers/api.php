@@ -436,7 +436,7 @@ class api extends MY_Controller {
                             'out_trade_no'  => $outTradeNo,
                             'sub_openid'    => $params['openid'],
                             'sub_appid'     => 'wx18cda3bfbb701cb7',
-                            'total_fee'     => '1',
+                            'total_fee'     => $total_fee,
                             'mch_create_ip' => '127.0.0.1',
                             'notify_url'    => 'https://koalabeds-server.kakaday.com/api/paycallback',
                             'nonce_str'     => '1409196838'
@@ -535,7 +535,7 @@ class api extends MY_Controller {
                                 'out_trade_no'  => $orderDetail['outTradeNo'],
                                 'sub_openid'    => $openid,
                                 'sub_appid'     => 'wx18cda3bfbb701cb7',
-                                'total_fee'     => '1',
+                                'total_fee'     => $orderInfo['total'],
                                 'mch_create_ip' => '127.0.0.1',
                                 'notify_url'    => 'https://koalabeds-server.kakaday.com/api/paycallback',
                                 'nonce_str'     => '1409196838'
@@ -604,7 +604,7 @@ class api extends MY_Controller {
                         'out_trade_no'  => $outTradeNo,
                         'sub_openid'    => $params['openid'],
                         'sub_appid'     => 'wx18cda3bfbb701cb7',
-                        'total_fee'     => '1',
+                        'total_fee'     => $total_fee,
                         'mch_create_ip' => '127.0.0.1',
                         'notify_url'    => 'https://koalabeds-server.kakaday.com/api/paycallbackGrayline',
                         'nonce_str'     => '1409196838'
